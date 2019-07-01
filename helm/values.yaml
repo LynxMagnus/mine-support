@@ -6,6 +6,7 @@ service:
 container:
   name: mine-support
   redisname: redis-redis-ha
+  redisCacheName: msrediscache
   port: 3000
   imagePullPolicy: IfNotPresent
   requestMemory: 30Mi

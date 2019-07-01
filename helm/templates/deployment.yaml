@@ -34,6 +34,8 @@ spec:
           value: {{ .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
           value: {{ .Values.container.redisname }}
+        - name: MINE_SUPPORT_CACHE_NAME
+          value: {{ .Values.container.redisCacheName }}
         - name: MINE_SUPPORT_API_GATEWAY
           value: {{ .Values.container.apiGatewayUrl }}:{{ .Values.container.apiGatewayPort }}
         ports:

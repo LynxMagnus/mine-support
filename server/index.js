@@ -1,4 +1,5 @@
 const hapi = require('hapi')
+const CatboxRedis = require('@hapi/catbox-redis')
 const config = require('./config')
 
 async function createServer () {
@@ -10,15 +11,12 @@ async function createServer () {
         options: {
           abortEarly: false
         }
-      }// },
-      // cache: {
-      //   otherwise: 'no-cache, must-revalidate, max-age=0, no-store'
-      // }
+      }
     },
     cache: [{
       name: config.cacheName,
       provider: {
-        constructor: require('catbox-redis'),
+        constructor: CatboxRedis,
         options: {
           host: config.redisHost,
           port: config.redisPort,

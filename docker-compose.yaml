@@ -16,6 +16,7 @@ services:
       REDIS_HOSTNAME: mine-support-redis
     ports:
         - "3000:3000"
+        - "9229:9229"
     depends_on:
         - mine-support-redis
     volumes:
