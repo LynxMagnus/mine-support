@@ -3,8 +3,10 @@ services:
   mine-support-redis:
     image: redis
     container_name: mine-support-redis
+    networks:
+      - mine-support-redis
     ports:
-        - "6379:6379"
+      - "6379:6379"
 
   mine-support:
     build: .
@@ -13,14 +15,23 @@ services:
     command: npm run start-watch
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
+      MINE_SUPPORT_API_GATEWAY: http://mine-support-api-gateway:3001
       REDIS_HOSTNAME: mine-support-redis
+    networks:
+      - mine-support
+      - mine-support-redis
     ports:
-        - "3000:3000"
+      - "3000:3000"
     depends_on:
-        - mine-support-redis
+      - mine-support-redis
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
+
+networks:
+  mine-support:
+    external: true
+  mine-support-redis: {}
 
 volumes:
   node_modules:
