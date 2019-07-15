@@ -1,5 +1,6 @@
 environment: development
 image: mine-support
+auth: ZGVmcmE6JGFwcjEkY1drUVhUTU4kWUh5OERFT1pvMEM1MGF4WkpXREtuMAo=
 service:
   port: 80
 
@@ -8,6 +9,7 @@ container:
   redisname: redis-redis-ha
   port: 3000
   imagePullPolicy: IfNotPresent
+  redeployOnChange: update this field to force a change
   requestMemory: 30Mi
   requestCpu: 10m
   limitMemory: 60Mi
