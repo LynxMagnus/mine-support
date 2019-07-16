@@ -1,12 +1,12 @@
 environment: development
 image: mine-support
-auth: ZGVmcmE6JGFwcjEkY1drUVhUTU4kWUh5OERFT1pvMEM1MGF4WkpXREtuMAo=
+auth:
 service:
   port: 80
 
 container:
   name: mine-support
-  redisname: redis-redis-ha
+  redisname: redis-redis-ha.default
   port: 3000
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change
