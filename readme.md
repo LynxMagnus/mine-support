@@ -36,9 +36,11 @@ The service has been developed with the intention of running in Kubernetes.  A h
 
 # Basic Authentication
 The ingress controller is protected with basic authentication.
-The credentials are retrieved from a Kubernetes Secret named `mine-support-basic-auth` in the namespace the application is deployed into.
+Credentials are retrieved from a Kubernetes Secret named `mine-support-basic-auth` in the application's namespace.
 
-The default username and password can be overridden by setting the `auth` value in the [values.yaml](./helm/values.yaml) file.
+The Helm chart includes an encrypted placeholder username and password in the [basic-auth-secret](./helm/templates/basic-auth-secret.yaml). These credentials are overridden in the Defra release pipeline and are not used in production.
+
+The default username and password can be changed by updating the `auth` value exposed by the [values.yaml](./helm/values.yaml) file.
 
 First generate a username and password using htpasswd. Below shows creating a password for the user 'defra'.
 Upon hitting enter you will be prompted for a password for the user.
@@ -63,7 +65,7 @@ kind: Secret
 metadata:
 ...
 ```
-In the example above the value of auth would be set to `ZGVmcmE6JGFwcjEkY1drUVhUTU4kWUh5OERFT1pvMEM1MGF4WkpXREtuMAo`
+In the example above the value of auth would be need to be set to `ZGVmcmE6JGFwcjEkY1drUVhUTU4kWUh5OERFT1pvMEM1MGF4WkpXREtuMAo` to use the generated credentials.
 
 Setting the new auth value while deploying the Helm chart will prompt a user to enter the username and password when visiting the web site.
 

@@ -1,6 +1,5 @@
 environment: development
 container:
-  redisname: redis-redis-ha
   readOnlyRootFilesystem: false
   allowPrivilegeEscalation: true
   command: ["node"]
