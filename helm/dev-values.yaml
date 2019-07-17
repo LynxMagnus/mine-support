@@ -7,5 +7,5 @@ container:
   # command: ["npx"]
   # args: ["nodemon", "--inspect=0.0.0.0", "--ext", "js,njk", "--legacy-watch", "index.js"]
 ingress:
-  endpoint: skaffold-mine-support
+  endpoint: mine-support
 replicaCount: 1

@@ -19,8 +19,8 @@ services:
     depends_on:
         - mine-support-redis
     volumes:
-      - node_modules:/mine-support/node_modules
-      - .:/mine-support
+      - node_modules:/code/node_modules
+      - .:/code
 
 volumes:
   node_modules:

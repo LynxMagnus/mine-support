@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  test:
+    build:
+      context: .
+    environment:
+      NODE_ENV: development
+      COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
+      REDIS_HOSTNAME: mine-support-redis
+    volumes:
+      - ./test-output:/code/test-output
+    command: npm run test

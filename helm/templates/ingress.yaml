@@ -21,7 +21,8 @@ metadata:
   name: {{ .Values.ingress.serviceName }}
 spec:
   rules:
-  - http:
+  - host: {{ .Values.ingress.endpoint }}.defradev.com
+    http:
       paths:
       - path: /?(.*)
       # - path: /{{ .Values.ingress.endpoint }}/?(.*)
