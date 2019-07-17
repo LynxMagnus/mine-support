@@ -1,6 +1,6 @@
 const config = require('../config')
 module.exports = {
-  plugin: require('yar'),
+  plugin: require('@hapi/yar'),
   options: {
     storeBlank: true,
     maxCookieSize: 1,
