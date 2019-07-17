@@ -68,7 +68,7 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose-test.yml
+    dockerComposeFile: docker-compose-test.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
     dockerComposeCommand: build --no-cache test
@@ -91,7 +91,7 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose.yml
+    dockerComposeFile: docker-compose.yaml
     projectName: $(Build.Repository.Name)
     qualifyImageNames: true
     additionalImageTags: $(containerTag)
@@ -102,7 +102,7 @@ steps:
     action: Push services
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistryFull)
-    dockerComposeFile: docker-compose.yml
+    dockerComposeFile: docker-compose.yaml
     qualifyImageNames: true
     additionalImageTags: $(containerTag)
   displayName: Push container to registry
