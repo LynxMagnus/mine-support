@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app.component: {{ .Values.container.name }}
+      annotations:
+        redeployOnChange: "{{ .Values.container.redeployOnChange }}"
     spec:
       containers:
       - name: {{ .Values.container.name }}

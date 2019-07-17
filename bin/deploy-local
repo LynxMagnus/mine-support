@@ -1,0 +1,2 @@
+#!/bin/bash
+helm upgrade mine-support --install --namespace mine-support --values ./helm/dev-values.yaml ./helm --set auth=$MINE_BASIC_AUTH

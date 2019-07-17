@@ -34,10 +34,59 @@ Alternatively the project can be run in a container through the docker-compose.y
 # Kubernetes
 The service has been developed with the intention of running in Kubernetes.  A helm chart is included in the `.\helm` folder.
 
+# Basic Authentication
+The ingress controller may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
+
+The provided auth string must be an htpasswd encoded for use in the data field of a Kubernetes secret.
+
+To generate the correct format auth token first create a username and password using htpasswd.
+Below shows creating a password for the user 'defra'.
+
+`htpasswd -c ./auth defra`
+
+Upon hitting return you will be prompted to enter a password for the user.
+A Secret can then be created in Kubernetes directly from the `./auth` file:
+
+`kubectl create secret generic basic-auth --namespace default --from-file auth`
+
+The secret can be viewed with the command:
+
+`kubectl get secret basic-auth -o yaml`
+
+The encoded, encrypted, username and password will be shown in the auth field of the data section.
+
+```
+apiVersion: v1
+data:
+  auth: xyzabc
+kind: Secret
+metadata:
+...
+```
+In the example above the value of `auth` would be need to be set to `xyzabc` to use the generated credentials.
+
+Setting the new auth value while deploying the Helm chart will prompt a user to enter the username and password when visiting the web site. 
+
+A utility script is provided to aid in deploying locally using basic authentication. 
+
+First build the container
+
+ `./bin/build-image`
+
+ export the generated auth token as the environment variable MINE_BASIC_AUTH, i.e.:
+
+ `export MINE_BASIC_AUTH=xyzabc`
+
+ deploy to the current Helm context
+
+ `./bin/deploy-local`
+
+
+
 # Note on running in local Kubernetes cluster
 To get running against redis-ha locally you must deploy with no affinities, so redis nodes can be on same worker node, set the replicas to one, and set min slaves to zero. This can be donw via the provided `redis.yaml` file:
 
-`helm install --namespace mine-support --name redis -f redis.yaml stable/redis-ha`
+`helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
 
 Further information: https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write
 
