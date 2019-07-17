@@ -21,7 +21,7 @@ variables:
     azureContainerRegistryFull: jwminesupport.azurecr.io
     azureSubscriptionEndpoint: MineSupport
     azureResourceGroup: MineSupport
-    kubernetesCluster: MineSupportCluster
+    kubernetesCluster: MineSupport
     imageName:  mine-support
     containerTag: $(Build.SourceBranchName)
     safeContainerTag: $(Build.SourceBranchName)
@@ -56,7 +56,7 @@ steps:
     gitLog=`git log -1 --pretty=%B`
     mergedPrNo=`echo $gitLog | sed -n 's/Merge pull request #\(.*\) from .*/\1/p'`
     echo '##vso[task.setvariable variable=mergedPrNo]'$mergedPrNo
-  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/heads/$(Build.SourceBranchName)'))
+  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/heads/develop'))
   displayName: 'extracts merged PR number if merge to branch'
   # create test folder
 - script: |

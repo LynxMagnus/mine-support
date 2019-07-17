@@ -5,9 +5,9 @@ services:
     build:
       context: .
     environment:
-      NODE_ENV: development
+      NODE_ENV: test
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
-      REDIS_HOSTNAME: mine-support-redis
+      REDIS_HOSTNAME: not-accessed
     volumes:
       - ./test-output:/code/test-output
     command: npm run test

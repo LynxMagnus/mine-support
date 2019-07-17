@@ -40,7 +40,7 @@ if (result.error) {
 const value = result.value
 
 // Add some helper props
-value.isDev = value.env === 'development'
+value.isDev = (value.env === 'development' || value.env === 'test')
+value.isTest = value.env === 'test'
 value.isProd = value.env === 'production'
-
 module.exports = value
