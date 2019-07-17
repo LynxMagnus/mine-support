@@ -7,6 +7,7 @@ service:
 container:
   name: mine-support
   redisname: redis-redis-ha.default
+  port: 3000
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change
   requestMemory: 30Mi
