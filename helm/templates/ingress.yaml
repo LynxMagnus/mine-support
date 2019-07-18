@@ -25,7 +25,6 @@ spec:
     http:
       paths:
       - path: /?(.*)
-      # - path: /{{ .Values.ingress.endpoint }}/?(.*)
         backend:
           serviceName: {{ .Values.ingress.serviceName }}
           servicePort: {{ .Values.service.port }}

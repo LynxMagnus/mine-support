@@ -149,7 +149,7 @@ steps:
       az acr repository delete --name $(azureContainerRegistry) --image $(imageName):pr$(mergedPrNo) -y
     failOnStandardError: false
   displayName: remove merged PR image
-  # add Helm chart to registry
+  # add Helm chart to registry for a release
 - task: AzureCLI@1
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags'))
   inputs:

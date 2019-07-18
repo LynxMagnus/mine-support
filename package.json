@@ -9,7 +9,8 @@
     "lint": "standard",
     "unit-test": "lab -c -r console -o stdout -r junit -o ./test-output/junit.xml",
     "start-watch": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch index.js",
-    "test": "npm run lint && npm run unit-test",
+    "pretest": "npm run lint",
+    "test": "npm run unit-test",
     "postinstall": "npm run build"
   },
   "author": "John Watson, Mark Harrop, Matthew Collins, David Bingham",
