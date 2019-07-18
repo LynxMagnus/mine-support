@@ -103,3 +103,21 @@ First build the container
  deploy to the current Helm context
 
  `./bin/deploy-local`
+
+# Build Pipeline
+
+The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
+- Runs unit tests
+- Publishes test result
+- Pushes containers to the registry tagged with the PR number or release version
+- Deploys PRs to a temporary end point for review
+- Deletes PR deployments, containers, and namepace upon merge
+
+PRs will be available at the URL `http://mine-support-pr{pr-number}.{ingress-server}`, where `{pr-number}` is the PR number, i.e. 8, and `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/values.yaml),  which is `defradev.com` by default.
+
+The temporary deployment requires a CNAME subdomain wildcard pointing at the public IP address of the Ingress Controller of the Kubernetes cluster. This can be simulated by updating your local hosts file to provide a name for the Ingress public IP address mapped to the PR address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this would be
+
+xx.xx.xx.xx mine-support-pr8.defradev.com
+
+where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
+
