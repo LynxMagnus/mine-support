@@ -20,8 +20,29 @@ Digital service mock to claim public money in the event property subsides into m
 Node v10+
 Redis 
 
-# Running the application
-First build the application using:
+
+# Running the application in Kubernetes
+The service has been developed with the intention of running in Kubernetes.  A helm chart is included in the `.\helm` folder.
+
+To get running against redis-ha locally you must deploy with no affinities, allow Redis nodes to reside on the same worker node, set the replicas to one, and set min slaves to zero. This can be done via the provided `redis.yaml` file using the command:
+
+`helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
+
+Further information: https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write
+
+A Skaffold file is provided that will redeploy the application upon files changes. This can be run via the script `./bin/start-skaffold`.
+Changes to the local file will be copied across to the pod, however this is fairly slow when running locally.
+Skaffold uses a `dev-values.yaml` config that makes the file system in the container read/write and starts nodemon.
+
+It is much quicker to use the provided docker-compose file for development. At the moment the compose file only contains the mine-support code and a Redis image, not stubs or images for other required services.
+
+The docker-compose file can be launched via `./bin/start-compose`. This will start a nodemon session watching for changes in `.js` and `njk` files. 
+
+For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
+You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
+
+# Running the application outside of Containers
+The application may be run natively on the local operating if a Redis server is available locally. First build the application using:
 
 `$ npm run build`
 
@@ -29,10 +50,12 @@ Now the application is ready to run:
 
 `$ node index.js`
 
-Alternatively the project can be run in a container through the docker-compose.yaml file.
+# How to run tests
+Unit tests are written in Lab and can be run with the following command:
 
-# Kubernetes
-The service has been developed with the intention of running in Kubernetes.  A helm chart is included in the `.\helm` folder.
+`npm run test`
+
+Alternatively the `docker-compose-test.yaml` used by the continuous integration build may be run via the script `./bin/test-compose`.
 
 # Basic Authentication
 The ingress controller may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
@@ -80,28 +103,3 @@ First build the container
  deploy to the current Helm context
 
  `./bin/deploy-local`
-
-
-
-# Note on running in local Kubernetes cluster
-To get running against redis-ha locally you must deploy with no affinities, so redis nodes can be on same worker node, set the replicas to one, and set min slaves to zero. This can be donw via the provided `redis.yaml` file:
-
-`helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
-
-Further information: https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write
-
-A Skaffold file is provided that can redeploy files upon change. This can be run via the script `./bin/start-skaffold`.
-Changes to the local file will be copied across to the pod, however this is fairly slow when running locally.
-Skaffold uses a `dev-values.yaml` config that makes the file system in the container read/write and starts nodemon.
-
-It's about an order of magnitude quicker to use the provided docker-compose file. At the moment this only contains the local code and a Redis image, not stubs or images for other required services.
-
-The docker-compose file can be launched via `./bin/start-compose`. This will start a nodemon session watching for changes in `.js` and `njk` files. 
-
-For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
-You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
-
-# How to run tests
-Unit tests are written in Lab and can be run with the following command:
-
-`npm run test`
