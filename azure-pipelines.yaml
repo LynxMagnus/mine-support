@@ -25,6 +25,7 @@ variables:
     imageName:  mine-support
     containerTag: $(Build.SourceBranchName)
     safeContainerTag: $(Build.SourceBranchName)
+    ingressServer: defradev.com
     mergedPrNo:
 steps:
   # extracts PR number from refs/pull/{prNo}/ branch name and sets to containerTag if pull request
@@ -32,37 +33,37 @@ steps:
     IFS='/' read -r -a array <<< $BUILD_SOURCEBRANCH
     echo '##vso[task.setvariable variable=containerTag]pr'${array[2]}
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/pull'))
-  displayName: 'set container tag if PR'
+  displayName: set container tag if PR
   # extracts version number from refs/tags/{versionNo}/ branch name and sets to containerTag if release
 - script: |
     IFS='/' read -r -a array <<< $BUILD_SOURCEBRANCH
     echo '##vso[task.setvariable variable=containerTag]'${array[2]}
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags'))
-  displayName: 'set container tag if release'
+  displayName: set container tag if release
   # update helm charts tag and version if files ready for publishing chart
 - script: |
     sed -i -e 's/image: mine-support/image: mine-support:$(containerTag)/' ./helm/values.yaml
     versionTag=`echo $(containerTag) | sed 's/v//'`
     sed -i -e 's/version: 1.0.0/version: '"$versionTag"'/' ./helm/Chart.yaml
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags'))
-  displayName: 'update values and Chart yaml for release'
+  displayName: update values and Chart yaml for release
   # create safe container tag for use in namespaces
 - script: |
     safeContainerTag=`echo $(containerTag) | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]'`
     echo '##vso[task.setvariable variable=safeContainerTag]'$safeContainerTag
-  displayName: 'set safe container tag as lower case container tag with illegal characters removed'
+  displayName: set safe container tag as lower case container tag with illegal characters removed
   # extracts merged PR number from git log if a PR merge to master
 - script: |
     gitLog=`git log -1 --pretty=%B`
     mergedPrNo=`echo $gitLog | sed -n 's/Merge pull request #\(.*\) from .*/\1/p'`
     echo '##vso[task.setvariable variable=mergedPrNo]'$mergedPrNo
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/heads/$(Build.SourceBranchName)'))
-  displayName: 'extracts merged PR number if merge to branch'
+  displayName: extracts merged PR number if merge to branch
   # create test folder
 - script: |
     mkdir test-output
     chmod 777 test-output
-  displayName: 'create test output directory'
+  displayName: create test output directory
 - task: DockerCompose@0
   inputs:
     containerregistrytype: Azure Container Registry
@@ -125,7 +126,7 @@ steps:
     chartType: filepath
     chartPath: helm
     releaseName: $(imageName)-$(containerTag)
-    arguments: --set ingress.endpoint=$(imageName)-$(containerTag) --set auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always
+    arguments: --set ingress.endpoint=$(imageName)-$(containerTag) --set ingress.server=$(ingressServer) auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always
     install: true
     waitForExecution: true
   displayName: Helm deploy
@@ -176,3 +177,7 @@ steps:
     command: delete
     arguments: namespaces $(imageName)-pr$(mergedPrNo)
   displayName: delete merged PR namespace
+  # display URL of deployed build
+- script: |
+    echo "Build available for review at http://$(imageName)-$(containerTag).$(ingressServer)"
+  displayName: display URL of deployed build
