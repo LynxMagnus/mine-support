@@ -126,7 +126,7 @@ steps:
     chartType: filepath
     chartPath: helm
     releaseName: $(imageName)-$(containerTag)
-    arguments: --set ingress.endpoint=$(imageName)-$(containerTag) --set ingress.server=$(ingressServer) auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always
+    arguments: --set ingress.endpoint=$(imageName)-$(containerTag) --set ingress.server=$(ingressServer) --set auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always
     install: true
     waitForExecution: true
   displayName: Helm deploy
