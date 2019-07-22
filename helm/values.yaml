@@ -17,8 +17,7 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  apiGatewayUrl: http://mine-support-api-gateway.default
-  apiGatewayPort: 3001
+  apiGatewayUrl: http://mine-support-api-gateway.default:3001
   restartPolicy: Always
 ingress:
   serviceName: mine-support
