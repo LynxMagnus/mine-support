@@ -157,7 +157,7 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
       helm init -c
-      az configure --defaults acr=$(azureContainerRegistry) 
+      az configure --defaults acr=$(azureContainerRegistry)
       az acr helm repo add
       helm package ./helm --save
       packageFile=`ls elm-rbac-* |  xargs echo`

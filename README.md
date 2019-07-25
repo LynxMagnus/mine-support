@@ -18,7 +18,7 @@ Digital service mock to claim public money in the event property subsides into m
 
 # Prerequisites
 Node v10+
-Redis 
+Redis
 
 
 # Running the application in Kubernetes
@@ -36,7 +36,7 @@ Skaffold uses a `dev-values.yaml` config that makes the file system in the conta
 
 It is much quicker to use the provided docker-compose file for development. At the moment the compose file only contains the mine-support code and a Redis image, not stubs or images for other required services.
 
-The docker-compose file can be launched via `./bin/start-compose`. This will start a nodemon session watching for changes in `.js` and `njk` files. 
+The docker-compose file can be launched via `./bin/start-compose`. This will start a nodemon session watching for changes in `.js` and `njk` files.
 
 For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
 You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
@@ -88,9 +88,9 @@ metadata:
 ```
 In the example above the value of `auth` would be need to be set to `xyzabc` to use the generated credentials.
 
-Setting the new auth value while deploying the Helm chart will prompt a user to enter the username and password when visiting the web site. 
+Setting the new auth value while deploying the Helm chart will prompt a user to enter the username and password when visiting the web site.
 
-A utility script is provided to aid in deploying locally using basic authentication. 
+A utility script is provided to aid in deploying locally using basic authentication.
 
 First build the container
 
