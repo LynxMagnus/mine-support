@@ -21,10 +21,10 @@ metadata:
   name: {{ .Values.ingress.serviceName }}
 spec:
   rules:
-  - http:
+  - host: {{ .Values.ingress.endpoint }}.{{.Values.ingress.server}}
+    http:
       paths:
       - path: /?(.*)
-      # - path: /{{ .Values.ingress.endpoint }}/?(.*)
         backend:
           serviceName: {{ .Values.ingress.serviceName }}
           servicePort: {{ .Values.service.port }}

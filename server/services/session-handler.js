@@ -1,4 +1,4 @@
-const hoek = require('hoek')
+const hoek = require('@hapi/hoek')
 
 module.exports = {
   get: function (request, key) {

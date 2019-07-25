@@ -13,7 +13,7 @@ spec:
   ports:
   - name: http
     port: {{ .Values.service.port }}
-    targetPort: {{ .Values.container.port }}
+    targetPort: http
   selector:
     app.component: {{ .Values.container.name }}
 status:

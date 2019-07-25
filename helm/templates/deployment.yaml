@@ -29,24 +29,27 @@ spec:
         {{- end }}
         {{- end }}
         imagePullPolicy: {{ .Values.container.imagePullPolicy }}
-        env:                
+        env:
         - name: NODE_ENV
           value: {{ .Values.environment }}
+        - name: PORT
+          value: "3000"
         - name: COOKIE_PASSWORD
           value: {{ .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
           value: {{ .Values.container.redisname }}
         - name: MINE_SUPPORT_API_GATEWAY
-          value: {{ .Values.container.apiGatewayUrl }}:{{ .Values.container.apiGatewayPort }}
+          value: {{ .Values.container.apiGatewayUrl }}
         ports:
-        - containerPort: {{ .Values.container.port }} 
+          - name: http
+            containerPort: 3000
+            protocol: TCP
         resources:
             requests:
                 memory: {{ .Values.container.requestMemory | quote }}
                 cpu: {{ .Values.container.requestCpu | quote }}
             limits:
                 memory: {{ .Values.container.limitMemory | quote }}
-                cpu: {{ .Values.container.limitCpu | quote }}   
-      volumes:       
+                cpu: {{ .Values.container.limitCpu | quote }}
       restartPolicy: {{ .Values.container.restartPolicy }}
 status: {}
