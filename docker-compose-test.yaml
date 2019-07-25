@@ -9,5 +9,5 @@ services:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: not-accessed
     volumes:
-      - ./test-output:/code/test-output
+      - ./test-output:/usr/src/app/test-output
     command: npm run test
