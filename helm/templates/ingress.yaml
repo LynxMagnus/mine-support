@@ -21,8 +21,12 @@ metadata:
   name: {{ .Values.ingress.serviceName }}
 spec:
   rules:
+{{- if .Values.ingress.endpoint }}
   - host: {{ .Values.ingress.endpoint }}.{{.Values.ingress.server}}
     http:
+{{ else }}
+  - http:
+{{- end }}
       paths:
       - path: /?(.*)
         backend:
