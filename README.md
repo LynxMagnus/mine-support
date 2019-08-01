@@ -36,7 +36,7 @@ Skaffold uses a `dev-values.yaml` config that makes the file system in the conta
 
 It is much quicker to use the provided docker-compose file for development. At the moment the compose file only contains the mine-support code and a Redis image, not stubs or images for other required services.
 
-The docker-compose file can be launched via `./bin/start-compose`. This will create the required `mine-support` network before starting the service with nodemon to watch for changes in `.js` and `njk` files.
+The docker-compose file can be launched via `./bin/start-compose`. This will create the required `mine-support` network before starting the service with nodemon to watch for changes in `.js` and `njk` files. The script will then attach to the running service, tailing its logs and allowing the service to be brought down by pressing `Ctrl + C`.
 
 For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
 You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
