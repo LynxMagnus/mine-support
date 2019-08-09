@@ -23,6 +23,22 @@ Digital service mock to claim public money in the event property subsides into m
 - Node v10+
 - Access to a Redis server
 
+# How to run tests
+
+A convenience script is provided to run automated tests in a containerised environment:
+
+```
+scripts/test
+```
+
+This runs tests via a `docker-compose run` command. If tests complete successfully, all containers, networks and volumes are cleaned up before the script exits. If there is an error or any tests fail, the associated Docker resources will be left available for inspection.
+
+Alternatively, the same tests may be run locally via npm:
+
+```
+npm run test
+```
+
 # Running the application
 
 The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
@@ -129,20 +145,6 @@ The application may be run natively on the local operating if a Redis server is 
 Now the application is ready to run:
 
 `$ node index.js`
-
-# How to run tests
-
-A convenience script is provided to run automated tests in a containerised environment:
-
-```
-scripts/test
-```
-
-Alternatively, the same tests may be run locally via npm:
-
-```
-npm run test
-```
 
 # Build Pipeline
 
