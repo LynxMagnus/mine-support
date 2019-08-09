@@ -1,27 +1,30 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=579&branchName=master)
 
 # Mine Support
+
 Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
 
 # Environment variables
-|Name|Description|Required|Default|Valid|Notes|
-|---|---|:---:|---|---|---|
-|NODE_ENV|Node environment|no|development|development,test,production||
-|PORT|Port number|no|3000|||
-|MINE_SUPPORT_CACHE_NAME|Cache name|no|redisCache|||
-|REDIS_HOSTNAME|Redis host|no|localhost|||
-|REDIS_PORT|Redis port|no|6379|||
-|COOKIE_PASSWORD|Redis cookie password|yes||||
-|MINE_SUPPORT_SESSION_TIMEOUT_IN_MINUTES|Redis session timeout|no|30|||
-|MINE_SUPPORT_API_GATEWAY|Url of service API Gateway|no|http://localhost:3001|||
-|MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS|Rest client timout|no|5000|||
+
+| Name                                  | Description                | Required | Default               | Valid                       |
+|---------------------------------------|----------------------------|:--------:|-----------------------|-----------------------------|
+| NODE_ENV                              | Node environment           | no       | development           | development,test,production |
+| PORT                                  | Port number                | no       | 3000                  |                             |
+| MINE_SUPPORT_CACHE_NAME               | Cache name                 | no       | redisCache            |                             |
+| REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
+| REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
+| COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
+| MINE_SUPPORT_API_GATEWAY              | Url of service API Gateway | no       | http://localhost:3001 |                             |
+| MINE_SUPPORT_SESSION_TIMEOUT_IN_MINUTES    | Redis session timeout | no       | 30                    |                             |
+| MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout    | no       | 5000                  |                             |
 
 # Prerequisites
-Node v10+
-Redis
 
+- Node v10+
+- Access to a Redis server
 
 # Running the application in Kubernetes
+
 The service has been developed with the intention of running in Kubernetes.  A helm chart is included in the `.\helm` folder.
 
 To get running against redis-ha locally you must deploy with no affinities, allow Redis nodes to reside on the same worker node, set the replicas to one, and set min slaves to zero. This can be done via the provided `redis.yaml` file using the command:
@@ -42,6 +45,7 @@ For the volume mounts to work correct via WSL the application needs to be run fr
 You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
 
 # Running the application outside of Containers
+
 The application may be run natively on the local operating if a Redis server is available locally. First build the application using:
 
 `$ npm run build`
@@ -51,6 +55,7 @@ Now the application is ready to run:
 `$ node index.js`
 
 # How to run tests
+
 Unit tests are written in Lab and can be run with the following command:
 
 `npm run test`
@@ -58,6 +63,7 @@ Unit tests are written in Lab and can be run with the following command:
 Alternatively the `docker-compose-test.yaml` used by the continuous integration build may be run via the script `./bin/test-compose`.
 
 # Basic Authentication
+
 The ingress controller may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
 
 The provided auth string must be an htpasswd encoded for use in the data field of a Kubernetes secret.
