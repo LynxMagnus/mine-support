@@ -18,7 +18,6 @@ services:
       MINE_SUPPORT_API_GATEWAY: http://mine-support-api-gateway:3001
       REDIS_HOSTNAME: mine-support-redis
     networks:
-      - mine-support
       - mine-support-redis
     ports:
       - "3000:3000"
@@ -29,8 +28,6 @@ services:
       - .:/usr/src/app
 
 networks:
-  mine-support:
-    external: true
   mine-support-redis: {}
 
 volumes:

@@ -23,46 +23,56 @@ Digital service mock to claim public money in the event property subsides into m
 - Node v10+
 - Access to a Redis server
 
-# Running the application in Kubernetes
+# Running the application
 
-The service has been developed with the intention of running in Kubernetes.  A helm chart is included in the `.\helm` folder.
+The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
 
-To get running against redis-ha locally you must deploy with no affinities, allow Redis nodes to reside on the same worker node, set the replicas to one, and set min slaves to zero. This can be done via the provided `redis.yaml` file using the command:
+## Using Docker Compose
+
+A set of convenience scripts are provided for local development and running via Docker Compose.
+
+```
+# Build service containers
+scripts/build
+
+# Start the service and attach to running containers (press `ctrl + c` to quit)
+scripts/start
+
+# Stop the service and remove Docker volumes and networks created by the start script
+scripts/stop
+```
+
+Any arguments provided to the build and start scripts are passed to the Docker Compose `build` and `up` commands, respectively. For example:
+
+```
+# Build without using the Docker cache
+scripts/build --no-cache
+
+# Start the service without attaching to containers
+scripts/start --detach
+```
+
+This service depends on an external Docker network named `mine-support` to communicate with other Mine Support services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+
+The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network.
+
+### Volume mounts on Windows Subsystem for Linux
+
+For the volume mounts to work correct via WSL it is necessary to either set up automounting of `/mnt/c`, or change the mount point for the shared drive from `/mnt/c` to `/c`. For a well-explained write-up, see [this blog post](https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly) by Nick Janetakis.
+
+## Using Kubernetes
+
+The service has been developed with the intention of running on Kubernetes in production.  A helm chart is included in the `.\helm` folder. For development, it is simpler to develop using Docker Compose than to set up a local Kubernetes environment. See above for instructions.
+
+Running via Helm requires a Redis instance to be installed in the local Kubernetes cluster, which may be accomplished using the provided [`redis.yaml`](./redis.yaml) file.
 
 `helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
 
-Further information: https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write
+This will deploy a single Redis instance with no affinities, allowing Redis nodes to reside on the same worker node, and no minimum slaves requirement. For information on the minimum slaves setting, see [this post](https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write) on Stack Overflow.
 
-A Skaffold file is provided that will redeploy the application upon files changes. This can be run via the script `./bin/start-skaffold`.
-Changes to the local file will be copied across to the pod, however this is fairly slow when running locally.
-Skaffold uses a `dev-values.yaml` config that makes the file system in the container read/write and starts nodemon.
+As an alternative to Docker Compose, a Skaffold file is provided that will automatically redeploy the application to Kubernetes upon files changes. This can be run via the script `./scripts/start-skaffold`. Changes to the local file will be copied across to the pod, however this is fairly slow compared to Docker Compose with bind-mounts. Skaffold uses a `dev-values.yaml` config that makes the container file read/write and starts the application using nodemon.
 
-It is much quicker to use the provided docker-compose file for development. At the moment the compose file only contains the mine-support code and a Redis image, not stubs or images for other required services.
-
-The docker-compose file can be launched via `./bin/start-compose`. This will create the required `mine-support` network before starting the service with nodemon to watch for changes in `.js` and `njk` files. The script will then attach to the running service, tailing its logs and allowing the service to be brought down by pressing `Ctrl + C`.
-
-For the volume mounts to work correct via WSL the application needs to be run from `/c/...` rather than `/mnt/c/..`.
-You may need to create a directory at `/c` then mount it via `sudo mount --bind /mnt/c /c` to be able to change to `/c/..`
-
-# Running the application outside of Containers
-
-The application may be run natively on the local operating if a Redis server is available locally. First build the application using:
-
-`$ npm run build`
-
-Now the application is ready to run:
-
-`$ node index.js`
-
-# How to run tests
-
-Unit tests are written in Lab and can be run with the following command:
-
-`npm run test`
-
-Alternatively the `docker-compose-test.yaml` used by the continuous integration build may be run via the script `./bin/test-compose`.
-
-# Basic Authentication
+### Basic Authentication
 
 The ingress controller may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
 
@@ -100,7 +110,7 @@ A utility script is provided to aid in deploying locally using basic authenticat
 
 First build the container
 
- `./bin/build-image`
+ `./scripts/build`
 
  export the generated auth token as the environment variable MINE_BASIC_AUTH, i.e.:
 
@@ -108,7 +118,31 @@ First build the container
 
  deploy to the current Helm context
 
- `./bin/deploy-local`
+ `./scripts/deploy`
+
+## Running without containers
+
+The application may be run natively on the local operating if a Redis server is available on `localhost:6379`. First build the application using:
+
+`$ npm run build`
+
+Now the application is ready to run:
+
+`$ node index.js`
+
+# How to run tests
+
+A convenience script is provided to run automated tests in a containerised environment:
+
+```
+scripts/test
+```
+
+Alternatively, the same tests may be run locally via npm:
+
+```
+npm run test
+```
 
 # Build Pipeline
 
