@@ -12,7 +12,9 @@ services:
     build: .
     image: mine-support
     container_name: mine-support
-    command: npm run start-watch
+    command: npm run watch:server
+    depends_on:
+      - mine-support-redis
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       MINE_SUPPORT_API_GATEWAY: http://mine-support-api-gateway:3001
@@ -21,8 +23,6 @@ services:
       - mine-support-redis
     ports:
       - "3000:3000"
-    depends_on:
-      - mine-support-redis
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
