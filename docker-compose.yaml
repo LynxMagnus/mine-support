@@ -1,13 +1,5 @@
 version: '3'
 services:
-  mine-support-redis:
-    image: redis
-    container_name: mine-support-redis
-    networks:
-      - mine-support-redis
-    ports:
-      - "6379:6379"
-
   mine-support:
     build: .
     image: mine-support
@@ -27,8 +19,20 @@ services:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
 
+  mine-support-redis:
+    image: redis
+    container_name: mine-support-redis
+    networks:
+      - mine-support-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+
 networks:
   mine-support-redis: {}
 
 volumes:
   node_modules:
+  redis_data:
