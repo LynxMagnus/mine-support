@@ -21,7 +21,7 @@ container:
   restartPolicy: Always
 ingress:
   serviceName: mine-support
-  endPoint: mine-support
+  endpoint: mine-support
   server: vividcloudsolutions.co.uk
 replicas: 1
 minReadySeconds: 5
