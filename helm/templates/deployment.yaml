@@ -4,6 +4,8 @@ metadata:
   labels:
     app.component: {{ .Values.container.name }}
   name: {{ .Values.container.name }}
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
