@@ -1,6 +1,7 @@
 environment: development
 image: mine-support
 auth:
+message: from a secret
 service:
   port: 80
 
@@ -23,6 +24,6 @@ ingress:
   serviceName: mine-support
   endPoint: mine-support
   server: vividcloudsolutions.co.uk
-replicas: 1
-minReadySeconds: 5
+replicas: 2
+minReadySeconds: 10
 cookiePassword: passwordpasswordpasswordpasswordpassword

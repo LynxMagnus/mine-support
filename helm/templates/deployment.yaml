@@ -45,8 +45,8 @@ spec:
         - name: MINE_SUPPORT_MESSAGE
           valueFrom:
             secretKeyRef:
-              name: mine-support-basic-auth
-              key: auth
+              name: mine-support-message
+              key: message
         ports:
           - name: http
             containerPort: 3000
