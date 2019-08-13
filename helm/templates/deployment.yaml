@@ -46,7 +46,7 @@ spec:
         - name: MINE_SUPPORT_MESSAGE
           valueFrom:
             secretKeyRef:
-              name: mine-support
+              name: mine-support-basic-auth
               key: auth
         ports:
           - name: http
