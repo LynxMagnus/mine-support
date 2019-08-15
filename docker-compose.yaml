@@ -13,11 +13,6 @@ services:
       REDIS_HOSTNAME: mine-support-redis
     networks:
       - mine-support-redis
-    ports:
-      - "3000:3000"
-    volumes:
-      - node_modules:/usr/src/app/node_modules
-      - .:/usr/src/app
 
   mine-support-redis:
     image: redis
@@ -34,5 +29,4 @@ networks:
   mine-support-redis: {}
 
 volumes:
-  node_modules:
   redis_data:
