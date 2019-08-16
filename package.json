@@ -7,10 +7,10 @@
     "build": "npm run build:css",
     "build:css": "node-sass --output-style=expanded --output=server/public/build/stylesheets client/sass",
     "pretest": "npm run test:lint",
+    "start:watch": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch index.js",
     "test": "npm run test:unit",
     "test:lint": "standard",
-    "test:unit": "lab -c -r console -o stdout -r junit -o ./test-output/junit.xml",
-    "watch:server": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch index.js"
+    "test:unit": "lab -c -r console -o stdout -r junit -o ./test-output/junit.xml"
   },
   "author": "John Watson, Mark Harrop, Matthew Collins, David Bingham",
   "license": "ISC",

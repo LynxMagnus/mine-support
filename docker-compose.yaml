@@ -4,7 +4,7 @@ services:
     build: .
     image: mine-support
     container_name: mine-support
-    command: npm run watch:server
+    command: npm run start:watch
     depends_on:
       - mine-support-redis
     environment:
