@@ -11,7 +11,7 @@ spec:
       labels:
         app: {{ .Values.name }}
       annotations:
-        redeployOnChange: {{ .Values.container.redeployOnChange }}
+        redeployOnChange: "{{ .Values.container.redeployOnChange }}"
     spec:
       restartPolicy: {{ .Values.container.restartPolicy }}
       containers:
