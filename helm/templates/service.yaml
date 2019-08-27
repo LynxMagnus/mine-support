@@ -6,15 +6,15 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-name: "route"
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+  name: {{ .Values.name }}
   labels:
-    app.component: {{ .Values.container.name }}
-  name: {{ .Values.container.name }}
+    app: {{ .Values.name }}
 spec:
   ports:
   - name: http
     port: {{ .Values.service.port }}
     targetPort: http
   selector:
-    app.component: {{ .Values.container.name }}
+    app: {{ .Values.name }}
 status:
   loadBalancer: {}

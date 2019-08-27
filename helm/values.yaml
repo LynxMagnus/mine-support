@@ -1,11 +1,11 @@
 environment: development
 image: mine-support
+name: mine-support
 auth:
 service:
   port: 80
 
-container:
-  name: mine-support
+container:  
   redisname: redis-redis-ha.default
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change
@@ -18,7 +18,7 @@ container:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   apiGatewayUrl: http://mine-support-api-gateway.default
-  restartPolicy: Always
+  restartPolicy: Always  
 ingress:
   serviceName: mine-support
   endPoint: mine-support
@@ -26,3 +26,10 @@ ingress:
 replicas: 1
 minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword
+
+livenessProbe:          
+  path: /liveness
+  port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 3

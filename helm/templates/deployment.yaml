@@ -1,9 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  labels:
-    app.component: {{ .Values.container.name }}
-  name: {{ .Values.container.name }}
+  name: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
@@ -11,12 +9,13 @@ spec:
   template:
     metadata:
       labels:
-        app.component: {{ .Values.container.name }}
+        app: {{ .Values.name }}
       annotations:
-        redeployOnChange: "{{ .Values.container.redeployOnChange }}"
+        redeployOnChange: {{ .Values.container.redeployOnChange }}
     spec:
+      restartPolicy: {{ .Values.container.restartPolicy }}
       containers:
-      - name: {{ .Values.container.name }}
+      - name: {{ .Values.name }}
         image: {{ .Values.image }}
         {{- if .Values.container.command }}
         {{- with .Values.container.command }}
@@ -29,6 +28,11 @@ spec:
         {{- end }}
         {{- end }}
         imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+        securityContext:
+          runAsUser: {{ .Values.container.runAsUser }}
+          runAsNonRoot: {{ .Values.container.runAsNonRoot }}
+          readOnlyRootFilesystem: {{ .Values.container.readOnlyRootFilesystem }}
+          allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
         env:
         - name: NODE_ENV
           value: {{ .Values.environment }}
@@ -41,15 +45,20 @@ spec:
         - name: MINE_SUPPORT_API_GATEWAY
           value: {{ .Values.container.apiGatewayUrl }}
         ports:
-          - name: http
-            containerPort: 3000
-            protocol: TCP
+        - name: http
+          containerPort: 3000
+          protocol: TCP
         resources:
-            requests:
-                memory: {{ .Values.container.requestMemory | quote }}
-                cpu: {{ .Values.container.requestCpu | quote }}
-            limits:
-                memory: {{ .Values.container.limitMemory | quote }}
-                cpu: {{ .Values.container.limitCpu | quote }}
-      restartPolicy: {{ .Values.container.restartPolicy }}
-status: {}
+          requests:
+            memory: {{ .Values.container.requestMemory }}
+            cpu: {{ .Values.container.requestCpu }}
+          limits:
+            memory: {{ .Values.container.limitMemory }}
+            cpu: {{ .Values.container.limitCpu }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.path }}
+            port: {{ .Values.livenessProbe.port }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
