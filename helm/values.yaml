@@ -19,6 +19,7 @@ container:
   allowPrivilegeEscalation: false
   apiGatewayUrl: http://mine-support-api-gateway.default
   restartPolicy: Always  
+  
 ingress:
   serviceName: mine-support
   endPoint: mine-support
