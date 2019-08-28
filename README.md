@@ -96,9 +96,12 @@ This will deploy a single Redis instance with no affinities, allowing Redis node
 
 As an alternative to Docker Compose, a Skaffold file is provided that will automatically redeploy the application to Kubernetes upon files changes. This can be run via the script `./scripts/start-skaffold`. Changes to the local file will be copied across to the pod, however this is fairly slow compared to Docker Compose with bind-mounts. Skaffold uses a `dev-values.yaml` config that makes the container file read/write and starts the application using nodemon.
 
-### Liveness probe
+### Probes
 
-The service has an Http liveness probe configured to receive at end point `/healthz`.
+The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
+
+Readiness: `/healthy`
+Liveness: `/healthz`
 
 ### Basic Authentication
 
