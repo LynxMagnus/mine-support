@@ -2,6 +2,7 @@ environment: development
 image: mine-support
 name: mine-support
 auth:
+imagePullSecret:
 service:
   port: 80
 
