@@ -28,9 +28,16 @@ replicas: 1
 minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword
 
+readinessProbe:
+  path: /healthy
+  port: 3000
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3
+
 livenessProbe:
   path: /healthz
   port: 3000
-  initialDelaySeconds: 20
+  initialDelaySeconds: 30
   periodSeconds: 10
   failureThreshold: 3
