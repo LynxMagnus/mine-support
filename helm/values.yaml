@@ -18,7 +18,7 @@ container:
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   apiGatewayUrl: http://mine-support-api-gateway.default
-  restartPolicy: Always  
+  restartPolicy: Always
   
 ingress:
   serviceName: mine-support
