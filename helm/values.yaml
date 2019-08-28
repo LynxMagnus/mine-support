@@ -31,6 +31,6 @@ cookiePassword: passwordpasswordpasswordpasswordpassword
 livenessProbe:          
   path: /health
   port: 3000
-  initialDelaySeconds: 10
+  initialDelaySeconds: 20
   periodSeconds: 10
   failureThreshold: 3
