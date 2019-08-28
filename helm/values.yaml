@@ -2,7 +2,7 @@ environment: development
 image: mine-support
 name: mine-support
 auth:
-imagePullSecret: regcred
+imagePullSecret: 
 service:
   port: 80
 
@@ -24,7 +24,7 @@ container:
 ingress:
   serviceName: mine-support
   endPoint: mine-support
-  server: defradev.com
+  server: vividcloudsolutions.co.uk
 replicas: 1
 minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword
