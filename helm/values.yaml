@@ -2,7 +2,7 @@ environment: development
 image: mine-support
 name: mine-support
 auth:
-imagePullSecret:
+imagePullSecret: regcred
 service:
   port: 80
 
