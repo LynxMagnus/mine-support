@@ -28,7 +28,7 @@ replicas: 1
 minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword
 
-livenessProbe:          
+livenessProbe:
   path: /healthz
   port: 3000
   initialDelaySeconds: 20
