@@ -10,7 +10,7 @@ const schema = {
   cookiePassword: joi.string().required(),
   sessionTimeoutMinutes: joi.number().default(30),
   apiGateway: joi.string().uri().default('http://localhost:3001'),
-  restClientTimeoutMillis: joi.number().default(5000)
+  restClientTimeoutMillis: joi.number().default(20000)
 }
 
 // Build config
