@@ -1,4 +1,4 @@
-describe('Health test', () => {
+describe('Healthz test', () => {
   let createServer
   let server
 
@@ -14,7 +14,7 @@ describe('Health test', () => {
   test('GET /liveness route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/health'
+      url: '/healthz'
     }
 
     const response = await server.inject(options)

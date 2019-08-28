@@ -1,6 +1,6 @@
 const routes = [].concat(
   require('../routes/home'),
-  require('../routes/health'),
+  require('../routes/healthz'),
   require('../routes/claim/property-type'),
   require('../routes/claim/accessible'),
   require('../routes/claim/date-of-subsidence'),

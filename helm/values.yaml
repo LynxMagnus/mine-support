@@ -29,7 +29,7 @@ minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword
 
 livenessProbe:          
-  path: /health
+  path: /healthz
   port: 3000
   initialDelaySeconds: 20
   periodSeconds: 10
