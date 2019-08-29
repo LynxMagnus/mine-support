@@ -44,6 +44,8 @@ spec:
           value: {{ .Values.container.redisname }}
         - name: MINE_SUPPORT_API_GATEWAY
           value: {{ .Values.container.apiGatewayUrl }}
+        - name: MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
+          value: {{ .Values.container.restClientTimeoutMillis }}
         ports:
         - name: http
           containerPort: 3000
