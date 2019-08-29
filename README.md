@@ -169,11 +169,11 @@ The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 
 Builds will be deployed into a namespace with the format `mine-support-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
 
-The builds will be available at the URL `http://mine-support-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/values.yaml),  which is `defradev.com` by default.
+The builds will be available at the URL `http://mine-support-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/values.yaml),  which is `vividcloudsolutions.co.uk` by default.
 
 The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this would be
 
-xx.xx.xx.xx mine-support-pr8.defradev.com
+xx.xx.xx.xx mine-support-pr8.vividcloudsolutions.co.uk
 
 where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
 
