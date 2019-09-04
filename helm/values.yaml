@@ -5,8 +5,9 @@ auth:
 imagePullSecret: 
 service:
   port: 80
+  type: ClusterIP
 
-container:  
+container:
   redisname: redis-redis-ha.default
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change

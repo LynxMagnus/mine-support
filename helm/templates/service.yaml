@@ -2,6 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
+  {{- if .Values.ingress.alb }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.endpoint }}.{{.Values.ingress.server}}
+  {{- end }}
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-name: "route"
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
@@ -16,5 +19,4 @@ spec:
     targetPort: http
   selector:
     app: {{ .Values.name }}
-status:
-  loadBalancer: {}
+  type: {{ .Values.service.type }}
