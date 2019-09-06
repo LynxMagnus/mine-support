@@ -24,7 +24,7 @@ container:
   
 ingress:
   serviceName: mine-support
-  endPoint: mine-support
+  endPoint: ffc-poc
   server: vividcloudsolutions.co.uk
 replicas: 1
 minReadySeconds: 5

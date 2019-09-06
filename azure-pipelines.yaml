@@ -21,7 +21,8 @@ variables:
     azureSubscriptionEndpoint: MineSupport
     azureResourceGroup: MineSupport
     kubernetesCluster: MineSupport
-    imageName:  mine-support
+    imageName: mine-support
+    endPoint: ffc-poc
     containerTag: $(Build.SourceBranchName)
     safeContainerTag: $(Build.SourceBranchName)
     ingressServer: vividcloudsolutions.co.uk
@@ -128,7 +129,7 @@ steps:
     chartType: filepath
     chartPath: helm
     releaseName: $(imageName)-$(containerTag)
-    arguments: --set ingress.endpoint=$(imageName)-$(containerTag) --set ingress.server=$(ingressServer) --set auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always --atomic
+    arguments: --set ingress.endpoint=$(endPoint)-$(containerTag) --set ingress.server=$(ingressServer) --set auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always --atomic
     install: true
     recreate: true
     waitForExecution: true
@@ -196,7 +197,7 @@ steps:
     command: package
     chartPath: ./helm
     save: false
-  # copy yaml values for release  
+  # copy yaml values for release
 - task: CopyFiles@2
   displayName: 'Copy values files'
   inputs:

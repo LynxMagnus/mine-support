@@ -1,6 +1,6 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=579&branchName=master)
 
-# Mine Support
+# FFC POC Service
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
 
@@ -68,7 +68,7 @@ scripts/build --no-cache
 scripts/start --detach
 ```
 
-This service depends on an external Docker network named `mine-support` to communicate with other Mine Support services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+This service depends on an external Docker network named `mine-support` to communicate with other FFC POC Service services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
 
 The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network by using standard Docker Compose commands:
 
