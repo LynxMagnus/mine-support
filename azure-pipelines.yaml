@@ -183,7 +183,7 @@ steps:
   displayName: delete merged PR namespace
   # display URL of deployed build
 - script: |
-    echo "Build available for review at http://$(imageName)-$(containerTag).$(ingressServer)"
+    echo "Build available for review at http://$(endPoint)-$(containerTag).$(ingressServer)"
   displayName: display URL of deployed build
 # install helm on build agent
 - task: HelmInstaller@0
