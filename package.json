@@ -1,7 +1,8 @@
 {
   "name": "mine-support",
-  "version": "0.0.1",
   "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/DEFRA/mine-support",
   "repository": {
     "type" : "git",
     "url" : "https://github.com/DEFRA/mine-support.git"
@@ -17,8 +18,14 @@
     "unit:watch": "jest --coverage=false --onlyChanged --watch",
     "start:watch": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch index.js"
   },
-  "author": "John Watson, Mark Harrop, Matthew Collins, David Bingham",
-  "license": "ISC",
+  "author": "Defra DDTS",
+  "contributors": [
+    "John Watson john.watson2@rpa.gov.uk",
+    "Mark Harrop mark.harrop@defra.gov.uk",
+    "Matthew Collins matthew.collins@defra.gov.uk",
+    "David Bingham david.bingham@defra.gov.uk"
+  ],
+  "license": "OGL-UK-3.0",
   "dependencies": {
     "@hapi/boom": "^7.4.2",
     "@hapi/catbox-redis": "^5.0.2",
