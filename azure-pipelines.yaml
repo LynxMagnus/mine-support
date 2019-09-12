@@ -21,7 +21,7 @@ variables:
     azureSubscriptionEndpoint: MineSupport
     azureResourceGroup: MineSupport
     kubernetesCluster: MineSupport
-    imageName: mine-support
+    imageName: ffc-poc-web
     endPoint: ffc-poc
     containerTag: $(Build.SourceBranchName)
     safeContainerTag: $(Build.SourceBranchName)

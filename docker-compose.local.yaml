@@ -4,10 +4,10 @@ version: '3'
 # connect this service to sibling services from other repositories
 
 services:
-  mine-support:
+  ffc-poc-web:
     networks:
-      - mine-support
+      - ffc-poc
 
 networks:
-  mine-support:
+  ffc-poc:
     external: true

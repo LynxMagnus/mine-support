@@ -4,7 +4,7 @@ version: '3'
 # bind-mount the app from the host into the container
 
 services:
-  mine-support:
+  ffc-poc-web:
     ports:
       - "3000:3000"
     volumes:

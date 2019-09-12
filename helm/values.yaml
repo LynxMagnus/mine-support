@@ -1,6 +1,6 @@
 environment: development
-image: mine-support
-name: mine-support
+image: ffc-poc-web
+name: ffc-poc-web
 auth:
 imagePullSecret: 
 service:
@@ -23,7 +23,7 @@ container:
   restClientTimeoutMillis: 20000
   
 ingress:
-  serviceName: mine-support
+  serviceName: ffc-poc-web
   endPoint: ffc-poc
   server: vividcloudsolutions.co.uk
 replicas: 1
