@@ -4,7 +4,7 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-  - image: mine-support
+  - image: ffc-demo-web
     sync:
       manual:
       - src: '**/*.js'
@@ -12,10 +12,10 @@ build:
 deploy:
   helm:
     releases:
-    - name: skaffold-mine-support
+    - name: skaffold-ffc-demo-web
       chartPath: helm
       #wait: true
       valuesFiles:
       - helm/dev-values.yaml
       values:
-        image: mine-support
+        image: ffc-demo-web
