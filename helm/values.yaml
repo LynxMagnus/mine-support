@@ -18,7 +18,7 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  apiGatewayUrl: http://mine-support-api-gateway.default
+  apiGatewayUrl: http://ffc-demo-api-gateway.default
   restartPolicy: Always
   restClientTimeoutMillis: 20000
   
