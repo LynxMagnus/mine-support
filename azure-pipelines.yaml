@@ -21,8 +21,8 @@ variables:
     azureSubscriptionEndpoint: MineSupport
     azureResourceGroup: MineSupport
     kubernetesCluster: MineSupport
-    imageName: ffc-poc-web
-    endPoint: ffc-poc
+    imageName: ffc-demo-web
+    endPoint: ffc-demo
     containerTag: $(Build.SourceBranchName)
     safeContainerTag: $(Build.SourceBranchName)
     ingressServer: vividcloudsolutions.co.uk

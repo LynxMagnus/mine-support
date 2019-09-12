@@ -4,10 +4,10 @@ version: '3'
 # connect this service to sibling services from other repositories
 
 services:
-  ffc-poc-web:
+  ffc-demo-web:
     networks:
-      - ffc-poc
+      - ffc-demo
 
 networks:
-  ffc-poc:
+  ffc-demo:
     external: true

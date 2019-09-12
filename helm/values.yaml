@@ -1,6 +1,6 @@
 environment: development
-image: ffc-poc-web
-name: ffc-poc-web
+image: ffc-demo-web
+name: ffc-demo-web
 auth:
 imagePullSecret: 
 service:
@@ -23,8 +23,8 @@ container:
   restClientTimeoutMillis: 20000
   
 ingress:
-  serviceName: ffc-poc-web
-  endPoint: ffc-poc
+  serviceName: ffc-demo-web
+  endPoint: ffc-demo
   server: vividcloudsolutions.co.uk
 replicas: 1
 minReadySeconds: 5

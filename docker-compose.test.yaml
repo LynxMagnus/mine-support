@@ -4,7 +4,7 @@ version: '3'
 # that test output is saved to the host
 
 services:
-  ffc-poc-web:
+  ffc-demo-web:
     command: npm run test
     volumes:
       - ./test-output:/usr/src/app/test-output
