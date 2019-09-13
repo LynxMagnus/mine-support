@@ -17,13 +17,13 @@ const schema = {
 const config = {
   port: process.env.PORT,
   env: process.env.NODE_ENV,
-  cacheName: process.env.MINE_SUPPORT_CACHE_NAME,
+  cacheName: process.env.CACHE_NAME,
   redisHost: process.env.REDIS_HOSTNAME,
   redisPort: process.env.REDIS_PORT,
   cookiePassword: process.env.COOKIE_PASSWORD,
-  sessionTimeoutMinutes: process.env.MINE_SUPPORT_SESSION_TIMEOUT_IN_MINUTES,
-  apiGateway: process.env.MINE_SUPPORT_API_GATEWAY,
-  restClientTimeoutMillis: process.env.MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
+  sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,
+  apiGateway: process.env.API_GATEWAY,
+  restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS
 }
 
 // Validate config
