@@ -1,6 +1,6 @@
 [![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/DEFRA.mine-support?branchName=master)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=579&branchName=master)
 
-# FFC POC Service
+# FFC Demo Service
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
 
@@ -68,7 +68,7 @@ scripts/build --no-cache
 scripts/start --detach
 ```
 
-This service depends on an external Docker network named `mine-support` to communicate with other FFC POC Service services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+This service depends on an external Docker network named `ffc-demo` to communicate with other FFC POC Service services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
 
 The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network by using standard Docker Compose commands:
 
@@ -170,9 +170,9 @@ The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 - Deploys PRs to a temporary end point for review
 - Deletes PR deployments, containers, and namepace upon merge
 
-Builds will be deployed into a namespace with the format `mine-support-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
+Builds will be deployed into a namespace with the format `ffc-demo-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
 
-The builds will be available at the URL `http://mine-support-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/values.yaml),  which is `vividcloudsolutions.co.uk` by default.
+The builds will be available at the URL `http://ffc-demo-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/values.yaml),  which is `vividcloudsolutions.co.uk` by default.
 
 The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this would be
 
