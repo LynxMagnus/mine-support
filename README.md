@@ -4,7 +4,23 @@
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
 
+# Prerequisites
+
+Either:
+- Docker
+- Docker Compose
+
+Or:
+- Kubernetes
+- Helm
+
+Or:
+- Node 10
+- Redis
+
 # Environment variables
+
+The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
 | Name                                  | Description                | Required | Default               | Valid                       |
 |---------------------------------------|----------------------------|:--------:|-----------------------|-----------------------------|
@@ -17,11 +33,6 @@ Digital service mock to claim public money in the event property subsides into m
 | API_GATEWAY              | Url of service API Gateway | no       | http://localhost:3001 |                             |
 | SESSION_TIMEOUT_IN_MINUTES    | Redis session timeout | no       | 30                    |                             |
 | REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout    | no       | 5000                  |                             |
-
-# Prerequisites
-
-- Node v10+
-- Access to a Redis server
 
 # How to run tests
 
@@ -41,58 +52,74 @@ npm run test
 
 # Running the application
 
-The application is designed to run as a container via Docker Compose or Kubernetes (with Helm).
+The application is designed to run in containerised environments: Docker Compose for development; Kubernetes for production.
 
-## Using Docker Compose
+A Helm chart is provided for deployment to Kubernetes and scripts are provided for local development and testing.
 
-A set of convenience scripts are provided for local development and running via Docker Compose.
+## Build container image
+
+Container images are built using Docker Compose and the same image may be run in either Docker Compose or Kubernetes.
+
+The [`build`](./scripts/build) script is essentially a shortcut and will pass any arguments through to the `docker-compose build` command.
 
 ```
-# Build service containers
+# Build images using default Docker behaviour
 scripts/build
 
+# Build images without using the Docker cache
+scripts/build --no-cache
+```
+
+## Run as an isolated service
+
+To test this service in isolation, use the provided scripts to start and stop a local instance. This relies on Docker Compose and will run direct dependencies, such as message queues and databases, as additional containers. Arguments given to the [`start`](./scripts/start) script will be passed through to the `docker-compose up` command.
+
+```
 # Start the service and attach to running containers (press `ctrl + c` to quit)
 scripts/start
+
+# Start the service without attaching to containers
+scripts/start --detach
 
 # Stop the service and remove Docker volumes and networks created by the start script
 scripts/stop
 ```
 
-Any arguments provided to the build and start scripts are passed to the Docker Compose `build` and `up` commands, respectively. For example:
+## Connect to sibling services
+
+To test this service in combination with other parts of the Mine Support application, it is necessary to connect each service to an external Docker network and shared dependencies, such as message queues. Start the shared dependencies from the [`mine-support-development`](https://github.com/DEFRA/mine-support-development) repository and then use the `connected-` [`scripts`](./scripts/) to start this service. Follow instructions in other repositories to connect each service to the shared dependencies and network.
 
 ```
-# Build without using the Docker cache
-scripts/build --no-cache
+# Start the service
+script/connected-start
 
-# Start the service without attaching to containers
-scripts/start --detach
+# Stop the service
+script/connected-stop
 ```
 
-This service depends on an external Docker network named `ffc-demo` to communicate with other FFC POC Service services running alongside it. The start script will automatically create the network if it doesn't exist and the stop script will remove the network if no other containers are using it.
+## Deploy to Kubernetes
 
-The external network is declared in a secondary Docker Compose configuration (referenced by the above scripts) so that this service can be run in isolation without creating an external Docker network by using standard Docker Compose commands:
+For production deployments, a helm chart is included in the `.\helm` folder. This service connects to an AMQP 1.0 message broker, using credentials defined in [values.yaml](./helm/values.yaml), which must be made available prior to deployment.
+
+Scripts are provided to test the Helm chart by deploying the service, along with an appropriate message broker, into the current Helm/Kubernetes context.
 
 ```
-# Build containers
-docker-compose build
+# Deploy to current Kubernetes context
+scripts/helm/install
 
-# Start the service is isolation
-docker-compose up
+# Remove from current Kubernetes context
+scripts/helm/delete
 ```
 
-### Volume mounts on Windows Subsystem for Linux
+### Redis in Kubernetes
 
-For the volume mounts to work correct via WSL it is necessary to either set up automounting of `/mnt/c`, or change the mount point for the shared drive from `/mnt/c` to `/c`. For a well-explained write-up, see [this blog post](https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly) by Nick Janetakis.
-
-## Using Kubernetes
-
-The service has been developed with the intention of running on Kubernetes in production.  A helm chart is included in the `.\helm` folder. For development, it is simpler to develop using Docker Compose than to set up a local Kubernetes environment. See above for instructions.
-
-Running via Helm requires a Redis instance to be installed in the local Kubernetes cluster, which may be accomplished using the provided [`redis.yaml`](./redis.yaml) file.
+For local deployment testing, it may be helpful to run a Redis instance in your Kubernetes cluster, rather than setting up a remote Redis instance. To deploy Redis with appropriate configuration, use the official Redis HA Helm chart with the provided [`redis.yaml`](./redis.yaml) configuration file:
 
 `helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
 
 This will deploy a single Redis instance with no affinities, allowing Redis nodes to reside on the same worker node, and no minimum slaves requirement. For information on the minimum slaves setting, see [this post](https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write) on Stack Overflow.
+
+## Develop using Skaffold
 
 As an alternative to Docker Compose, a Skaffold file is provided that will automatically redeploy the application to Kubernetes upon files changes. This can be run via the script `./scripts/start-skaffold`. Changes to the local file will be copied across to the pod, however this is fairly slow compared to Docker Compose with bind-mounts. Skaffold uses a `dev-values.yaml` config that makes the container file read/write and starts the application using nodemon.
 
@@ -133,6 +160,7 @@ kind: Secret
 metadata:
 ...
 ```
+
 In the example above the value of `auth` would be need to be set to `xyzabc` to use the generated credentials.
 
 Setting the new auth value while deploying the Helm chart will prompt a user to enter the username and password when visiting the web site.
