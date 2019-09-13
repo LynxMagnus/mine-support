@@ -9,7 +9,7 @@ services:
       - ffc-demo-web-redis
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
-      MINE_SUPPORT_API_GATEWAY: http://mine-support-api-gateway:3001
+      API_GATEWAY: http://ffc-demo-api-gateway:3001
       REDIS_HOSTNAME: ffc-demo-web-redis
     networks:
       - ffc-demo-web-redis
