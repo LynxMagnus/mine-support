@@ -119,10 +119,6 @@ For local deployment testing, it may be helpful to run a Redis instance in your 
 
 This will deploy a single Redis instance with no affinities, allowing Redis nodes to reside on the same worker node, and no minimum slaves requirement. For information on the minimum slaves setting, see [this post](https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write) on Stack Overflow.
 
-## Develop using Skaffold
-
-As an alternative to Docker Compose, a Skaffold file is provided that will automatically redeploy the application to Kubernetes upon files changes. This can be run via the script `./scripts/start-skaffold`. Changes to the local file will be copied across to the pod, however this is fairly slow compared to Docker Compose with bind-mounts. Skaffold uses a `dev-values.yaml` config that makes the container file read/write and starts the application using nodemon.
-
 ### Probes
 
 The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
