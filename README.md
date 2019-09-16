@@ -87,7 +87,7 @@ scripts/stop
 
 ## Connect to sibling services
 
-To test this service in combination with other parts of the Mine Support application, it is necessary to connect each service to an external Docker network and shared dependencies, such as message queues. Start the shared dependencies from the [`mine-support-development`](https://github.com/DEFRA/mine-support-development) repository and then use the `connected-` [`scripts`](./scripts/) to start this service. Follow instructions in other repositories to connect each service to the shared dependencies and network.
+To test this service in combination with other parts of the FFC demo application, it is necessary to connect each service to an external Docker network and shared dependencies, such as message queues. Start the shared dependencies from the [`mine-support-development`](https://github.com/DEFRA/mine-support-development) repository and then use the `connected-` [`scripts`](./scripts/) to start this service. Follow instructions in other repositories to connect each service to the shared dependencies and network.
 
 ```
 # Start the service
@@ -165,15 +165,15 @@ A utility script is provided to aid in deploying locally using basic authenticat
 
 First build the container
 
- `./scripts/build`
+`./scripts/build`
 
- export the generated auth token as the environment variable MINE_BASIC_AUTH, i.e.:
+export the generated auth token as the environment variable MINE_BASIC_AUTH, i.e.:
 
- `export MINE_BASIC_AUTH=xyzabc`
+`export MINE_BASIC_AUTH=xyzabc`
 
- deploy to the current Helm context
+deploy to the current Helm context
 
- `./scripts/deploy`
+`./scripts/deploy`
 
 ## Running without containers
 
