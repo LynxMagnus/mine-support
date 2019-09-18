@@ -27,13 +27,13 @@ The following environment variables are required by the application container. V
 |---------------------------------------|----------------------------|:--------:|-----------------------|-----------------------------|
 | NODE_ENV                              | Node environment           | no       | development           | development,test,production |
 | PORT                                  | Port number                | no       | 3000                  |                             |
-| CACHE_NAME               | Cache name                 | no       | redisCache            |                             |
+| CACHE_NAME                            | Cache name                 | no       | redisCache            |                             |
 | REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
 | REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
 | COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
-| API_GATEWAY              | Url of service API Gateway | no       | http://localhost:3001 |                             |
-| SESSION_TIMEOUT_IN_MINUTES    | Redis session timeout | no       | 30                    |                             |
-| REST_CLIENT_TIMEOUT_IN_MILLIS | Rest client timout    | no       | 5000                  |                             |
+| API_GATEWAY                           | Url of service API Gateway | no       | http://localhost:3001 |                             |
+| SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
+| REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
 
 # How to run tests
 
