@@ -1,13 +1,31 @@
-node{
+node {
   checkout scm
-  docker.withRegistry('https://mhk8sregistry.azurecr.io/', 'mhk8sregistry') {
-    stage('Build Test Image') {
-      sh 'mkdir -p test-output'
-      sh 'chmod 777 test-output'
-      sh 'docker-compose -f docker-compose-test.yml build --no-cache test'
-    }
-    stage('Test') {
-      sh 'docker-compose -f docker-compose-test.yml up --force-recreate test'
+  def registry = "https://562955126301.dkr.ecr.eu-west-2.amazonaws.com"
+  def imageName = "ffc-demo-web"
+  def tag = "jenkins"
+    withEnv(["imageName=$imageName",
+             'tag=jenkins']) {
+    docker.withRegistry(registry, 'ecr:eu-west-2:ecr-user') {
+      stage('Build Test Image') {
+        sh 'echo $imageName'
+        sh 'echo $tag'
+        sh 'mkdir -p test-output'
+        sh 'chmod 777 test-output'
+        sh 'docker-compose -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache ffc-demo-web'
+      }
+      try {
+        stage('Test') {
+          sh 'docker-compose -f docker-compose.yaml -f docker-compose.test.yaml up ffc-demo-web'
+        }
+      } finally {
+          sh 'docker-compose -f docker-compose.yaml -f docker-compose.test.yaml down -v'
+          junit 'test-output/junit.xml'
+      }
+      stage('Push Production Image') {
+        sh 'docker-compose build --no-cache'
+        sh 'docker tag ffc-demo-web 562955126301.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:jenkins'
+        sh 'docker push 562955126301.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:jenkins'
+      }
     }
   }
 }
