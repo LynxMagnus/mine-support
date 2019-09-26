@@ -3,6 +3,7 @@ node {
   def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
   def imageName = "ffc-demo-web"
   def tag = "jenkins"
+  def myMessage = "hi"
     withEnv([
       "registry=$registry",
       "imageName=$imageName",
@@ -10,6 +11,7 @@ node {
     ]) {
     docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
       stage('Build Test Image') {
+        sh "echo $myMessage"
         sh 'echo $registry'
         sh 'echo $imageName'
         sh 'echo $tag'
