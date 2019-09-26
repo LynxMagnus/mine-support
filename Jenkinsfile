@@ -27,8 +27,8 @@ node {
       }
       stage('Push Production Image') {
         sh 'docker-compose build --no-cache'
-        sh 'docker tag ffc-demo-web $registry/$image:$tag'
-        sh 'docker push $registry/$image:$tag'
+        sh 'docker tag ffc-demo-web $registry/$imageName:$tag'
+        sh 'docker push $registry/$imageName:$tag'
       }
     }
   }
