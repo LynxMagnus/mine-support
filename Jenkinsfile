@@ -7,6 +7,8 @@ node {
              'tag=jenkins']) {
     docker.withRegistry(registry, 'ecr:eu-west-2:ecr-user') {
       stage('Build Test Image') {
+        sh 'ls -l ~/.docker/config.json'
+        sh 'cat ~/.docker/config.json'
         sh 'echo $imageName'
         sh 'echo $tag'
         sh 'mkdir -p test-output'
