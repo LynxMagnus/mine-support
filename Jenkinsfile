@@ -3,6 +3,7 @@ node {
   def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
   def imageName = "ffc-demo-web"
   def tag = "jenkins"
+  def namespace = "ffc-demo"
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
       sh 'mkdir -p test-output'
@@ -19,12 +20,12 @@ node {
     }
     stage('Push Production Image') {
       sh 'docker-compose build --no-cache'
-      sh "docker tag ffc-demo-web $registry/$imageName:$tag"
+      sh "docker tag $imageName $registry/$imageName:$tag"
       sh "docker push $registry/$imageName:$tag"
     }
     stage('Helm install') {
       withKubeConfig([credentialsId: 'kubeuser001']) {
-        sh "helm upgrade ffc-demo-web --install --namespace ffc-demo --values ./helm/jenkins-eks.yaml ./helm"
+        sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/jenkins-eks.yaml ./helm"
       }
     }
   }
