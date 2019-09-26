@@ -1,6 +1,7 @@
 environment: production
 image: 562955126301.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:jenkins
 service:
+  port: 443
   type: NodePort
 container:
   allowPrivilegeEscalation: true
