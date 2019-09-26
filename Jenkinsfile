@@ -22,5 +22,10 @@ node {
       sh "docker tag ffc-demo-web $registry/$imageName:$tag"
       sh "docker push $registry/$imageName:$tag"
     }
+    stage('Helm install') {
+      withKubeConfig([credentialsId: 'kubeuser001']) {
+        sh "helm upgrade ffc-demo-web --install --namespace ffc-demo --values ./helm/jenkins-eks.yaml ./helm"
+      }
+    }
   }
 }

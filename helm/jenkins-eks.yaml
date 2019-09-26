@@ -1,0 +1,14 @@
+environment: production
+image: 562955126301.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:jenkins
+service:
+  type: NodePort
+container:
+  allowPrivilegeEscalation: true
+  imagePullPolicy: Always
+ingress:
+  endpoint: ffc-demo-web
+  server: ffc.aws-int.defra.cloud
+  alb:
+    tags: Name=FFCLDNALBMIME001,Environment=FFC,Project=FFC,Region=eu-west-2,Location=London,ServiceCode=FFC,ServiceType=LOB
+    arn: arn:aws:acm:eu-west-2:562955126301:certificate/d9bd0a19-487e-4bd1-beb8-a26806739c9a
+
