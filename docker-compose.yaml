@@ -3,8 +3,8 @@ services:
   ffc-demo-web:
     build: .
     image: ffc-demo-web
-    container_name: ffc-demo-web
-    command: npm start
+    container_name: ffc-demo-web${BUILD_NUMBER:-local}
+    command: npm run start:watch
     depends_on:
       - ffc-demo-web-redis
     environment:
@@ -13,22 +13,17 @@ services:
       REDIS_HOSTNAME: ffc-demo-web-redis
     networks:
       - ffc-demo-web-redis
-    ports:
-      - "3000:3000"
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
 
   ffc-demo-web-redis:
     image: redis
-    container_name: ffc-demo-web-redis
+    container_name: ffc-demo-web-redis${BUILD_NUMBER:-local}
     networks:
       - ffc-demo-web-redis
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
-
 
 networks:
   ffc-demo-web-redis: {}
