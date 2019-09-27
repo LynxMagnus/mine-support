@@ -6,12 +6,12 @@ node {
   def namespace = "ffc-demo"
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
-      sh 'mkdir -p test-output'
-      sh 'chmod 777 test-output'
       sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
     }
     try {
       stage('Test') {
+        sh 'mkdir -p test-output'
+        sh 'chmod 777 test-output'
         sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml up $imageName"
       }
     } finally {
