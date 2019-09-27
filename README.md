@@ -129,7 +129,7 @@ Liveness: `/healthz`
 
 ### Basic Authentication
 
-The ingress controller may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
+When deployed to an NGINX Ingress Controller The ingress may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
 
 The provided auth string must be an htpasswd encoded for use in the data field of a Kubernetes secret.
 
@@ -175,6 +175,17 @@ export the generated auth token as the environment variable MINE_BASIC_AUTH, i.e
 deploy to the current Helm context
 
 `./scripts/deploy`
+
+### Amazon Load Balancer
+
+Settings are available in the Helm charts to use the Amazon Load Balancer Ingress Controller rather than an NGINX Ingress Controller.
+Additional child settings below `ingress` are available allowing the user to set [resource tags](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#tags) and the arn of an [SSL certificate](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#certificate-arn), i.e.
+```
+ingress:
+  alb:
+    tags: Name=myservername,Environment=myEnv,Project=MyProject,ServiceType=LOB
+    arn: arn:aws:acm:eu-west-2:123456:certificate/abcdef0000-123a-4321-abc8-a1234567z
+```
 
 ## Running without containers
 
