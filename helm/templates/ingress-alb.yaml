@@ -8,6 +8,7 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.alb.arn}}
     alb.ingress.kubernetes.io/tags: {{ .Values.ingress.alb.tags }}
+    external-dns.alpha.kubernetes.io/aws-zone-type-private: "true"
 spec:
   rules:
 {{- if .Values.ingress.endpoint }}
