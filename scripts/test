@@ -9,10 +9,11 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
   docker-compose \
     -f docker-compose.yaml \
     -f docker-compose.test.yaml \
-    run ffc-demo-web
+    down -v
 
   docker-compose \
     -f docker-compose.yaml \
     -f docker-compose.test.yaml \
-    down -v
+    run ffc-demo-web
+
 )
