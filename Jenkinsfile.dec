@@ -17,15 +17,9 @@ pipeline {
         sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml up $imageName"
       }
     }
-    post {
-      always {
-        sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml down -v"
-        junit 'test-output/junit.xml'
-      }
-    }
     stage('Push Production Image') {
       steps {
-        docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
+        withDockerRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
             sh "docker-compose build --no-cache"
             sh "docker tag $imageName $registry/$imageName:$tag"
             sh "docker push $registry/$imageName:$tag"
@@ -38,6 +32,12 @@ pipeline {
           sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/jenkins-eks.yaml ./helm"
         }
       }
+    }
+  }
+  post {
+    always {
+      sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml down -v"
+      junit 'test-output/junit.xml'
     }
   }
 }
