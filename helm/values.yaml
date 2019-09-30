@@ -11,10 +11,10 @@ container:
   redisname: redis-redis-ha.default
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change
-  requestMemory: 30Mi
-  requestCpu: 10m
-  limitMemory: 60Mi
-  limitCpu: 50m
+  requestMemory: 60Mi
+  requestCpu: 60m
+  limitMemory: 80Mi
+  limitCpu: 80m
   runAsNonRoot: true
   runAsUser: 1000
   readOnlyRootFilesystem: true
