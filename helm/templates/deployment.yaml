@@ -46,9 +46,9 @@ spec:
           value: {{ .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
           value: {{ .Values.container.redisname }}
-        - name: MINE_SUPPORT_API_GATEWAY
+        - name: API_GATEWAY
           value: {{ .Values.container.apiGatewayUrl }}
-        - name: MINE_SUPPORT_REST_CLIENT_TIMEOUT_IN_MILLIS
+        - name: REST_CLIENT_TIMEOUT_IN_MILLIS
           value: {{ .Values.container.restClientTimeoutMillis | quote }}
         ports:
         - name: http
