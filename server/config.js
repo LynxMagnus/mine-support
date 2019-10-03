@@ -9,6 +9,7 @@ const schema = {
   redisPort: joi.number().default(6379),
   cookiePassword: joi.string().required(),
   sessionTimeoutMinutes: joi.number().default(30),
+  staticCacheTimeoutMillis: joi.number().default(15 * 60 * 1000),
   apiGateway: joi.string().uri().default('http://localhost:3001'),
   restClientTimeoutMillis: joi.number().default(20000)
 }
@@ -23,7 +24,8 @@ const config = {
   cookiePassword: process.env.COOKIE_PASSWORD,
   sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,
   apiGateway: process.env.API_GATEWAY,
-  restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS
+  restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS,
+  staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS
 }
 
 // Validate config

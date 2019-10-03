@@ -1,9 +1,15 @@
+const config = require('../config')
+
 module.exports = [{
   method: 'GET',
   path: '/robots.txt',
   options: {
     handler: {
       file: 'server/public/static/robots.txt'
+    },
+    cache: {
+      expiresIn: config.staticCacheTimeoutMillis,
+      privacy: 'private'
     }
   }
 }, {
@@ -12,6 +18,10 @@ module.exports = [{
   options: {
     handler: {
       file: 'node_modules/govuk-frontend/all.js'
+    },
+    cache: {
+      expiresIn: config.staticCacheTimeoutMillis,
+      privacy: 'private'
     }
   }
 }, {
@@ -26,6 +36,10 @@ module.exports = [{
           'node_modules/govuk-frontend/assets'
         ]
       }
+    },
+    cache: {
+      expiresIn: config.staticCacheTimeoutMillis,
+      privacy: 'private'
     }
   }
 }]

@@ -36,8 +36,8 @@ module.exports = {
     context: {
       appVersion: pkg.version,
       assetPath: '/assets',
-      serviceName: 'FFC POC Service',
-      pageTitle: 'FFC POC Service - GOV.UK',
+      serviceName: 'FFC Demo Service',
+      pageTitle: 'FFC Demo Service - GOV.UK',
       analyticsAccount: analyticsAccount
     }
   }

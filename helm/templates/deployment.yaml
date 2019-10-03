@@ -50,6 +50,8 @@ spec:
           value: {{ .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS
           value: {{ .Values.container.restClientTimeoutMillis | quote }}
+        - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
+          value: {{ .Values.container.staticCacheTimeoutMillis | quote }}
         ports:
         - name: http
           containerPort: 3000
