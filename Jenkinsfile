@@ -24,7 +24,7 @@ node {
       sh "docker push $registry/$imageName:$tag"
     }
     stage('Helm install') {
-      withKubeConfig([credentialsId: 'kubeuser001']) {
+      withKubeConfig([credentialsId: 'awskubeconfig001']) {
         sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/jenkins-eks.yaml ./helm"
       }
     }
