@@ -4,8 +4,10 @@ node {
   def imageName = "ffc-demo-web"
   def tag = "jenkins"
   def namespace = "ffc-demo"
+  def PULL_REQUEST = env.CHANGE_ID
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
+      sh "**** PULL REQUEST $PULL_REQUEST ****"
       sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
     }
     try {
