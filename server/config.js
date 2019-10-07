@@ -1,18 +1,18 @@
-const joi = require('@hapi/joi')
+const Joi = require('@hapi/joi')
 
 // Define config schema
-const schema = {
-  port: joi.number().default(3000),
-  env: joi.string().valid('development', 'test', 'production').default('development'),
-  cacheName: joi.string().default('redisCache'),
-  redisHost: joi.string().default('localhost'),
-  redisPort: joi.number().default(6379),
-  cookiePassword: joi.string().required(),
-  sessionTimeoutMinutes: joi.number().default(30),
-  staticCacheTimeoutMillis: joi.number().default(15 * 60 * 1000),
-  apiGateway: joi.string().uri().default('http://localhost:3001'),
-  restClientTimeoutMillis: joi.number().default(20000)
-}
+const schema = Joi.object({
+  port: Joi.number().default(3000),
+  env: Joi.string().valid('development', 'test', 'production').default('development'),
+  cacheName: Joi.string().default('redisCache'),
+  redisHost: Joi.string().default('localhost'),
+  redisPort: Joi.number().default(6379),
+  cookiePassword: Joi.string().required(),
+  sessionTimeoutMinutes: Joi.number().default(30),
+  staticCacheTimeoutMillis: Joi.number().default(15 * 60 * 1000),
+  apiGateway: Joi.string().uri().default('http://localhost:3001'),
+  restClientTimeoutMillis: Joi.number().default(20000)
+})
 
 // Build config
 const config = {
@@ -29,7 +29,7 @@ const config = {
 }
 
 // Validate config
-const result = joi.validate(config, schema, {
+const result = schema.validate(config, {
   abortEarly: false
 })
 
@@ -38,7 +38,7 @@ if (result.error) {
   throw new Error(`The server config is invalid. ${result.error.message}`)
 }
 
-// Use the joi validated value
+// Use the Joi validated value
 const value = result.value
 
 // Add some helper props

@@ -35,7 +35,7 @@ function ViewModel (mineTypes, error) {
 
   if (mineTypes != null) {
     mineTypes.forEach(mine => {
-      let item = this.model.items.find(x => x.value === mine)
+      const item = this.model.items.find(x => x.value === mine)
       if (item != null) {
         item.checked = true
       }
@@ -45,7 +45,7 @@ function ViewModel (mineTypes, error) {
   // If error is passed to model then this error property is added to the model and therefore radio macro
   if (error) {
     this.model.errorMessage = {
-      'text': 'Please select mine types'
+      text: 'Please select mine types'
     }
   }
 }

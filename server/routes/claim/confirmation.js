@@ -1,5 +1,5 @@
-const ViewModel = require('../../models/claim/confirmation')
 const sessionHandler = require('../../services/session-handler')
+const ViewModel = require('../../models/claim/confirmation')
 
 module.exports = {
   method: 'GET',

@@ -1,6 +1,6 @@
-const ViewModel = require('../../models/claim/property-type')
 const schema = require('../../schemas/claim/property-type')
 const sessionHandler = require('../../services/session-handler')
+const ViewModel = require('../../models/claim/property-type')
 
 module.exports = [{
   method: 'GET',
@@ -16,7 +16,8 @@ module.exports = [{
   method: 'POST',
   path: '/claim/property-type',
   options: {
-    validate: { payload: { propertyType: schema },
+    validate: {
+      payload: schema,
       failAction: async (request, h, error) => {
         return h.view('claim/property-type', new ViewModel(request.payload.propertyType, error)).takeover()
       }

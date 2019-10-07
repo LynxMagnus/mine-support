@@ -1,15 +1,15 @@
-const ViewModel = require('../../models/claim/email')
-const schema = require('../../schemas/claim/email')
-const sessionHandler = require('../../services/session-handler')
 const apiGateway = require('../../services/api-gateway')
 const idService = require('../../services/id-service')
+const schema = require('../../schemas/claim/email')
+const sessionHandler = require('../../services/session-handler')
+const ViewModel = require('../../models/claim/email')
 
 module.exports = [{
   method: 'GET',
   path: '/claim/email',
   options: {
     handler: (request, h) => {
-      let claim = sessionHandler.get(request, 'claim')
+      const claim = sessionHandler.get(request, 'claim')
       return h.view('claim/email', new ViewModel(claim.email, null))
     }
   }
@@ -18,7 +18,8 @@ module.exports = [{
   method: 'POST',
   path: '/claim/email',
   options: {
-    validate: { payload: { email: schema },
+    validate: {
+      payload: schema,
       failAction: async (request, h, error) => {
         return h.view('claim/email', new ViewModel(request.payload.email, error)).takeover()
       }

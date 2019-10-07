@@ -1,3 +1,5 @@
 const Joi = require('@hapi/joi')
 
-module.exports = Joi.boolean()
+module.exports = Joi.object({
+  accessible: Joi.boolean()
+})

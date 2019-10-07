@@ -17,7 +17,7 @@ function ViewModel (email, error) {
   // If error is passed to model then this error property is added to the model and therefore radio macro
   if (error) {
     this.model.errorMessage = {
-      'text': 'Please enter valid email'
+      text: 'Please enter valid email'
     }
   }
 }

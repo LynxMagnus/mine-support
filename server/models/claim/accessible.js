@@ -27,7 +27,7 @@ function ViewModel (accessible, error) {
   }
 
   if (accessible != null) {
-    let item = this.model.items.find(x => x.value === accessible)
+    const item = this.model.items.find(x => x.value === accessible)
     if (item != null) {
       item.checked = true
     }
@@ -36,7 +36,7 @@ function ViewModel (accessible, error) {
   // If error is passed to model then this error property is added to the model and therefore radio macro
   if (error) {
     this.model.errorMessage = {
-      'text': 'Please select if the property is accessible'
+      text: 'Please select if the property is accessible'
     }
   }
 }

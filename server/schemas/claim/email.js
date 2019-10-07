@@ -1,3 +1,5 @@
 const Joi = require('@hapi/joi')
 
-module.exports = Joi.string().email()
+module.exports = Joi.object({
+  email: Joi.string().email()
+})

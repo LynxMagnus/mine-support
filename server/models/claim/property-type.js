@@ -27,7 +27,7 @@ function ViewModel (propertyType, error) {
   }
 
   if (propertyType != null) {
-    let item = this.model.items.find(x => x.value === propertyType)
+    const item = this.model.items.find(x => x.value === propertyType)
     if (item != null) {
       item.checked = true
     }
@@ -36,7 +36,7 @@ function ViewModel (propertyType, error) {
   // If error is passed to model then this error property is added to the model and therefore radio macro
   if (error) {
     this.model.errorMessage = {
-      'text': 'Please select a property type'
+      text: 'Please select a property type'
     }
   }
 }

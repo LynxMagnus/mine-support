@@ -1,6 +1,6 @@
-const ViewModel = require('../../models/claim/accessible')
 const schema = require('../../schemas/claim/accessible')
 const sessionHandler = require('../../services/session-handler')
+const ViewModel = require('../../models/claim/accessible')
 
 module.exports = [{
   method: 'GET',
@@ -16,7 +16,8 @@ module.exports = [{
   method: 'POST',
   path: '/claim/accessible',
   options: {
-    validate: { payload: { accessible: schema },
+    validate: {
+      payload: schema,
       failAction: async (request, h, error) => {
         return h.view('claim/accessible', new ViewModel(request.payload.accessible, error)).takeover()
       }

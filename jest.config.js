@@ -1,34 +1,34 @@
 module.exports = {
-  'collectCoverage': true,
-  'collectCoverageFrom': [
+  collectCoverage: true,
+  collectCoverageFrom: [
     '**/*.js',
     '!**/*.test.js'
   ],
-  'coverageDirectory': 'test-output',
-  'coverageReporters': [
+  coverageDirectory: 'test-output',
+  coverageReporters: [
     'text-summary',
     'cobertura',
     'lcov'
   ],
-  'coveragePathIgnorePatterns': [
+  coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/test-output/',
     '<rootDir>/test/',
     '<rootDir>/jest.config.js'
   ],
-  'modulePathIgnorePatterns': [
+  modulePathIgnorePatterns: [
     'node_modules'
   ],
-  'reporters': [
+  reporters: [
     'default',
     [
       'jest-junit',
       {
-        'suiteName': 'jest tests',
-        'outputDirectory': 'test-output',
-        'outputName': 'junit.xml'
+        suiteName: 'jest tests',
+        outputDirectory: 'test-output',
+        outputName: 'junit.xml'
       }
     ]
   ],
-  'testEnvironment': 'node'
+  testEnvironment: 'node'
 }

@@ -1,7 +1,7 @@
-const ViewModel = require('../../models/claim/date-of-subsidence')
+const dateUtil = require('../../../util/date-util')
 const schema = require('../../schemas/claim/date-of-subsidence')
 const sessionHandler = require('../../services/session-handler')
-const dateUtil = require('../../../util/date-util')
+const ViewModel = require('../../models/claim/date-of-subsidence')
 
 module.exports = [{
   method: 'GET',
@@ -17,7 +17,8 @@ module.exports = [{
   method: 'POST',
   path: '/claim/date-of-subsidence',
   options: {
-    validate: { payload: schema,
+    validate: {
+      payload: schema,
       failAction: async (request, h, error) => {
         const dateOfSubsidence = dateUtil.buildDate(request.payload.year, request.payload.month, request.payload.day, false)
         return h.view('claim/date-of-subsidence', new ViewModel(dateOfSubsidence, error)).takeover()

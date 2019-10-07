@@ -1,6 +1,6 @@
-const ViewModel = require('../../models/claim/mine-type')
 const schema = require('../../schemas/claim/mine-type')
 const sessionHandler = require('../../services/session-handler')
+const ViewModel = require('../../models/claim/mine-type')
 
 module.exports = [{
   method: 'GET',
@@ -16,7 +16,8 @@ module.exports = [{
   method: 'POST',
   path: '/claim/mine-type',
   options: {
-    validate: { payload: { mineType: schema },
+    validate: {
+      payload: schema,
       failAction: async (request, h, error) => {
         return h.view('claim/mine-type', new ViewModel(request.payload.mineType, error)).takeover()
       }
