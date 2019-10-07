@@ -19,6 +19,14 @@ services:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
 
+  ffc-demo-web-css-watch:
+    build: .
+    image: ffc-demo-web
+    command: npm run build:css-watch
+    volumes:
+      - node_modules:/usr/src/app/node_modules
+      - .:/usr/src/app
+
   ffc-demo-web-redis:
     image: redis
     container_name: ffc-demo-web-redis

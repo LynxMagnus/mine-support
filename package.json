@@ -11,12 +11,13 @@
   "scripts": {
     "build": "npm run build:css",
     "build:css": "node-sass --output-style=expanded --output=server/public/build/stylesheets client/sass",
+    "build:css-watch": "node-sass --output-style=expanded --output=server/public/build/stylesheets --watch client/sass",
     "pretest": "npm run test:lint",
     "test": "npm run test:unit",
     "test:lint": "standard",
     "test:unit": "jest",
     "unit:watch": "jest --coverage=false --onlyChanged --watch",
-    "start:watch": "nodemon --inspect=0.0.0.0 --ext js,njk --legacy-watch index.js"
+    "start:watch": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch index.js"
   },
   "author": "Defra DDTS",
   "contributors": [
