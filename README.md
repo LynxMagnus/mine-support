@@ -38,10 +38,14 @@ The following environment variables are required by the application container. V
 
 # How to run tests
 
-A convenience script is provided to run automated tests in a containerised environment:
+A convenience script is provided to run automated tests in a containerised environment. The first time this is run, container images required for testing will be automatically built. An optional `--build` (or `-b`) flag may be used to rebuild these images in future (for example, to apply dependency updates).
 
 ```
+# Run tests
 scripts/test
+
+# Rebuild images and run tests
+scripts/test --build
 ```
 
 This runs tests via a `docker-compose run` command. If tests complete successfully, all containers, networks and volumes are cleaned up before the script exits. If there is an error or any tests fail, the associated Docker resources will be left available for inspection.
@@ -49,54 +53,47 @@ This runs tests via a `docker-compose run` command. If tests complete successful
 Alternatively, the same tests may be run locally via npm:
 
 ```
+# Run tests without Docker
 npm run test
 ```
 
 # Running the application
 
-The application is designed to run in containerised environments: Docker Compose for development; Kubernetes for production.
+The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
 
-A Helm chart is provided for deployment to Kubernetes and scripts are provided for local development and testing.
+- Scripts are provided to aid local development and testing using Docker Compose.
+- A Helm chart is provided for production deployments to Kubernetes.
 
 ## Build container image
 
-Container images are built using Docker Compose and the same image may be run in either Docker Compose or Kubernetes.
+Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
 
-The [`build`](./scripts/build) script is essentially a shortcut and will pass any arguments through to the `docker-compose build` command.
-
-```
-# Build images using default Docker behaviour
-scripts/build
-
-# Build images without using the Docker cache
-scripts/build --no-cache
-```
-
-## Run as an isolated service
-
-To test this service in isolation, use the provided scripts to start and stop a local instance. This relies on Docker Compose and will run direct dependencies, such as message queues and databases, as additional containers. Arguments given to the [`start`](./scripts/start) script will be passed through to the `docker-compose up` command.
+By default, the start script will build (or rebuild) images so there will rarely be a need to build images manually. However, this can be achieved through the Docker Compose [build](https://docs.docker.com/compose/reference/build/) command:
 
 ```
-# Start the service and attach to running containers (press `ctrl + c` to quit)
-scripts/start
-
-# Start the service without attaching to containers
-scripts/start --detach
-
-# Stop the service and remove Docker volumes and networks created by the start script
-scripts/stop
+# Build container images
+docker-compose build
 ```
 
-## Connect to sibling services
+## Start and stop the service
 
-To test this service in combination with other parts of the FFC demo application, it is necessary to connect each service to an external Docker network and shared dependencies, such as message queues. Start the shared dependencies from the [`ffc-demo-development`](https://github.com/DEFRA/ffc-demo-development) repository and then use the `connected-` [`scripts`](./scripts/) to start this service. Follow instructions in other repositories to connect each service to the shared dependencies and network.
+Use the provided [`start`](./scripts/start) and [`stop`](./scripts/stop) scripts to run the service locally via Docker Compose. Both scripts accept a number of flags to customise their behaviour. For full instructions on the flags available to each script, use the `--help` or `-h` flag:
 
 ```
-# Start the service
-script/connected-start
+# View instructions for the start script
+scripts/start --help
 
-# Stop the service
-script/connected-stop
+# View instructions for the stop script
+scripts/stop --help
+```
+
+By default, the start script will build new container images before starting the service on an isolated Docker network along with any direct dependencies, such as message queues and databases. It will not automatically replace existing containers or volumes, but will warn if there is a conflict and abort the request. Use the `--clean` or `--quick` flags to instruct the script to replace or keep existing resources, respectively.
+
+The underlying `docker-compose up/down` commands can be customised by appending `-- [DOCKER_COMPOSE_ARGS]` after any other arguments to the `start/stop` scripts. For example:
+
+```
+# Start the service without attaching to logs
+scripts/start -- --detach
 ```
 
 ## Deploy to Kubernetes
@@ -113,13 +110,23 @@ scripts/helm/install
 scripts/helm/delete
 ```
 
-### Redis in Kubernetes
+### Accessing the pod
 
-For local deployment testing, it may be helpful to run a Redis instance in your Kubernetes cluster, rather than setting up a remote Redis instance. To deploy Redis with appropriate configuration, use the official Redis HA Helm chart with the provided [`redis.yaml`](./redis.yaml) configuration file:
+The service is exposed via a Kubernetes ingress, which requires an ingress controller to be running on the cluster. For example, the NGINX Ingress Controller may be installed via Helm:
 
-`helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
+```
+# Install nginx-ingress into its own namespace
+helm install --namespace nginx-ingress nginx-ingress
+```
 
-This will deploy a single Redis instance with no affinities, allowing Redis nodes to reside on the same worker node, and no minimum slaves requirement. For information on the minimum slaves setting, see [this post](https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write) on Stack Overflow.
+Alternatively, a local port may be forwarded to the pod:
+
+```
+# Forward local port to the Kubernetes deployment
+kubectl port-forward --namespace=ffc-demo deployment/ffc-demo-web 3000:3000
+```
+
+Once the port is forwarded or an ingress controller is installed, the service can be accessed and tested in the same way as described in the "Test the service" section above.
 
 ### Probes
 
@@ -130,52 +137,23 @@ Liveness: `/healthz`
 
 ### Basic Authentication
 
-When deployed to an NGINX Ingress Controller The ingress may be protected with basic authentication by setting the `auth` value exposed by [values.yaml](./helm/values.yaml) on deployment.
-
-The provided auth string must be an htpasswd encoded for use in the data field of a Kubernetes secret.
-
-To generate the correct format auth token first create a username and password using htpasswd.
-Below shows creating a password for the user 'defra'.
-
-`htpasswd -c ./auth defra`
-
-Upon hitting return you will be prompted to enter a password for the user.
-A Secret can then be created in Kubernetes directly from the `./auth` file:
-
-`kubectl create secret generic basic-auth --namespace default --from-file auth`
-
-The secret can be viewed with the command:
-
-`kubectl get secret basic-auth -o yaml`
-
-The encoded, encrypted, username and password will be shown in the auth field of the data section.
+When deployed with an NGINX Ingress Controller, the ingress may be protected with basic authentication by passing the `--auth` (or `-a`) flag to the [Helm install](./scripts/helm/install) script. This relies on `htpasswd`, which must be available on the host system, and will prompt for a username and password.
 
 ```
-apiVersion: v1
-data:
-  auth: xyzabc
-kind: Secret
-metadata:
-...
+# Deploy to the current Helm context with basic auth enabled
+scripts/helm/install --auth
 ```
 
-In the example above the value of `auth` would be need to be set to `xyzabc` to use the generated credentials.
+__How basic auth is configured__
 
-Setting the new auth value while deploying the Helm chart will prompt a user to enter the username and password when visiting the web site.
+Basic authentication is enabled via labels on the ingress object. Those labels are read by the NGINX Ingress Controller and used to configure basic authentication for incoming traffic. One of the labels provides the name of a Kubernetes secret in which credentials are stored as the encoded output of a `htpasswd` command. The ingress controller uses the value of that secret to verify any basic auth attempt.
 
-A utility script is provided to aid in deploying locally using basic authentication.
+If it wasn't defined by the Helm chart, the secret could be created via the following command:
 
-First build the container
-
-`./scripts/build`
-
-export the generated auth token as the environment variable MINE_BASIC_AUTH, i.e.:
-
-`export MINE_BASIC_AUTH=xyzabc`
-
-deploy to the current Helm context
-
-`./scripts/deploy`
+```
+# Create basic auth secret for username 'defra'
+kubectl create secret generic ffc-demo-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
+```
 
 ### Amazon Load Balancer
 

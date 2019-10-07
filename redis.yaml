@@ -1,5 +1,0 @@
-affinity: {}
-replicas: 1
-redis:
-  config:
-    min-slaves-to-write: 0
