@@ -1,8 +1,8 @@
 {% extends 'layout.njk' %}
-{% from "input/macro.njk" import govukInput %}
-{% from "button/macro.njk" import govukButton %}
-{% from "error-message/macro.njk" import govukErrorMessage %}
-{% from "fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 
 {% block content %}
   <div class="govuk-body">
@@ -18,7 +18,7 @@
       }
     }) %}
     <form method="POST" action="/claim/email">
-      {{ govukInput(model) }}      
+      {{ govukInput(model) }}
       {{ govukButton({
         text: "Submit application"
       }) }}

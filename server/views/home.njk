@@ -1,7 +1,7 @@
 {% extends 'layout.njk' %}
 
-{% from "breadcrumbs/macro.njk" import govukBreadcrumbs %}
-{% from "button/macro.njk" import govukButton %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block beforeContent %}
   {{ govukBreadcrumbs({
@@ -34,9 +34,10 @@
       <p class="govuk-body">Registering takes around 5 minutes.</p>
 
       {{ govukButton({
-        text: "Start new claim",
+        classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8",
         href: "/claim/property-type",
-        classes: "govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8"
+        isStartButton: true,
+        text: "Start new claim"
       }) }}
 
       <h2 class="govuk-heading-m">Before you start</h2>
@@ -59,6 +60,6 @@
         </nav>
       </aside>
 
-    </div>    
+    </div>
   </div>
 {% endblock %}

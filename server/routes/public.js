@@ -17,7 +17,7 @@ module.exports = [{
   path: '/assets/all.js',
   options: {
     handler: {
-      file: 'node_modules/govuk-frontend/all.js'
+      file: 'node_modules/govuk-frontend/govuk/all.js'
     },
     cache: {
       expiresIn: config.staticCacheTimeoutMillis,
@@ -33,7 +33,7 @@ module.exports = [{
         path: [
           'server/public/static',
           'server/public/build',
-          'node_modules/govuk-frontend/assets'
+          'node_modules/govuk-frontend/govuk/assets'
         ]
       }
     },
