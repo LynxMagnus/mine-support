@@ -17,7 +17,6 @@ Or:
 
 Or:
 - Node 10
-- Redis
 
 # Environment variables
 
