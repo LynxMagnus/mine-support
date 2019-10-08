@@ -113,14 +113,6 @@ scripts/helm/install
 scripts/helm/delete
 ```
 
-### Redis in Kubernetes
-
-For local deployment testing, it may be helpful to run a Redis instance in your Kubernetes cluster, rather than setting up a remote Redis instance. To deploy Redis with appropriate configuration, use the official Redis HA Helm chart with the provided [`redis.yaml`](./redis.yaml) configuration file:
-
-`helm install --namespace default --name redis -f redis.yaml stable/redis-ha`
-
-This will deploy a single Redis instance with no affinities, allowing Redis nodes to reside on the same worker node, and no minimum slaves requirement. For information on the minimum slaves setting, see [this post](https://stackoverflow.com/questions/55365775/redis-ha-helm-chart-error-noreplicas-not-enough-good-replicas-to-write) on Stack Overflow.
-
 ### Probes
 
 The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.

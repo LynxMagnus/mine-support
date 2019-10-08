@@ -1,6 +1,5 @@
 const hapi = require('@hapi/hapi')
 const config = require('./config')
-const catbox = config.isTest ? require('@hapi/catbox-memory') : require('@hapi/catbox-redis')
 
 async function createServer () {
   // Create the hapi server
@@ -15,18 +14,7 @@ async function createServer () {
       // cache: {
       //   otherwise: 'no-cache, must-revalidate, max-age=0, no-store'
       // }
-    },
-    cache: [{
-      name: config.cacheName,
-      provider: {
-        constructor: catbox,
-        options: {
-          host: config.redisHost,
-          port: config.redisPort,
-          partition: 'mine-support'
-        }
-      }
-    }]
+    }
   })
 
   // Register the plugins

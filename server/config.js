@@ -4,9 +4,6 @@ const joi = require('@hapi/joi')
 const schema = {
   port: joi.number().default(3000),
   env: joi.string().valid('development', 'test', 'production').default('development'),
-  cacheName: joi.string().default('redisCache'),
-  redisHost: joi.string().default('localhost'),
-  redisPort: joi.number().default(6379),
   cookiePassword: joi.string().required(),
   sessionTimeoutMinutes: joi.number().default(30),
   staticCacheTimeoutMillis: joi.number().default(15 * 60 * 1000),
@@ -18,9 +15,6 @@ const schema = {
 const config = {
   port: process.env.PORT,
   env: process.env.NODE_ENV,
-  cacheName: process.env.CACHE_NAME,
-  redisHost: process.env.REDIS_HOSTNAME,
-  redisPort: process.env.REDIS_PORT,
   cookiePassword: process.env.COOKIE_PASSWORD,
   sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,
   apiGateway: process.env.API_GATEWAY,
