@@ -73,7 +73,7 @@ compose() {
   # Only bring down services if there are existing containers/volumes
   if [ -n "${existingContainers}${existingVolumes}" ]; then
     if [ "${clean}" = "true" ]; then
-      compose down --remove-orphans --rmi=local --volumes $@
+      compose down --remove-orphans --rmi=all --volumes $@
     else
       compose down $@
     fi
