@@ -26,7 +26,7 @@ node {
     }
     stage('Helm install') {
       withKubeConfig([credentialsId: 'awskubeconfig001']) {
-        sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/jenkins-eks.yaml ./helm"
+        sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web"
       }
     }
   }

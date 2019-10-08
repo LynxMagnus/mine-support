@@ -42,9 +42,9 @@ steps:
   displayName: set container tag if release
   # update helm charts tag and version if files ready for publishing chart
 - script: |
-    sed -i -e 's/image: mine-support/image: mine-support:$(containerTag)/' ./helm/values.yaml
+    sed -i -e 's/image: mine-support/image: mine-support:$(containerTag)/' ./helm/ffc-demo-web/values.yaml
     versionTag=`echo $(containerTag) | sed 's/v//'`
-    sed -i -e 's/version: 1.0.0/version: '"$versionTag"'/' ./helm/Chart.yaml
+    sed -i -e 's/version: 1.0.0/version: '"$versionTag"'/' ./helm/ffc-demo-web/Chart.yaml
   condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags'))
   displayName: update values and Chart yaml for release
   # create safe container tag for use in namespaces
@@ -164,7 +164,7 @@ steps:
       helm init -c
       az configure --defaults acr=$(azureContainerRegistry)
       az acr helm repo add
-      helm package ./helm --save
+      helm package ./helm/ffc-demo-web --save
       packageFile=`ls elm-rbac-* |  xargs echo`
       az acr helm push --force $packageFile
       az acr helm list
@@ -195,7 +195,7 @@ steps:
   displayName: 'helm package'
   inputs:
     command: package
-    chartPath: ./helm
+    chartPath: ./helm/ffc-demo-web
     save: false
   # copy yaml values for release
 - task: CopyFiles@2
