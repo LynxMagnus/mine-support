@@ -112,7 +112,7 @@ show_conflict_warning() {
     scripts/stop --clean
   fi
 
-  # Build images, unless quick flag received
+  # Rebuild images, unless quick flag received
   if [ "${quick}" != "true" ]; then
     compose build
   fi
