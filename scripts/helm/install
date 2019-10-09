@@ -63,6 +63,7 @@ fi
     --install \
     --namespace ${kubernetesNamespace} \
     --values helm/redis-values.yaml \
+    --wait \
     ${dockerPrefix}-redis \
     stable/redis
 
