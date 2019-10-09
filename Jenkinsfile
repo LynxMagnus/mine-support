@@ -5,10 +5,14 @@ node {
   def tag = "jenkins"
   def namespace = "ffc-demo"
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
+    
     stage('Publish chart') {
-      checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-      userRemoteConfigs: [[url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git', credentialsId: 'helm-chart-creds']]])
+      dir('HelmCharts') {
+        git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
+            credentialsId: 'helm-chart-creds'
+      }
       sh "ls -lat"
+      sh "ls -lat HelmCharts"
     }
     stage('Build Test Image') {
       sh 'env'
