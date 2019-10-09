@@ -5,6 +5,11 @@ node {
   def tag = "jenkins"
   def namespace = "ffc-demo"
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
+    stage('Publish chart') {
+      checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+      userRemoteConfigs: [[url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git', credentialsId: 'helm-chart-creds']]])
+      sh "ls -lat helm-charts"
+    }
     stage('Build Test Image') {
       sh 'env'
       sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
@@ -28,13 +33,6 @@ node {
       withKubeConfig([credentialsId: 'awskubeconfig001']) {
         sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web"
       }
-    }
-    stage('Publish chart') {
-      git branch: 'master',
-          credentialsId: 'helm-chart-creds'
-          url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git'
-
-      sh "ls -lat helm-charts"
     }
   }
 }
