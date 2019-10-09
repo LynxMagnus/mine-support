@@ -8,7 +8,7 @@ node {
     stage('Publish chart') {
       checkout([$class: 'GitSCM', branches: [[name: '*/master']],
       userRemoteConfigs: [[url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git', credentialsId: 'helm-chart-creds']]])
-      sh "ls -lat helm-charts"
+      sh "ls -lat"
     }
     stage('Build Test Image') {
       sh 'env'
