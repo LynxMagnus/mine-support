@@ -16,10 +16,10 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header l5d-dst-override {{.Values.ingress.serviceName }}.default.svc.cluster.local:{{ .Values.service.port }};
+      proxy_set_header l5d-dst-override {{.Values.name }}.default.svc.cluster.local:{{ .Values.service.port }};
       proxy_hide_header l5d-remote-ip;
       proxy_hide_header l5d-server-id;
-  name: {{ .Values.ingress.serviceName }}
+  name: {{ .Values.name }}
 spec:
   rules:
 {{- if .Values.ingress.endpoint }}
@@ -31,6 +31,6 @@ spec:
       paths:
       - path: /?(.*)
         backend:
-          serviceName: {{ .Values.ingress.serviceName }}
+          serviceName: {{ .Values.name }}
           servicePort: {{ .Values.service.port }}
 {{- end }}

@@ -24,7 +24,6 @@ container:
   restClientTimeoutMillis: 20000
   staticCacheTimeoutMillis: 54000
 ingress:
-  serviceName: ffc-demo-web
   endPoint: ffc-demo
   server: vividcloudsolutions.co.uk
 replicas: 1

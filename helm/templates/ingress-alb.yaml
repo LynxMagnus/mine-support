@@ -2,10 +2,11 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Values.ingress.serviceName }}
+  name: {{ .Values.name }}
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.alb.securityGroups}}
     alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.alb.arn}}
     alb.ingress.kubernetes.io/tags: {{ .Values.ingress.alb.tags }}
     external-dns.alpha.kubernetes.io/aws-zone-type-private: "true"
@@ -20,6 +21,6 @@ spec:
       paths:
       - path: /*
         backend:
-          serviceName: {{ .Values.ingress.serviceName }}
+          serviceName: {{ .Values.name }}
           servicePort: {{ .Values.service.port }}
 {{- end }}
