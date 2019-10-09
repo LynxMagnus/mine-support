@@ -31,6 +31,7 @@ node {
     }
     stage('Publish chart') {
       git branch: 'master',
+          credentialsId: 'helm-chart-creds'
           url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git'
 
       sh "ls -lat helm-charts"
