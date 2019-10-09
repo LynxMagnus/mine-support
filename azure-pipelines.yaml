@@ -127,7 +127,7 @@ steps:
     namespace: $(imageName)-$(safeContainerTag)
     command: upgrade
     chartType: filepath
-    chartPath: helm
+    chartPath: helm/ffc-demo-web
     releaseName: $(imageName)-$(containerTag)
     arguments: --set ingress.endpoint=$(endPoint)-$(containerTag) --set ingress.server=$(ingressServer) --set auth=$(mineSupportAuth) --set image=$(azureContainerRegistryFull)/$(imageName):$(containerTag) --set container.redeployOnChange=$(Build.BuildId) --set container.imagePullPolicy=Always --atomic
     install: true
@@ -195,13 +195,13 @@ steps:
   displayName: 'helm package'
   inputs:
     command: package
-    chartPath: ./helm/ffc-demo-web
+    chartPath: helm/ffc-demo-web
     save: false
   # copy yaml values for release
 - task: CopyFiles@2
   displayName: 'Copy values files'
   inputs:
-    SourceFolder: helm
+    SourceFolder: ./helm/ffc-demo-web
     Contents: '*-values.yaml'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
   # publish artifact for release
