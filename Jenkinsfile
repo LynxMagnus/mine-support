@@ -29,6 +29,12 @@ node {
         sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web"
       }
     }
+    stage('Publish chart') {
+      git branch: 'master',
+          url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git'
+
+      sh "ls -lat helm-charts"
+    }
   }
 }
 
