@@ -10,6 +10,10 @@ node {
       dir('HelmCharts') {
         git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
             credentialsId: 'helm-chart-creds'
+        sh "helm package ../helm/ffc-demo-web"
+        sh "git add -u"
+        sh "git commit -m 'update helm chart from build job'"
+        sh 'git push'
       }
       sh "ls -lat"
       sh "ls -lat HelmCharts"
