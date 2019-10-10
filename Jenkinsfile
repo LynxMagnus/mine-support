@@ -12,8 +12,8 @@ node {
             credentialsId: 'helm-chart-creds'
         sh "helm init -c"
         sh "helm package ../helm/ffc-demo-web"
-        sh 'git config --global user.email "jenkins@defrabuildserver.com"'
-        sh 'git config --global user.name "Jenkins build Agent"'
+        sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
+        sh 'git config --global user.name "mharrop"'
         sh "git add -u"
         sh "git commit -m 'update helm chart from build job'"
         sh "git push --set-upstream origin master"
