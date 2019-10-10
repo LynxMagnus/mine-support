@@ -7,6 +7,11 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     
     stage('Publish chart') {
+      dir('ProdSettings') {
+        git url: 'http://gitlab.ffc.aws-int.defra.cloud/helm/mine-support-production-values.git',
+            credentialsId: 'helm-chart-creds'
+        sh "ls -l"
+      }
       dir('HelmCharts') {
         git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
             credentialsId: 'helm-chart-creds'
