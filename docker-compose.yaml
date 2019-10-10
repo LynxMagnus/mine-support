@@ -20,7 +20,6 @@ services:
       - .:/usr/src/app
 
   ffc-demo-web-css-watch:
-    build: .
     image: ffc-demo-web
     command: npm run build:css-watch
     volumes:
