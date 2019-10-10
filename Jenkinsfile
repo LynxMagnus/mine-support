@@ -8,7 +8,7 @@ node {
     
     stage('Publish chart') {
       dir('ProdSettings') {
-        git url: 'http://gitlab.ffc.aws-int.defra.cloud/helm/mine-support-production-values.git',
+        git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/mine-support-production-values.git',
             credentialsId: 'helm-chart-creds'
         sh "ls -l"
       }
