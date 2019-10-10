@@ -7,21 +7,17 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     
     stage('Publish chart') {
-      dir('ProdSettings') {
-        git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/mine-support-production-values.git',
-            credentialsId: 'helm-chart-creds'
-        sh "ls -l"
-      }
       dir('HelmCharts') {
         git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
-            credentialsId: 'helm-chart-creds'
+            credentialsId: 'helm-chart-creds',
+            branch: 'master'
         sh "helm init -c"
         sh "helm package ../helm/ffc-demo-web"
         sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
         sh 'git config --global user.name "mharrop"'
         sh "git add -u"
         sh "git commit -m 'update helm chart from build job'"
-        sh "git push --set-upstream origin master"
+        sh "git push"
       }
       sh "ls -lat"
       sh "ls -lat HelmCharts"
