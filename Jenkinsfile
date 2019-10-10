@@ -20,6 +20,7 @@ node {
   def namespace = "ffc-demo"
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
+      sh "*************${GIT_BRANCH}***************"
       dir('HelmCharts') {
         checkout([
           $class: 'GitSCM',
