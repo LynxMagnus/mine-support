@@ -17,7 +17,8 @@
     "test:lint": "standard",
     "test:unit": "jest",
     "unit:watch": "jest --coverage=false --onlyChanged --watch",
-    "start:watch": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch index.js"
+    "start": "npm-run-all --parallel build:css-watch start:nodemon",
+    "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch index.js"
   },
   "author": "Defra DDTS",
   "contributors": [
@@ -41,15 +42,16 @@
     "nunjucks": "^3.2.0"
   },
   "devDependencies": {
-    "blipp": "^4.0.1",
     "@hapi/catbox-memory": "^4.1.1",
     "@hapi/good": "^8.2.3",
     "@hapi/good-console": "^8.1.2",
     "@hapi/good-squeeze": "^5.2.1",
+    "blipp": "^4.0.1",
     "jest": "^24.9.0",
     "jest-junit": "^8.0.0",
     "node-sass": "^4.12.0",
     "nodemon": "^1.19.3",
+    "npm-run-all": "^4.1.5",
     "standard": "^14.3.1"
   },
   "standard": {

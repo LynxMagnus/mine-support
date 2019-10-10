@@ -4,24 +4,17 @@ services:
     build: .
     image: ffc-demo-web
     container_name: ffc-demo-web
-    command: npm run start:watch
+    command: npm start
     depends_on:
       - ffc-demo-web-redis
     environment:
-      COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       API_GATEWAY: http://ffc-demo-api-gateway:3001
+      COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: ffc-demo-web-redis
     networks:
       - ffc-demo-web-redis
     ports:
       - "3000:3000"
-    volumes:
-      - node_modules:/usr/src/app/node_modules
-      - .:/usr/src/app
-
-  ffc-demo-web-css-watch:
-    image: ffc-demo-web
-    command: npm run build:css-watch
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
