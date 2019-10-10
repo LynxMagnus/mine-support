@@ -16,7 +16,7 @@ node {
         sh 'git config --global user.name "Jenkins build Agent"'
         sh "git add -u"
         sh "git commit -m 'update helm chart from build job'"
-        sh "git push"
+        sh "git push --set-upstream origin master"
       }
       sh "ls -lat"
       sh "ls -lat HelmCharts"
