@@ -19,6 +19,28 @@ node {
   def tag = "jenkins"
   def namespace = "ffc-demo"
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
+    stage('Publish chart') {
+      dir('HelmCharts') {
+        checkout([
+          $class: 'GitSCM',
+          branches: [[name: '*/master']],
+          userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
+          poll: false,
+          changelog: false
+          ])
+
+        sh "helm init -c"
+        sh "helm package ../helm/ffc-demo-web"
+        sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
+        sh 'git config --global user.name "mharrop"'
+        sh "git add -u"
+        sh "git commit -m 'update helm chart from build job'"
+        sh "git remote -v"
+        sshagent(credentials: ['helm-chart-creds']) {
+          sh "git push  --set-upstream origin master"
+        }
+      }
+    }    
     stage('Build Test Image') {
       sh 'env'
       sh 'docker image prune -f'
@@ -42,25 +64,6 @@ node {
     stage('Helm install') {
       withKubeConfig([credentialsId: 'awskubeconfig001']) {
         sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web"
-      }
-    }
-    stage('Publish chart') {
-      dir('HelmCharts') {
-        git url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
-            credentialsId: 'helm-chart-creds',
-            branch: 'master',
-            poll: false
-            
-        sh "helm init -c"
-        sh "helm package ../helm/ffc-demo-web"
-        sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
-        sh 'git config --global user.name "mharrop"'
-        sh "git add -u"
-        sh "git commit -m 'update helm chart from build job'"
-        sh "git remote -v"
-        sshagent(credentials: ['helm-chart-creds']) {
-          sh "git push  --set-upstream origin master"
-        }
       }
     }
   }
