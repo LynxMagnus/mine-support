@@ -5,7 +5,7 @@ def branch = BRANCH == 'unknown' ? "jenkins" : BRANCH
 def namespace = "ffc-demo"
 
 def pr = PR == 'unknown' ? '' : PR
-def tag = pr ?: branch
+def containerTag = pr ?: branch
 
 node {
   checkout scm
@@ -13,8 +13,8 @@ node {
     stage('Publish chart') {
       dir('HelmCharts') {
         sh "PR $PR"
-        sh "branch $pr"
-        sh "tag $tag"
+        sh "branch $branch"
+        sh "containerTag $containerTag"
         checkout([
           $class: 'GitSCM',
           branches: [[name: '*/master']],
