@@ -1,17 +1,3 @@
-properties([
-    parameters([
-        gitParameter(branch: '',
-                     branchFilter: 'origin/(.*)',
-                     defaultValue: 'master',
-                     description: '',
-                     name: 'BRANCH',
-                     quickFilterEnabled: false,
-                     selectedValue: 'NONE',
-                     sortMode: 'NONE',
-                     tagFilter: '*',
-                     type: 'PT_BRANCH')
-    ])
-])
 node {
   checkout scm
   def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
@@ -21,6 +7,8 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
       dir('HelmCharts') {
+        sh 'echo $PR'
+        sh "echo $PR"
         checkout([
           $class: 'GitSCM',
           branches: [[name: '*/master']],
