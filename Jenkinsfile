@@ -8,6 +8,7 @@ def pr = PR == 'unknown' ? '' : PR
 def containerTag = pr ?: branch
 
 node {
+  deleteDir()
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
@@ -59,7 +60,7 @@ node {
     }
     stage('Helm install') {
       withKubeConfig([credentialsId: 'awskubeconfig001']) {
-        sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web"
+        sh "helm upgrade $imageName --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web --dry-run --debug" 
       }
     }
   }
