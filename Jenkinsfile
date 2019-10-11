@@ -1,11 +1,12 @@
 
 def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
 def imageName = "ffc-demo-web"
-def tag = "jenkins"
+def branch = BRANCH == 'unknown' ? "jenkins" : BRANCH
 def namespace = "ffc-demo"
 
 def pr = PR == 'unknown' ? '' : PR
 def tag = pr ?: branch
+
 node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
