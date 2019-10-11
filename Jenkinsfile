@@ -28,6 +28,7 @@ node {
             sh "helm package ../helm/ffc-demo-web"
             sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
             sh 'git config --global user.name "mharrop"'
+            sh 'git checkout master'
             sh 'touch delme'
             sh "git add -A"
             sh "git commit -m 'update helm chart from build job'"
