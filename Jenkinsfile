@@ -54,8 +54,8 @@ node {
     }
     stage('Push Production Image') {
       sh "docker-compose build --no-cache"
-      sh "docker tag $imageName $registry/$imageName:$tag"
-      sh "docker push $registry/$imageName:$tag"
+      sh "docker tag $imageName $registry/$imageName:$containerTag"
+      sh "docker push $registry/$imageName:$containerTag"
     }
     stage('Helm install') {
       withKubeConfig([credentialsId: 'awskubeconfig001']) {
