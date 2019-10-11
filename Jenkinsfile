@@ -1,17 +1,18 @@
+
+def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
+def imageName = "ffc-demo-web"
+def tag = "jenkins"
+def namespace = "ffc-demo"
+
+def pr = PR == 'unknown' ? '' : PR
+def tag = pr ?: branch
 node {
   checkout scm
-  def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
-  def imageName = "ffc-demo-web"
-  def tag = "jenkins"
-  def namespace = "ffc-demo"
-  def pr = PR == 'unknown' ? '' : PR
-  def branch = BRANCH == 'unknown' : 'jenkins' : BRANCH
-  def tag = pr ? branch : PR
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
       dir('HelmCharts') {
-        sh "PR $pr"
-        sh "branch $branch"
+        sh "PR $PR"
+        sh "branch $pr"
         sh "tag $tag"
         checkout([
           $class: 'GitSCM',
