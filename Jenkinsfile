@@ -8,7 +8,6 @@ def pr = PR == 'unknown' ? '' : PR
 def containerTag = pr ?: branch
 
 node {
-  deleteDir()
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
@@ -52,6 +51,7 @@ node {
     } finally {
         sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml down -v"
         junit 'test-output/junit.xml'
+        sh 'rm -fr test-output'
     }
     stage('Push Production Image') {
       sh "docker-compose build --no-cache"
