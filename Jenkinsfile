@@ -12,9 +12,9 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
       dir('HelmCharts') {
-        sh "PR $PR"
-        sh "branch $branch"
-        sh "containerTag $containerTag"
+        sh "echo $PR"
+        sh "echo branch $branch"
+        sh "echo containerTag $containerTag"
         checkout([
           $class: 'GitSCM',
           branches: [[name: '*/master']],
