@@ -4,9 +4,9 @@ node {
   def imageName = "ffc-demo-web"
   def tag = "jenkins"
   def namespace = "ffc-demo"
-  def pr = PR == 'unknown' :? ''
-  def branch = PR == 'unknown' :? 'jenkins'
-  def tag = pr :? branch
+  def pr = PR == 'unknown' ? '' : PR
+  def branch = BRANCH == 'unknown' : 'jenkins' : BRANCH
+  def tag = pr ? branch : PR
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
       dir('HelmCharts') {
