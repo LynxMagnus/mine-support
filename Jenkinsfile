@@ -32,7 +32,7 @@ node {
             sh "git add -A"
             sh "git commit -m 'update helm chart from build job'"
             sh "git remote -v"
-            sh "git push  --set-upstream origin master"
+            sh "git push"
           }
         }
       // }
