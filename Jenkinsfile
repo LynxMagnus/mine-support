@@ -11,7 +11,7 @@ node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
-      if (pr != '') {
+      if (pr == '') {
         dir('HelmCharts') {
           sh "echo $PR"
           sh "echo branch $branch"
