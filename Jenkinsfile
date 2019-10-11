@@ -4,11 +4,15 @@ node {
   def imageName = "ffc-demo-web"
   def tag = "jenkins"
   def namespace = "ffc-demo"
+  def pr = PR == 'unknown' :? ''
+  def branch = PR == 'unknown' :? 'jenkins'
+  def tag = pr :? branch
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
       dir('HelmCharts') {
-        sh 'echo $PR'
-        sh "echo $PR"
+        sh "PR $pr"
+        sh "branch $branch"
+        sh "tag $tag"
         checkout([
           $class: 'GitSCM',
           branches: [[name: '*/master']],
