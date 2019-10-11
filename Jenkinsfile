@@ -10,32 +10,33 @@ def containerTag = pr ?: branch
 node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
-    when { expression { return false } }
     stage('Publish chart') {
-      dir('HelmCharts') {
-        sh "echo $PR"
-        sh "echo branch $branch"
-        sh "echo containerTag $containerTag"
-        checkout([
-          $class: 'GitSCM',
-          branches: [[name: '*/master']],
-          userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
-          poll: false,
-          changelog: false
-          ])
+      if (pr != '') {
+        dir('HelmCharts') {
+          sh "echo $PR"
+          sh "echo branch $branch"
+          sh "echo containerTag $containerTag"
+          checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/master']],
+            userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
+            poll: false,
+            changelog: false
+            ])
 
-        sh "helm init -c"
-        sh "helm package ../helm/ffc-demo-web"
-        sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
-        sh 'git config --global user.name "mharrop"'
-        sh "git add -u"
-        sh "git commit -m 'update helm chart from build job'"
-        sh "git remote -v"
-        sshagent(credentials: ['helm-chart-creds']) {
-          sh "git push  --set-upstream origin master"
+          sh "helm init -c"
+          sh "helm package ../helm/ffc-demo-web"
+          sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
+          sh 'git config --global user.name "mharrop"'
+          sh "git add -u"
+          sh "git commit -m 'update helm chart from build job'"
+          sh "git remote -v"
+          sshagent(credentials: ['helm-chart-creds']) {
+            sh "git push  --set-upstream origin master"
+          }
         }
       }
-    }    
+    }
     stage('Build Test Image') {
       sh 'env'
       sh 'docker image prune -f'
