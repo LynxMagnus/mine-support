@@ -10,6 +10,7 @@ def containerTag = pr ?: branch
 node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
+    when { expression { return false } }
     stage('Publish chart') {
       dir('HelmCharts') {
         sh "echo $PR"
