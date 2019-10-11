@@ -13,26 +13,26 @@ node {
     stage('Publish chart') {
       // if (pr == '') {
         dir('HelmCharts') {
-          sh "echo $PR"
-          sh "echo branch $branch"
-          sh "echo containerTag $containerTag"
-          checkout([
-            $class: 'GitSCM',
-            branches: [[name: '*/master']],
-            userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
-            poll: false,
-            changelog: false
-            ])
-
-          sh "helm init -c"
-          sh "helm package ../helm/ffc-demo-web"
-          sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
-          sh 'git config --global user.name "mharrop"'
-          sh 'touch delme'
-          sh "git add -A"
-          sh "git commit -m 'update helm chart from build job'"
-          sh "git remote -v"
           sshagent(credentials: ['helm-chart-creds']) {
+            sh "echo $PR"
+            sh "echo branch $branch"
+            sh "echo containerTag $containerTag"
+            checkout([
+              $class: 'GitSCM',
+              branches: [[name: '*/master']],
+              userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
+              poll: false,
+              changelog: false
+              ])
+
+            sh "helm init -c"
+            sh "helm package ../helm/ffc-demo-web"
+            sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
+            sh 'git config --global user.name "mharrop"'
+            sh 'touch delme'
+            sh "git add -A"
+            sh "git commit -m 'update helm chart from build job'"
+            sh "git remote -v"
             sh "git push  --set-upstream origin master"
           }
         }
