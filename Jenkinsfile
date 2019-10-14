@@ -12,6 +12,7 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
       // if (pr == '') {
+        sh "rm -rf HelmCharts"
         dir('HelmCharts') {
           sshagent(credentials: ['helm-chart-creds']) {
             sh "echo $PR"
