@@ -62,7 +62,7 @@ fi
     --atomic \
     --install \
     --namespace ${kubernetesNamespace} \
-    --values helm/redis-values.yaml \
+    --values helm/ffc-demo-web/redis-values.yaml \
     --wait \
     ${dockerPrefix}-redis \
     stable/redis
@@ -72,7 +72,7 @@ fi
     --atomic \
     --install \
     --namespace ${kubernetesNamespace} \
-    --values helm/development-values.yaml \
+    --values helm/ffc-demo-web/development-values.yaml \
     --set auth="${credentials}" \
     --wait \
     ${containerName} \

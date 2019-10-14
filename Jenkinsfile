@@ -24,7 +24,6 @@ node {
     } finally {
         sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml down -v"
         junit 'test-output/junit.xml'
-        sh 'docker images'
         sh "docker run -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $imageName rm -rf test-output/*"
     }
     stage('Push Production Image') {
@@ -45,6 +44,7 @@ node {
           sh "echo $PR"
           sh "echo branch $branch"
           sh "echo containerTag $containerTag"
+          // this should do the same as the command below, but gives a branch error on check in
           // git( 
           //   url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
           //   credentialsId: 'helm-chart-creds',
@@ -59,7 +59,8 @@ node {
             poll: false,
             changelog: false
             ])
-
+          // the poll and changelog settings above seem to have no effect. The build reports it doesn't recognise the parameters
+          // and an endless build cycles ensues as the Jenkins job considers the change to the charts rep reason to rebuild the parent repo
           sshagent(credentials: ['helm-chart-creds']) {
             sh "helm init -c"
             sh "helm package ../helm/ffc-demo-web"
