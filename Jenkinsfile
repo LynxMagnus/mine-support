@@ -44,7 +44,7 @@ node {
           sh "echo branch $branch"
           sh "echo containerTag $containerTag"
           git( 
-            branch: 'master',
+            branch: '*/master',
             url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
             credentialsId: 'helm-chart-creds',
             changelog: false,
@@ -59,16 +59,16 @@ node {
           //   changelog: false
           //   ])
 
-          sh "helm init -c"
-          sh "helm package ../helm/ffc-demo-web"
-          sh "helm repo index ."
-          sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
-          sh 'git config --global user.name "mharrop"'
-          sh 'git checkout master'
-          sh "git add -A"
-          sh "git commit -m 'update helm chart from build job'"
-
           sshagent(credentials: ['helm-chart-creds']) {
+            sh "helm init -c"
+            sh "helm package ../helm/ffc-demo-web"
+            sh "helm repo index ."
+            sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
+            sh 'git config --global user.name "mharrop"'
+            sh 'git checkout master'
+            sh "git add -A"
+            sh "git commit -m 'update helm chart from build job'"
+
             sh "git push"
           }
         }
