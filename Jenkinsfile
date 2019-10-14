@@ -44,7 +44,6 @@ node {
           sh "echo branch $branch"
           sh "echo containerTag $containerTag"
           git( 
-            branch: '*/master',
             url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
             credentialsId: 'helm-chart-creds',
             changelog: false,
