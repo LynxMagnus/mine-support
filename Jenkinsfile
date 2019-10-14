@@ -43,12 +43,13 @@ node {
           sh "echo $PR"
           sh "echo branch $branch"
           sh "echo containerTag $containerTag"
-          git 
+          git( 
+            branch: 'master',
             url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
-            branch: '*/master',
             credentialsId: 'helm-chart-creds',
             changelog: false,
             poll: false
+          )
           // checkout([
           //   $class: 'GitSCM',
           //   extensions: [[$class: 'DisableRemotePoll']],
