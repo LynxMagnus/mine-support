@@ -3,8 +3,9 @@ def imageName = "ffc-demo-web"
 def branch = BRANCH == 'unknown' ? "jenkins" : BRANCH
 
 def pr = PR == 'unknown' ? '' : PR
-def containerTag = pr ?: branch
-def namespace = "ffc-demo-web-${containerTag}"
+def rawTag = pr ?: branch
+def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
+def namespace = "${imageName}-${containerTag}"
 
 node {
   checkout scm
