@@ -45,7 +45,7 @@ node {
           sh "echo containerTag $containerTag"
           checkout([
             $class: 'GitSCM',
-            extensions: [[$class: 'DisableRemotePoll'],
+            extensions: [[$class: 'DisableRemotePoll']],
             branches: [[name: '*/master']],
             userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
             poll: false,
