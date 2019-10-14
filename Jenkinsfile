@@ -8,6 +8,8 @@ def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
 def namespace = "${imageName}-${containerTag}"
 
 node {
+  label "${imageName}-build-node"
+  customWorkspace "${JENKINS_HOME}/workspace/${JOB_NAME}/${BUILD_NUMBER}"
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Publish chart') {
