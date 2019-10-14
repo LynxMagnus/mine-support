@@ -24,8 +24,7 @@ node {
     } finally {
         sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml down -v"
         junit 'test-output/junit.xml'
-        sh 'cwd=$(pwd)'
-        sh 'docker run -u node --mount type=bind,source=$cwd/test-output,target=/usr/src/app/test-output ' + imageName + BUILD_NUMBER +' rm -rf test-output'
+        sh "docker run -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $imageName$BUILD_NUMBER rm -rf test-output"
     }
     stage('Push Production Image') {
       sh "docker-compose build --no-cache"
