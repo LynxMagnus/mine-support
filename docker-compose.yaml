@@ -3,7 +3,7 @@ services:
   ffc-demo-web:
     build: .
     image: ffc-demo-web
-    container_name: ffc-demo-web${BUILD_NUMBER:-local}
+    container_name: ffc-demo-web-${BUILD_NUMBER:local}
     command: npm run start:watch
     depends_on:
       - ffc-demo-web-redis
@@ -19,7 +19,7 @@ services:
 
   ffc-demo-web-redis:
     image: redis
-    container_name: ffc-demo-web-redis${BUILD_NUMBER:-local}
+    container_name: ffc-demo-web-redis-${BUILD_NUMBER:-local}
     networks:
       - ffc-demo-web-redis
     volumes:
