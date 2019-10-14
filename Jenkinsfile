@@ -43,14 +43,20 @@ node {
           sh "echo $PR"
           sh "echo branch $branch"
           sh "echo containerTag $containerTag"
-          checkout([
-            $class: 'GitSCM',
-            extensions: [[$class: 'DisableRemotePoll']],
-            branches: [[name: '*/master']],
-            userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
-            poll: false,
-            changelog: false
-            ])
+          git 
+            url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git',
+            branch: '*/master',
+            credentialsId: 'helm-chart-creds',
+            changelog: false,
+            poll: false
+          // checkout([
+          //   $class: 'GitSCM',
+          //   extensions: [[$class: 'DisableRemotePoll']],
+          //   branches: [[name: '*/master']],
+          //   userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
+          //   poll: false,
+          //   changelog: false
+          //   ])
 
           sh "helm init -c"
           sh "helm package ../helm/ffc-demo-web"
