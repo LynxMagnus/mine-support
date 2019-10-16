@@ -1,8 +1,7 @@
 def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
 def imageName = "ffc-demo-web"
-def branch = BRANCH == 'unknown' ? "jenkins" : BRANCH
-
-def pr = PR == 'unknown' ? '' : PR
+def branch = ''
+def pr = ''
 def rawTag = pr ?: branch
 def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
 def namespace = "${imageName}-${containerTag}"
@@ -11,6 +10,10 @@ node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
+      def dir1 = sh(script:'ls -la dir1', returnStdout:true).trim()
+      sh "echo branch $dir1"
+      sh "echo branch $branch"
+      sh "echo containerTag $containerTag"
       sh 'env'
       sh 'docker image prune -f'
       sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
@@ -33,7 +36,7 @@ node {
     }
     stage('Helm install') {
       withKubeConfig([credentialsId: 'awskubeconfig001']) {
-        sh "helm upgrade $imageName-$containerTag --debug --dry-run --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-eks.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag" 
+        sh "helm upgrade $imageName-$containerTag --debug --dry-run --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag"
       }
     }
     stage('Publish chart') {
@@ -41,8 +44,6 @@ node {
         // jenkins doesn't tidy up folder, remove old charts before running
         sh "rm -rf helm-charts"
         sh "echo $PR"
-        sh "echo branch $branch"
-        sh "echo containerTag $containerTag"
         sshagent(credentials: ['helm-chart-creds']) {
           sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
           dir('helm-charts') {
