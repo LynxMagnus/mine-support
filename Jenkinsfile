@@ -51,19 +51,21 @@ node {
           //   changelog: false,
           //   poll: false
           // )
-          checkout([
-            $class: 'GitSCM',
-            extensions: [[$class: 'DisableRemotePoll']],
-            branches: [[name: '*/master']],
-            userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
-            poll: false,
-            changelog: false
-            ])
+          // checkout([
+          //   $class: 'GitSCM',
+          //   extensions: [[$class: 'DisableRemotePoll']],
+          //   branches: [[name: '*/master']],
+          //   userRemoteConfigs: [[credentialsId: 'helm-chart-creds', url: 'git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git']],
+          //   poll: false,
+          //   changelog: false
+          //   ])
           // the poll and changelog settings above seem to have no effect. The build reports it doesn't recognise the parameters
           // and an endless build cycles ensues as the Jenkins job considers the change to the charts rep reason to rebuild the parent repo
           sshagent(credentials: ['helm-chart-creds']) {
+            sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
+            sh "cd helm-charts"
             sh "helm init -c"
-            sh "helm package ../helm/ffc-demo-web"
+            sh "helm package ../../helm/ffc-demo-web"
             sh "helm repo index ."
             sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
             sh 'git config --global user.name "mharrop"'
