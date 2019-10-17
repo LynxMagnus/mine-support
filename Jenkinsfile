@@ -3,9 +3,12 @@ def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
 def branch = ''
 def pr = ''
-def rawTag = ''
 def containerTag = ''
 def namespace = ''
+
+def sampleScript(value){
+  sh "echo $value"
+}
 
 node {
   checkout scm
@@ -13,13 +16,13 @@ node {
     branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
     sh "echo PR $pr"
-    rawTag = pr == '' ? branch : pr
+    def rawTag = pr == '' ? branch : pr
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     namespace = "${imageName}-${containerTag}"
   }
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
-      sh 'env'
+      sampleScript('message from script')
       sh 'docker image prune -f'
       sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
     }
@@ -39,13 +42,15 @@ node {
       sh "docker tag $imageName $registry/$imageName:$containerTag"
       sh "docker push $registry/$imageName:$containerTag"
     }
-    stage('Helm install') {
-      withKubeConfig([credentialsId: 'awskubeconfig002']) {
-        sh "helm upgrade $imageName-$containerTag --debug --dry-run --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.enpoint=ffc-demo-$containerTag"
+    if (pr != '') {
+      stage('Helm install') {
+        withKubeConfig([credentialsId: 'awskubeconfig002']) {
+          sh "helm upgrade $imageName-$containerTag --debug --dry-run --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.enpoint=ffc-demo-$containerTag"
+        }
       }
     }
     stage('Publish chart') {
-      // if (pr == '') {
+      if (pr == '') {
         // jenkins doesn't tidy up folder, remove old charts before running
         sh "rm -rf helm-charts"
         sh "echo $PR"
@@ -63,7 +68,7 @@ node {
             sh 'git push'
           }
         }
-      // }
+      }
     }
   }
 }
