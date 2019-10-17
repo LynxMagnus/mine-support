@@ -1,6 +1,6 @@
-def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
-def imageName = "ffc-demo-web"
-def repoName = "ffc-demo-web"
+def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
+def imageName = 'ffc-demo-web'
+def repoName = 'ffc-demo-web'
 def branch = ''
 def pr = ''
 def rawTag = ''
@@ -16,10 +16,6 @@ node {
     rawTag = pr == '' ? branch : pr
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     namespace = "${imageName}-${containerTag}"
-    sh "echo branch $branch"
-    sh "echo rawTag $rawTag"
-    sh "echo containerTag $containerTag"
-    sh "echo namespace $namespace"
   }
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
@@ -49,25 +45,25 @@ node {
       }
     }
     stage('Publish chart') {
-      if (pr == '') {
+      // if (pr == '') {
         // jenkins doesn't tidy up folder, remove old charts before running
         sh "rm -rf helm-charts"
         sh "echo $PR"
         sshagent(credentials: ['helm-chart-creds']) {
           sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
           dir('helm-charts') {
-            sh "helm init -c"
-            sh "helm package ../helm/ffc-demo-web"
-            sh "helm repo index ."
-            sh 'git config --global user.email "mark.harrop@defra.gov.uk"'
+            sh 'helm init -c'
+            sh 'helm package ../helm/ffc-demo-web'
+            sh 'helm repo index .'
+            sh 'git config --global user.email "buildserver@defra.gov.uk"'
             sh 'git config --global user.name "mharrop"'
             sh 'git checkout master'
-            sh "git add -A"
-            sh "git commit -m 'update helm chart from build job'"
-            sh "git push"
+            sh 'git add -A'
+            sh 'git commit -m "update helm chart from build job"'
+            sh 'git push'
           }
         }
-      }
+      // }
     }
   }
 }
