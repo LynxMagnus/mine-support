@@ -10,7 +10,7 @@ node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
-      sh 'git branch'
+      sh 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3'
       sh "echo branch $branch"
       sh "echo containerTag $containerTag"
       sh 'env'
