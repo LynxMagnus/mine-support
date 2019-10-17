@@ -1,5 +1,6 @@
 def registry = "562955126301.dkr.ecr.eu-west-2.amazonaws.com"
 def imageName = "ffc-demo-web"
+def repoName = "ffc-demo-web"
 def branch = ''
 def pr = ''
 def rawTag = ''
@@ -10,15 +11,15 @@ node {
   checkout scm
   stage('Set branch, PR, containerTag, and namespace variables') {
     branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
+    pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'")
+    sh "echo PR $pr"
     rawTag = pr == '' ? branch : pr
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     namespace = "${imageName}-${containerTag}"
     sh "echo branch $branch"
     sh "echo rawTag $rawTag"
-    sh "echo PR $pr"
     sh "echo containerTag $containerTag"
     sh "echo namespace $namespace"
-    sh "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[]'"
   }
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
