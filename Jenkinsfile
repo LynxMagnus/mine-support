@@ -6,8 +6,10 @@ def pr = ''
 def containerTag = ''
 def namespace = ''
 
-def sampleScript(value){
-  sh "echo $value"
+def buildTestImage(name, suffix){
+  sh 'docker image prune -f'
+  sh "echo $name $suffix"
+  // sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
 }
 
 node {
@@ -22,7 +24,7 @@ node {
   }
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
-      sampleScript('message from script')
+      buildTestImage(imageName, BUILD_NUMBER)
       sh 'docker image prune -f'
       sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
     }
