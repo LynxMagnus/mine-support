@@ -10,7 +10,7 @@ node {
   checkout scm
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
-      def dir1 = sh(script:'ls -la dir1', returnStdout:true).trim()
+      def dir1 = sh(script:'git branch', returnStdout:true).trim()
       sh "echo branch $dir1"
       sh "echo branch $branch"
       sh "echo containerTag $containerTag"
