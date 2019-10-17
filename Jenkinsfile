@@ -56,7 +56,7 @@ node {
             sh 'helm package ../helm/ffc-demo-web'
             sh 'helm repo index .'
             sh 'git config --global user.email "buildserver@defra.gov.uk"'
-            sh 'git config --global user.name "mharrop"'
+            sh 'git config --global user.name "buildserver"'
             sh 'git checkout master'
             sh 'git add -A'
             sh 'git commit -m "update helm chart from build job"'
