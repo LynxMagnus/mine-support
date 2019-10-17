@@ -11,7 +11,7 @@ node {
   checkout scm
   stage('Set branch, PR, containerTag, and namespace variables') {
     branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
-    pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'")
+    pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
     sh "echo PR $pr"
     rawTag = pr == '' ? branch : pr
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
