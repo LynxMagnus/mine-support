@@ -11,8 +11,6 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
       sh 'git branch'
-      sh 'git checkout ${BRANCH_NAME}'
-      sh 'git branch'
       sh "echo branch $branch"
       sh "echo containerTag $containerTag"
       sh 'env'
