@@ -7,12 +7,16 @@ def branch = ''
 def pr = ''
 def containerTag = ''
 
+def getMergedPrNo() {
+    def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\([0-9]\+\)).*/\1/p'")
+}
+
 def getVariables(repoName) {
     def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
     def rawTag = pr == '' ? branch : pr
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    return [branch, pr, containerTag]
+    return [branch, pr, containerTag, getMergedPrNo()]
 }
 
 def buildTestImage(name, suffix) {
@@ -71,7 +75,7 @@ def publishChart(imageName) {
 node {
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
-    (branch, pr, containerTag) = getVariables(repoName)
+    (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
   }
   stage('Build test image') {
     buildTestImage(imageName, BUILD_NUMBER)
