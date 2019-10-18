@@ -43,6 +43,12 @@ def pushContainerImage(registry, credentialsId, imageName, tag) {
   }
 }
 
+def deployPR(credentialsId, registry, imageName, tag, extraCommands) {
+  withKubeConfig([credentialsId: credentialsId]) {
+    sh "helm upgrade $imageName-$tag --install -n $imageName-$tag ./helm/$imageName --set image=$registry/$imageName:$tag $extraCommands"
+  }
+}
+
 def publishChart(imageName) {
   // jenkins doesn't tidy up folder, remove old charts before running
   sh "rm -rf helm-charts"
@@ -80,10 +86,12 @@ node {
   }
   if (pr != '') {
     stage('Helm install') {
-      withKubeConfig([credentialsId: kubeCredsId]) {
-        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
-        sh "helm upgrade $imageName-$containerTag --install --namespace $imageName-$containerTag $extraCommands"
-      }
+      def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
+      deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+      // withKubeConfig([credentialsId: kubeCredsId]) {
+      //   def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
+      //   sh "helm upgrade $imageName-$containerTag --install --namespace $imageName-$containerTag $extraCommands"
+      // }
     }
   }
   if (pr == '') {
