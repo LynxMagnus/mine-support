@@ -1,4 +1,6 @@
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
+def regCredsId = 'ecr:eu-west-2:ecr-user'
+def kubeCredsId = 'awskubeconfig002'
 def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
 def branch = ''
@@ -71,13 +73,16 @@ node {
   stage('Run tests') {
       runTests(imageName, BUILD_NUMBER)
   }
+  // note: there should be a `build production image` step here,
+  // but the docker file is currently not set up to create a production only image
   stage('Push container image') {
-    pushContainerImage(registry, 'ecr:eu-west-2:ecr-user', imageName, containerTag)
+    pushContainerImage(registry, regCredsId, imageName, containerTag)
   }
   if (pr != '') {
     stage('Helm install') {
-      withKubeConfig([credentialsId: 'awskubeconfig002']) {
-        sh "helm upgrade $imageName-$containerTag --install --namespace $imageName-$containerTag --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
+      withKubeConfig([credentialsId: kubeCredsId]) {
+        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
+        sh "helm upgrade $imageName-$containerTag --install --namespace $imageName-$containerTag $extraCommands"
       }
     }
   }
