@@ -6,10 +6,10 @@ def pr = ''
 def containerTag = ''
 
 def getVariables(repoName) {
-    branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
-    pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
+    def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
+    def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
     def rawTag = pr == '' ? branch : pr
-    containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
+    def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     return [branch, pr, containerTag]
 }
 
@@ -63,11 +63,7 @@ def publishChart(imageName) {
 node {
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
-    def (a, b, c) = getVariables(repoName)
-    branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
-    pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
-    def rawTag = pr == '' ? branch : pr
-    containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
+    (branch, pr, containerTag) = getVariables(repoName)
   }
   stage('Build test image') {
     buildTestImage(imageName, BUILD_NUMBER)
