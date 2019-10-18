@@ -6,10 +6,24 @@ def pr = ''
 def containerTag = ''
 def namespace = ''
 
-def buildTestImage(name, suffix){
+def buildTestImage(name, suffix) {
   sh 'docker image prune -f'
   // NOTE: the docker-compose file currently makes use of env vars for image names
   sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $name"
+}
+
+def runTests(name, suffix) {
+  try {
+    sh 'mkdir -p test-output'
+    sh 'chmod 777 test-output'
+    sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml up $name"
+
+  } finally {
+    sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml down -v"
+    junit 'test-output/junit.xml'
+    // clean up files created by node/ubuntu user
+    sh "docker run -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $$name rm -rf test-output/*"
+  }
 }
 
 node {
@@ -17,27 +31,18 @@ node {
   stage('Set branch, PR, containerTag, and namespace variables') {
     branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
-    sh "echo PR $pr"
     def rawTag = pr == '' ? branch : pr
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     namespace = "${imageName}-${containerTag}"
   }
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
-    stage('Build Test Image') {
+    stage('Build test image') {
       buildTestImage(imageName, BUILD_NUMBER)
     }
-    try {
-      stage('Test') {
-        sh 'mkdir -p test-output'
-        sh 'chmod 777 test-output'
-        sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml up $imageName"
-      }
-    } finally {
-        sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml down -v"
-        junit 'test-output/junit.xml'
-        sh "docker run -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $imageName rm -rf test-output/*"
+    stage('Run tests') {
+       runTests(imageName, BUILD_NUMBER)
     }
-    stage('Push Production Image') {
+    stage('Push container image') {
       sh "docker-compose build --no-cache"
       sh "docker tag $imageName $registry/$imageName:$containerTag"
       sh "docker push $registry/$imageName:$containerTag"
