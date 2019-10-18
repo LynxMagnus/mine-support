@@ -35,43 +35,43 @@ node {
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     namespace = "${imageName}-${containerTag}"
   }
-  docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
-    stage('Build test image') {
-      buildTestImage(imageName, BUILD_NUMBER)
-    }
-    stage('Run tests') {
-       runTests(imageName, BUILD_NUMBER)
-    }
-    stage('Push container image') {
+  stage('Build test image') {
+    buildTestImage(imageName, BUILD_NUMBER)
+  }
+  stage('Run tests') {
+      runTests(imageName, BUILD_NUMBER)
+  }
+  stage('Push container image') {
+    docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
       sh "docker-compose build --no-cache"
       sh "docker tag $imageName $registry/$imageName:$containerTag"
       sh "docker push $registry/$imageName:$containerTag"
     }
-    if (pr != '') {
-      stage('Helm install') {
-        withKubeConfig([credentialsId: 'awskubeconfig002']) {
-          sh "helm upgrade $imageName-$containerTag --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
-        }
+  }
+  if (pr != '') {
+    stage('Helm install') {
+      withKubeConfig([credentialsId: 'awskubeconfig002']) {
+        sh "helm upgrade $imageName-$containerTag --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
       }
     }
-    if (pr == '') {
-      stage('Publish chart') {
-        // jenkins doesn't tidy up folder, remove old charts before running
-        sh "rm -rf helm-charts"
-        sh "echo $PR"
-        sshagent(credentials: ['helm-chart-creds']) {
-          sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
-          dir('helm-charts') {
-            sh 'helm init -c'
-            sh 'helm package ../helm/ffc-demo-web'
-            sh 'helm repo index .'
-            sh 'git config --global user.email "buildserver@defra.gov.uk"'
-            sh 'git config --global user.name "buildserver"'
-            sh 'git checkout master'
-            sh 'git add -A'
-            sh 'git commit -m "update helm chart from build job"'
-            sh 'git push'
-          }
+  }
+  if (pr == '') {
+    stage('Publish chart') {
+      // jenkins doesn't tidy up folder, remove old charts before running
+      sh "rm -rf helm-charts"
+      sh "echo $PR"
+      sshagent(credentials: ['helm-chart-creds']) {
+        sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
+        dir('helm-charts') {
+          sh 'helm init -c'
+          sh 'helm package ../helm/ffc-demo-web'
+          sh 'helm repo index .'
+          sh 'git config --global user.email "buildserver@defra.gov.uk"'
+          sh 'git config --global user.name "buildserver"'
+          sh 'git checkout master'
+          sh 'git add -A'
+          sh 'git commit -m "update helm chart from build job"'
+          sh 'git push'
         }
       }
     }
