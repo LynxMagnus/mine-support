@@ -26,6 +26,14 @@ def runTests(name, suffix) {
   }
 }
 
+def pushContainerImage(registry, credentialsId, imageName, tag) {
+  docker.withRegistry("https://$registry", credentialsId) {
+    sh "docker-compose build --no-cache"
+    sh "docker tag $imageName $registry/$imageName:$tag"
+    sh "docker push $registry/$imageName:$tag"
+  }
+}
+
 node {
   checkout scm
   stage('Set branch, PR, containerTag, and namespace variables') {
@@ -42,11 +50,7 @@ node {
       runTests(imageName, BUILD_NUMBER)
   }
   stage('Push container image') {
-    docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
-      sh "docker-compose build --no-cache"
-      sh "docker tag $imageName $registry/$imageName:$containerTag"
-      sh "docker push $registry/$imageName:$containerTag"
-    }
+    pushContainerImage(registry, 'ecr:eu-west-2:ecr-user', imageName, containerTag)
   }
   if (pr != '') {
     stage('Helm install') {
