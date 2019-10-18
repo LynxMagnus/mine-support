@@ -8,9 +8,8 @@ def namespace = ''
 
 def buildTestImage(name, suffix){
   sh 'docker image prune -f'
-  sh "echo $name $suffix"
   // NOTE: the docker-compose file currently makes use of env vars for image names
-  sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
+  sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $name"
 }
 
 node {
