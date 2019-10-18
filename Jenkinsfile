@@ -45,7 +45,7 @@ def pushContainerImage(registry, credentialsId, imageName, tag) {
 
 def deployPR(credentialsId, registry, imageName, tag, extraCommands) {
   withKubeConfig([credentialsId: credentialsId]) {
-    sh "helm upgrade $imageName-$tag --install -n $imageName-$tag ./helm/$imageName --set image=$registry/$imageName:$tag $extraCommands"
+    sh "helm upgrade $imageName-$tag --install --namespace $imageName-$tag ./helm/$imageName --set image=$registry/$imageName:$tag $extraCommands"
   }
 }
 
