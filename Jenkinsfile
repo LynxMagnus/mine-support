@@ -4,7 +4,6 @@ def repoName = 'ffc-demo-web'
 def branch = ''
 def pr = ''
 def containerTag = ''
-def namespace = ''
 
 def buildTestImage(name, suffix) {
   sh 'docker image prune -f'
@@ -47,7 +46,7 @@ def publishChart(imageName) {
       sh 'git config --global user.name "buildserver"'
       sh 'git checkout master'
       sh 'git add -A'
-      sh "git commit -m 'update helm $imageName chart from build job'"
+      sh "git commit -m 'update $imageName helm chart from build job'"
       sh 'git push'
     }
   }
@@ -55,12 +54,11 @@ def publishChart(imageName) {
 
 node {
   checkout scm
-  stage('Set branch, PR, containerTag, and namespace variables') {
+  stage('Set branch, PR, and containerTag variables') {
     branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/ffc-demo-web/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
     def rawTag = pr == '' ? branch : pr
     containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    namespace = "${imageName}-${containerTag}"
   }
   stage('Build test image') {
     buildTestImage(imageName, BUILD_NUMBER)
@@ -74,14 +72,14 @@ node {
   if (pr != '') {
     stage('Helm install') {
       withKubeConfig([credentialsId: 'awskubeconfig002']) {
-        sh "helm upgrade $imageName-$containerTag --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
+        sh "helm upgrade $imageName-$containerTag --install --namespace $imageName-$containerTag --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
       }
     }
   }
-  // if (pr == '') {
+  if (pr == '') {
     stage('Publish chart') {
       publishChart(imageName)
     }
-  // }
+  }
 }
 
