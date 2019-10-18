@@ -9,7 +9,8 @@ def namespace = ''
 def buildTestImage(name, suffix){
   sh 'docker image prune -f'
   sh "echo $name $suffix"
-  // sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
+  // NOTE: the docker-compose file currently makes use of env vars for image names
+  sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
 }
 
 node {
@@ -25,8 +26,6 @@ node {
   docker.withRegistry("https://$registry", 'ecr:eu-west-2:ecr-user') {
     stage('Build Test Image') {
       buildTestImage(imageName, BUILD_NUMBER)
-      sh 'docker image prune -f'
-      sh "docker-compose -p $imageName-$BUILD_NUMBER -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $imageName"
     }
     try {
       stage('Test') {
@@ -47,12 +46,12 @@ node {
     if (pr != '') {
       stage('Helm install') {
         withKubeConfig([credentialsId: 'awskubeconfig002']) {
-          sh "helm upgrade $imageName-$containerTag --debug --dry-run --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.enpoint=ffc-demo-$containerTag"
+          sh "helm upgrade $imageName-$containerTag --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.enpoint=ffc-demo-$containerTag"
         }
       }
     }
-    stage('Publish chart') {
-      if (pr == '') {
+    if (pr == '') {
+      stage('Publish chart') {
         // jenkins doesn't tidy up folder, remove old charts before running
         sh "rm -rf helm-charts"
         sh "echo $PR"
