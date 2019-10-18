@@ -34,6 +34,25 @@ def pushContainerImage(registry, credentialsId, imageName, tag) {
   }
 }
 
+def publishChart(imageName) {
+  // jenkins doesn't tidy up folder, remove old charts before running
+  sh "rm -rf helm-charts"
+  sshagent(credentials: ['helm-chart-creds']) {
+    sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
+    dir('helm-charts') {
+      sh 'helm init -c'
+      sh "helm package ../helm/$imageName"
+      sh 'helm repo index .'
+      sh 'git config --global user.email "buildserver@defra.gov.uk"'
+      sh 'git config --global user.name "buildserver"'
+      sh 'git checkout master'
+      sh 'git add -A'
+      sh "git commit -m 'update helm $imageName chart from build job'"
+      sh 'git push'
+    }
+  }
+}
+
 node {
   checkout scm
   stage('Set branch, PR, containerTag, and namespace variables') {
@@ -59,26 +78,10 @@ node {
       }
     }
   }
-  if (pr == '') {
+  // if (pr == '') {
     stage('Publish chart') {
-      // jenkins doesn't tidy up folder, remove old charts before running
-      sh "rm -rf helm-charts"
-      sh "echo $PR"
-      sshagent(credentials: ['helm-chart-creds']) {
-        sh "git clone git@gitlab.ffc.aws-int.defra.cloud:helm/helm-charts.git"
-        dir('helm-charts') {
-          sh 'helm init -c'
-          sh 'helm package ../helm/ffc-demo-web'
-          sh 'helm repo index .'
-          sh 'git config --global user.email "buildserver@defra.gov.uk"'
-          sh 'git config --global user.name "buildserver"'
-          sh 'git checkout master'
-          sh 'git add -A'
-          sh 'git commit -m "update helm chart from build job"'
-          sh 'git push'
-        }
-      }
+      publishChart(imageName)
     }
-  }
+  // }
 }
 
