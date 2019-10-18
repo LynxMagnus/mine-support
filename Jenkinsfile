@@ -45,7 +45,7 @@ node {
     if (pr != '') {
       stage('Helm install') {
         withKubeConfig([credentialsId: 'awskubeconfig002']) {
-          sh "helm upgrade $imageName-$containerTag --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.enpoint=ffc-demo-$containerTag"
+          sh "helm upgrade $imageName-$containerTag --install --namespace $namespace --values ./helm/ffc-demo-web/jenkins-aws.yaml ./helm/ffc-demo-web --set image=$registry/$imageName:$containerTag,name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
         }
       }
     }
