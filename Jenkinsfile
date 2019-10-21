@@ -42,7 +42,7 @@ def runTests(name, suffix) {
     sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml down -v"
     junit 'test-output/junit.xml'
     // clean up files created by node/ubuntu user that cannot be deleted by jenkins. Note: uses global environment variable
-    sh "docker run -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $name rm -rf test-output/*"
+    sh "docker run --rm -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $name rm -rf test-output/*"
   }
 }
 
@@ -90,9 +90,6 @@ def publishChart(imageName) {
 }
 
 node {
-  sh "echo tags: ${params.albTags}"
-  sh "echo arn: ${params.albArn}"
-  sh "echo securityGroups: ${params.albSecurityGroups}"
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
@@ -101,7 +98,7 @@ node {
     buildTestImage(imageName, BUILD_NUMBER)
   }
   stage('Run tests') {
-      runTests(imageName, BUILD_NUMBER)
+    runTests(imageName, BUILD_NUMBER)
   }
   // note: there should be a `build production image` step here,
   // but the docker file is currently not set up to create a production only image
