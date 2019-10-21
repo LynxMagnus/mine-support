@@ -103,6 +103,7 @@ node {
     stage('Helm install') {
       def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
       deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+      undeployPR(kubeCredsId, imageName, '35-31')
     }
   }
   if (pr == '') {
