@@ -14,7 +14,11 @@ def getMergedPrNo() {
 }
 
 def getVariables(repoName) {
+    // jenkins checks out a commit, rather than a branch
+    // use the git cli to get branch info for the commit
     def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
+    // and the github API to get the current open PR for the branch. 
+    // Note: This will cause issues if one branch has two open PRs
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
     def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
@@ -23,7 +27,7 @@ def getVariables(repoName) {
 
 def buildTestImage(name, suffix) {
   sh 'docker image prune -f'
-  // NOTE: the docker-compose file currently makes use of env vars for image names
+  // NOTE: the docker-compose file currently makes use of global $BUILD_NUMBER env vars fo image names
   sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $name"
 }
 
@@ -36,7 +40,7 @@ def runTests(name, suffix) {
   } finally {
     sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml down -v"
     junit 'test-output/junit.xml'
-    // clean up files created by node/ubuntu user
+    // clean up files created by node/ubuntu user that cannot be deleted by jenkins. Note: uses global environment variable
     sh "docker run -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $name rm -rf test-output/*"
   }
 }
