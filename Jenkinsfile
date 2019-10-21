@@ -1,6 +1,7 @@
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def kubeCredsId = 'awskubeconfig002'
+def ingressServer = "ffc.aws-int.defra.cloud"
 def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
 def branch = ''
@@ -106,8 +107,9 @@ node {
   }
   if (pr != '') {
     stage('Helm install') {
-      def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
+      def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag"
       deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+      echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
     }
   }
   if (pr == '') {
