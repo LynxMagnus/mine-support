@@ -16,7 +16,7 @@ def getMergedPrNo() {
 def getVariables(repoName) {
     def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
-    def rawTag = pr == '' ? branch : pr
+    def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     return [branch, pr, containerTag,  getMergedPrNo()]
 }
@@ -103,7 +103,6 @@ node {
     stage('Helm install') {
       def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.endpoint=ffc-demo-$containerTag"
       deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
-      undeployPR(kubeCredsId, imageName, '35-31')
     }
   }
   if (pr == '') {
