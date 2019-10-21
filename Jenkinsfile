@@ -9,7 +9,7 @@ def mergedPrNo = ''
 def containerTag = ''
 
 def getMergedPrNo() {
-    def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'")
+    def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
     return mergedPrNo ?: ''
 }
 
@@ -18,7 +18,7 @@ def getVariables(repoName) {
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref | contains(\"$branch\")) | .number'").trim()
     def rawTag = pr == '' ? branch : pr
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    return [branch, pr, containerTag, getMergedPrNo()]
+    return [branch, pr, containerTag,  getMergedPrNo()]
 }
 
 def buildTestImage(name, suffix) {
@@ -110,7 +110,7 @@ node {
       publishChart(imageName)
     }
   }
-  if (mergedPrNo != '') {
+  if (mergedPrNo == '') {
     stage('Remove merged PR') {
       sh "echo removing deployment for PR $mergedPrNo"
       undeployPR(kubeCredsId, imageName, mergedPrNo)
