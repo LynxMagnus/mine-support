@@ -41,6 +41,8 @@ def runTests(name, suffix) {
 
 def pushContainerImage(registry, credentialsId, imageName, tag) {
   docker.withRegistry("https://$registry", credentialsId) {
+    sh "env"
+    sh "ls -al"
     sh "docker-compose build --no-cache"
     sh "docker tag $imageName $registry/$imageName:$tag"
     sh "docker push $registry/$imageName:$tag"
