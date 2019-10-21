@@ -90,6 +90,9 @@ def publishChart(imageName) {
 }
 
 node {
+  sh "echo tags: ${params.albTags}"
+  sh "echo arn: ${params.albArn}"
+  sh "echo securityGroups: ${params.albSecurityGroups}"
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
@@ -107,7 +110,7 @@ node {
   }
   if (pr != '') {
     stage('Helm install') {
-      def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag"
+      def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=${params.albTags},ingress.alb.arn=${params.albArn},ingress.alb.securityGroups=${params.albSecurityGroups}"
       deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
       echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
     }
