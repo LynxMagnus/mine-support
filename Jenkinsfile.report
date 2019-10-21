@@ -82,7 +82,7 @@ def getCommitSha() {
   return readFile(".git/current-commit").trim()
 }
 
-def updateGithubCommitStatus(build) {
+def updateGithubCommitStatus() {
   // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
   repoUrl = getRepoURL()
   commitSha = getCommitSha()
@@ -95,8 +95,8 @@ def updateGithubCommitStatus(build) {
     statusResultSource: [
       $class: 'ConditionalStatusResultSource',
       results: [
-        [$class: 'BetterThanOrEqualBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: build.description],
-        [$class: 'BetterThanOrEqualBuildResult', result: 'FAILURE', state: 'FAILURE', message: build.description],
+        [$class: 'BetterThanOrEqualBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: 'build.description'],
+        [$class: 'BetterThanOrEqualBuildResult', result: 'FAILURE', state: 'FAILURE', message: 'build.description'],
         [$class: 'AnyBuildResult', state: 'FAILURE', message: 'Loophole']
       ]
     ]
@@ -106,7 +106,7 @@ def updateGithubCommitStatus(build) {
 node {
   checkout scm
   stage('Report pending status') {
-    updateGithubCommitStatus(build)
+    updateGithubCommitStatus()
   }
   stage('Set branch, PR, and containerTag variables') {
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
