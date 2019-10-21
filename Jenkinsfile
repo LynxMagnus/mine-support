@@ -5,6 +5,7 @@ def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
 def branch = ''
 def pr = ''
+def mergedPrNo = ''
 def containerTag = ''
 
 def getMergedPrNo() {
@@ -41,8 +42,6 @@ def runTests(name, suffix) {
 
 def pushContainerImage(registry, credentialsId, imageName, tag) {
   docker.withRegistry("https://$registry", credentialsId) {
-    sh "env"
-    sh "ls -al"
     sh "docker-compose build --no-cache"
     sh "docker tag $imageName $registry/$imageName:$tag"
     sh "docker push $registry/$imageName:$tag"
@@ -51,7 +50,16 @@ def pushContainerImage(registry, credentialsId, imageName, tag) {
 
 def deployPR(credentialsId, registry, imageName, tag, extraCommands) {
   withKubeConfig([credentialsId: credentialsId]) {
-    sh "helm upgrade $imageName-$tag --install --namespace $imageName-$tag ./helm/$imageName --set image=$registry/$imageName:$tag $extraCommands"
+    def deploymentName = "$imageName-$tag"
+    sh "kubectl get namespaces $deploymentName || kubectl create namespace $deploymentName"
+    sh "helm upgrade $deploymentName --install --namespace $deploymentName --atomic ./helm/$imageName --set image=$registry/$imageName:$tag $extraCommands"
+  }
+}
+
+def undeployPR(credentialsId, imageName, tag) {
+  withKubeConfig([credentialsId: credentialsId]) {
+    def deploymentName = "$imageName-$tag"
+    sh "helm delete --purge $deploymentName || echo error removing deployment $deploymentName"
   }
 }
 
@@ -99,6 +107,11 @@ node {
   if (pr == '') {
     stage('Publish chart') {
       publishChart(imageName)
+    }
+  }
+  if (mergedPrNo != '') {
+    stage('Remove merged PR') {
+      undeployPR(kubeCredsId, registry, imageName, mergedPrNo)
     }
   }
 }
