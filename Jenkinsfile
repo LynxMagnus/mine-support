@@ -111,7 +111,8 @@ node {
   }
   if (mergedPrNo != '') {
     stage('Remove merged PR') {
-      undeployPR(kubeCredsId, registry, imageName, mergedPrNo)
+      sh "echo removing deployment for PR $mergedPrNo"
+      undeployPR(kubeCredsId, imageName, mergedPrNo)
     }
   }
 }
