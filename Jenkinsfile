@@ -95,6 +95,18 @@ def publishChart(imageName) {
 node {
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
+    sh "env"
+    withCredentials([
+        string(credentialsId: 'albTags', variable: 'albTags'),
+        string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
+        string(credentialsId: 'albArn', variable: 'albArn')
+      ]) {
+      sh "echo tags: $albTags"
+      sh "echo albArn: $albArn"
+      sh "echo albSecurityGroups: $albSecurityGroups"
+    }
+
+
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
     if (pr ) {
       sh "echo Building $pr"
