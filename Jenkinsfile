@@ -88,9 +88,14 @@ def publishChart(imageName) {
     }
   }
 }
-
 node {
-  checkout scm
+  // checkout scm
+  checkout([
+    $class: 'GitSCM',
+    branches: [[name: '*/*']],
+    userRemoteConfigs: [[credentialsId: 'ffc-demo-web', url: 'https://github.com/DEFRA/ffc-demo-web.git']],
+    poll: true
+  ])
   stage('Set branch, PR, and containerTag variables') {
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
   }
