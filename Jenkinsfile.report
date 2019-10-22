@@ -103,7 +103,7 @@ def getCommitSha() {
   return commitSha
 }
 
-def updateGithubCommitStatus(build) {
+def updateGithubCommitStatus(build, repoUrl, commitSha) {
   // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
   step([
     $class: 'GitHubCommitStatusSetter',
@@ -128,7 +128,7 @@ node {
       (branch, pr, containerTag, mergedPrNo, repoUrl, commitSha) = getVariables(repoName)
     }
     stage('Report pending status') {
-      updateGithubCommitStatus(currentBuild)
+      updateGithubCommitStatus(currentBuild, repoUrl, commitSha)
     }
     stage('Build test image') {
       buildTestImage(imageName, BUILD_NUMBER)
@@ -160,10 +160,10 @@ node {
       }
     }
     stage('Report success') {
-      updateGithubCommitStatus(currentBuild)
+      updateGithubCommitStatus(currentBuild, repoUrl, commitSha)
     }
   } catch(e) {
-    updateGithubCommitStatus(currentBuild)
+    updateGithubCommitStatus(currentBuild, repoUrl, commitSha)
     throw e
   }
 }
