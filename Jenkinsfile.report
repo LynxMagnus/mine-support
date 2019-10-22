@@ -95,11 +95,18 @@ def getRepoURL() {
   return repoUrl
 }
 
+def getCommitSha() {
+  sh "git rev-parse HEAD > .git/current-commit"
+  return readFile(".git/current-commit").trim()
+}
+
 def updateGithubCommitStatus(message, state) {
-  def repoUrl = getRepoURL()
+  repoUrl = getRepoURL()
+  commitSha = getCommitSha()
   step([
     $class: 'GitHubCommitStatusSetter',
     reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
+    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
     errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
     statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
   ])
