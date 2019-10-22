@@ -17,10 +17,12 @@ def getMergedPrNo() {
 def getVariables(repoName) {
     // jenkins checks out a commit, rather than a branch
     // use the git cli to get branch info for the commit
-    sh 'git ls-remote --heads origin | grep $(git rev-parse HEAD)'
-    sh 'git show-ref | grep $(git log --pretty=%h -1)'
-    def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
+    // sh 'git ls-remote --heads origin | grep $(git rev-parse HEAD)'
+    // sh 'git show-ref | grep $(git log --pretty=%h -1)'
+    //def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
+    def branch = BRANCH_NAME
     sh "echo branch: '$branch'"
+    
     // and the github API to get the current open PR for the branch. 
     // Note: This will cause issues if one branch has two open PRs
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
@@ -31,7 +33,7 @@ def getVariables(repoName) {
 }
 
 def buildTestImage(name, suffix) {
-  sh 'docker image prune -f'
+  sh 'docker image prune -f -a --volumes'
   // NOTE: the docker-compose file currently makes use of global $BUILD_NUMBER env vars fo image names
   sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $name"
 }
@@ -96,17 +98,6 @@ node {
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
     sh "env"
-    withCredentials([
-        string(credentialsId: 'albTags', variable: 'albTags'),
-        string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
-        string(credentialsId: 'albArn', variable: 'albArn')
-      ]) {
-      sh "echo tags: $albTags"
-      sh "echo albArn: $albArn"
-      sh "echo albSecurityGroups: $albSecurityGroups"
-    }
-
-
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
     if (pr ) {
       sh "echo Building $pr"
@@ -130,9 +121,19 @@ node {
   }
   if (pr != '') {
     stage('Helm install') {
-      def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=${params.albTags},ingress.alb.arn=${params.albArn},ingress.alb.securityGroups=${params.albSecurityGroups}"
-      deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
-      echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
+      withCredentials([
+          string(credentialsId: 'albTags', variable: 'albTags'),
+          string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
+          string(credentialsId: 'albArn', variable: 'albArn')
+        ]) {
+        sh "echo tags: $albTags"
+        sh "echo albArn: $albArn"
+        sh "echo albSecurityGroups: $albSecurityGroups"
+
+        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=${params.albTags},ingress.alb.arn=${params.albArn},ingress.alb.securityGroups=${params.albSecurityGroups}"
+        deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+        echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
+      }
     }
   }
   if (pr == '') {
