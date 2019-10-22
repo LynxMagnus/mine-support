@@ -122,7 +122,7 @@ node {
           string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
           string(credentialsId: 'albArn', variable: 'albArn')
         ]) {
-        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=$albTags,ingress.alb.arn=$albArn,ingress.alb.securityGroups=$albSecurityGroups"
+        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
         deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
         echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
       }
