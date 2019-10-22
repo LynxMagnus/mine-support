@@ -18,9 +18,11 @@ def getVariables(repoName) {
     // jenkins checks out a commit, rather than a branch
     // use the git cli to get branch info for the commit
     def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
+    sh "echo branch: '$branch'"
     // and the github API to get the current open PR for the branch. 
     // Note: This will cause issues if one branch has two open PRs
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
+    sh "echo pr: '$pr'"
     def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     return [branch, pr, containerTag,  getMergedPrNo()]
