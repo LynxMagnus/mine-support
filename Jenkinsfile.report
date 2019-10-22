@@ -8,8 +8,6 @@ def branch = ''
 def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
-def repoUrl = ''
-def commitSha = ''
 
 def getMergedPrNo() {
     def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
@@ -25,7 +23,7 @@ def getVariables(repoName) {
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
     def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    return [branch, pr, containerTag,  getMergedPrNo(), getRepoURL(), getCommitSha()]
+    return [branch, pr, containerTag,  getMergedPrNo()]
 }
 
 def buildTestImage(name, suffix) {
@@ -97,38 +95,24 @@ def getRepoURL() {
   return repoUrl
 }
 
-def getCommitSha() {
-  sh "git rev-parse HEAD > .git/current-commit"
-  def commitSha = readFile(".git/current-commit").trim()
-  return commitSha
-}
-
-def updateGithubCommitStatus(build, repoUrl, commitSha) {
-  // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
+def updateGithubCommitStatus(message, state) {
+  def repoUrl = getRepoURL()
   step([
     $class: 'GitHubCommitStatusSetter',
     reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
-    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
     errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
-    statusResultSource: [
-      $class: 'ConditionalStatusResultSource',
-      results: [
-        [$class: 'BetterThanOrEqualBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: build.description],
-        [$class: 'BetterThanOrEqualBuildResult', result: 'FAILURE', state: 'FAILURE', message: build.description],
-        [$class: 'AnyBuildResult', state: 'PENDING', message: build.description]
-      ]
-    ]
+    statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
   ])
 }
 
 node {
   checkout scm
   try {
-    stage('Set branch, PR, and containerTag variables') {
-      (branch, pr, containerTag, mergedPrNo, repoUrl, commitSha) = getVariables(repoName)
-    }
     stage('Report pending status') {
-      updateGithubCommitStatus(currentBuild, repoUrl, commitSha)
+      updateGithubCommitStatus('Build started','PENDING')
+    }
+    stage('Set branch, PR, and containerTag variables') {
+      (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
     }
     stage('Build test image') {
       buildTestImage(imageName, BUILD_NUMBER)
@@ -160,10 +144,10 @@ node {
       }
     }
     stage('Report success') {
-      updateGithubCommitStatus(currentBuild, repoUrl, commitSha)
+      updateGithubCommitStatus('Complete','SUCCESS')
     }
   } catch(e) {
-    updateGithubCommitStatus(currentBuild, repoUrl, commitSha)
+    updateGithubCommitStatus(e.message,'FAILURE')
     throw e
   }
 }
