@@ -131,7 +131,7 @@ node {
         sh "echo albArn: $albArn"
         sh "echo albSecurityGroups: $albSecurityGroups"
 
-        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=${params.albTags},ingress.alb.arn=${params.albArn},ingress.alb.securityGroups=${params.albSecurityGroups}"
+        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=$albTags,ingress.alb.arn=$albArn,ingress.alb.securityGroups=$albSecurityGroups"
         deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
         echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
       }
