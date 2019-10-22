@@ -98,7 +98,7 @@ node {
       sh "echo Building master branch"
     } else {
       currentBuild.result = 'ABORTED'
-      error('Build is not a PR or a master branch')
+      error('Build aborted - not a PR or a master branch')
     }
   }
   stage('Build test image') {
