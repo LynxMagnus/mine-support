@@ -1,12 +1,10 @@
 def getRepoURL() {
-  sh "git config --get remote.origin.url > .git/remote-url"
-  def repoUrl = readFile(".git/remote-url").trim()
-  return repoUrl
+  return sh(returnStdout: true, script: "git config --get remote.origin.url").trim()
 }
 
 def getCommitSha() {
-  sh "git rev-parse HEAD > .git/current-commit"
-  return readFile(".git/current-commit").trim()
+
+  return sh(returnStdout: true, script: "git rev-parse HEAD").trim()
 }
 
 def updateGithubCommitStatus(message, state) {
