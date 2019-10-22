@@ -16,12 +16,9 @@ def getMergedPrNo() {
 
 def getVariables(repoName) {
     def branch = BRANCH_NAME
-    sh "echo branch: '$branch'"
-    
-    // and the github API to get the current open PR for the branch. 
+    // use the git API to get the open PR for a branch
     // Note: This will cause issues if one branch has two open PRs
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
-    sh "echo pr: '$pr'"
     def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
     return [branch, pr, containerTag,  getMergedPrNo()]
@@ -92,7 +89,6 @@ def publishChart(imageName) {
 node {
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
-    sh "env"
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
     if (pr ) {
       sh "echo Building $pr"
