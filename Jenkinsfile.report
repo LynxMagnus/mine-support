@@ -8,6 +8,8 @@ def branch = ''
 def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
+def repoUrl = ''
+def commitSha = ''
 
 def getMergedPrNo() {
     def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
@@ -23,7 +25,7 @@ def getVariables(repoName) {
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
     def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    return [branch, pr, containerTag,  getMergedPrNo()]
+    return [branch, pr, containerTag,  getMergedPrNo(), getRepoURL(), getCommitSha()]
 }
 
 def buildTestImage(name, suffix) {
@@ -42,7 +44,7 @@ def runTests(name, suffix) {
     sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml down -v"
     junit 'test-output/junit.xml'
     // clean up files created by node/ubuntu user that cannot be deleted by jenkins. Note: uses global environment variable
-    sh "docker run --rm -u node --mount type=bind,source=$WORKSPACE/test-output,target=/usr/src/app/test-output $name rm -rf test-output/*"
+    sh "docker run --rm -u node --mount type=bind,source='$WORKSPACE/test-output',target=/usr/src/app/test-output $name rm -rf test-output/*"
   }
 }
 
@@ -101,9 +103,6 @@ def getCommitSha() {
 
 def updateGithubCommitStatus(build) {
   // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
-  repoUrl = getRepoURL()
-  commitSha = getCommitSha()
-
   step([
     $class: 'GitHubCommitStatusSetter',
     reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
@@ -122,12 +121,12 @@ def updateGithubCommitStatus(build) {
 
 node {
   checkout scm
-  stage('Report pending status') {
-    updateGithubCommitStatus(currentBuild)
-  }
   try {
     stage('Set branch, PR, and containerTag variables') {
-      (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
+      (branch, pr, containerTag, mergedPrNo, repoUrl, commitSha) = getVariables(repoName)
+    }
+    stage('Report pending status') {
+      updateGithubCommitStatus(currentBuild)
     }
     stage('Build test image') {
       buildTestImage(imageName, BUILD_NUMBER)
