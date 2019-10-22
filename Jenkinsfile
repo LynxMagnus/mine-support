@@ -11,7 +11,7 @@ def containerTag = ''
 
 def getMergedPrNo() {
     def mergedPrNo = sh(returnStdout: true, script: "git log --pretty=oneline --abbrev-commit -1 | sed -n 's/.*(#\\([0-9]\\+\\)).*/\\1/p'").trim()
-    return mergedPrNo ? '' : "pr$mergedPrNo"
+    return mergedPrNo ? "pr$mergedPrNo" : ''
 }
 
 def getVariables(repoName) {
@@ -92,6 +92,14 @@ node {
   checkout scm
   stage('Set branch, PR, and containerTag variables') {
     (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
+    if (pr ) {
+      sh "echo Building $pr"
+    } else if (branch == "master") {
+      sh "echo Building master branch"
+    } else {
+      currentBuild.result = 'ABORTED'
+      error('Build is not a PR or a master branch')
+    }
   }
   stage('Build test image') {
     buildTestImage(imageName, BUILD_NUMBER)
