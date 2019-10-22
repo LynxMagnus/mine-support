@@ -33,7 +33,8 @@ def getVariables(repoName) {
 }
 
 def buildTestImage(name, suffix) {
-  sh 'docker image prune -f -a --volumes'
+  sh 'docker container prune'
+  sh 'docker image prune -f'
   // NOTE: the docker-compose file currently makes use of global $BUILD_NUMBER env vars fo image names
   sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $name"
 }
