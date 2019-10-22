@@ -25,7 +25,7 @@ def getVariables(repoName) {
 }
 
 def buildTestImage(name, suffix) {
-  sh 'docker image prune -f'
+  sh 'docker image prune -f || echo could not prune images'
   // NOTE: the docker-compose file currently makes use of global $BUILD_NUMBER env vars fo image names
   sh "docker-compose -p $name-$suffix -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $name"
 }
