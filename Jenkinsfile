@@ -17,7 +17,7 @@ def getMergedPrNo() {
 def getVariables(repoName) {
     // jenkins checks out a commit, rather than a branch
     // use the git cli to get branch info for the commit
-    sh "git ls-remote --heads origin"
+    sh "git ls-remote --heads origin | grep $(git rev-parse HEAD)"
     def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     sh "echo branch: '$branch'"
     // and the github API to get the current open PR for the branch. 
