@@ -15,11 +15,6 @@ def getMergedPrNo() {
 }
 
 def getVariables(repoName) {
-    // jenkins checks out a commit, rather than a branch
-    // use the git cli to get branch info for the commit
-    // sh 'git ls-remote --heads origin | grep $(git rev-parse HEAD)'
-    // sh 'git show-ref | grep $(git log --pretty=%h -1)'
-    //def branch = sh(returnStdout: true, script: 'git ls-remote --heads origin | grep $(git rev-parse HEAD) | cut -d / -f 3').trim()
     def branch = BRANCH_NAME
     sh "echo branch: '$branch'"
     
@@ -127,10 +122,6 @@ node {
           string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
           string(credentialsId: 'albArn', variable: 'albArn')
         ]) {
-        sh "echo tags: $albTags"
-        sh "echo albArn: $albArn"
-        sh "echo albSecurityGroups: $albSecurityGroups"
-
         def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=$albTags,ingress.alb.arn=$albArn,ingress.alb.securityGroups=$albSecurityGroups"
         deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
         echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
