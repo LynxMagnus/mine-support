@@ -7,3 +7,8 @@ service:
 container:
   allowPrivilegeEscalation: true
   imagePullPolicy: Always
+ingress:
+  endPoint: ffc-demo-web
+  server: ffc.aws-int.defra.cloud
+apiGatewayUrl: http://ffc-demo-api-gateway.ffc-demo
+  
