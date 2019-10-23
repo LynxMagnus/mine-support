@@ -119,7 +119,7 @@ node {
         currentBuild.result = 'ABORTED'
         error('Build aborted - not a PR or a master branch')
       }
-      updateGithubCommitStatus('Build started','PENDING',repoUrl, commitSha)
+      updateGithubCommitStatus('Build started', 'PENDING', repoUrl, commitSha)
     }
     stage('Build test image') {
       buildTestImage(imageName, BUILD_NUMBER)
@@ -156,9 +156,9 @@ node {
         undeployPR(kubeCredsId, imageName, mergedPrNo)
       }
     }
-    updateGithubCommitStatus('Build successful','SUCCESS', repoUrl, commitSha)
+    updateGithubCommitStatus('Build successful', 'SUCCESS', repoUrl, commitSha)
   } catch(e) {
-    updateGithubCommitStatus(e.message,'FAILURE', repoUrl, commitSha)
+    updateGithubCommitStatus(e.message, 'FAILURE', repoUrl, commitSha)
     throw e
   }
 }
