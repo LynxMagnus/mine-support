@@ -4,6 +4,8 @@ def kubeCredsId = 'awskubeconfig002'
 def ingressServer = "ffc.aws-int.defra.cloud"
 def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
+def repoUrl = ''
+def commitSha = ''
 def branch = ''
 def pr = ''
 def mergedPrNo = ''
@@ -14,6 +16,14 @@ def getMergedPrNo() {
     return mergedPrNo ? "pr$mergedPrNo" : ''
 }
 
+def getRepoURL() {
+  return sh(returnStdout: true, script: "git config --get remote.origin.url").trim()
+}
+ 
+def getCommitSha() {
+  return sh(returnStdout: true, script: "git rev-parse HEAD").trim()
+}
+
 def getVariables(repoName) {
     def branch = BRANCH_NAME
     // use the git API to get the open PR for a branch
@@ -21,7 +31,17 @@ def getVariables(repoName) {
     def pr = sh(returnStdout: true, script: "curl https://api.github.com/repos/DEFRA/$repoName/pulls?state=open | jq '.[] | select(.head.ref == \"$branch\") | .number'").trim()
     def rawTag = pr == '' ? branch : "pr$pr"
     def containerTag = rawTag.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()
-    return [branch, pr, containerTag,  getMergedPrNo()]
+    return [branch, pr, containerTag,  getMergedPrNo(), getRepoURL(), getCommitSha()]
+}
+
+def updateGithubCommitStatus(message, state, repoUrl, commitSha) {
+  step([
+    $class: 'GitHubCommitStatusSetter',
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
+    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
+    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
+    statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+  ])
 }
 
 def buildTestImage(name, suffix) {
@@ -88,51 +108,58 @@ def publishChart(imageName) {
 }
 node {
   checkout scm
-  stage('Set branch, PR, and containerTag variables') {
-    (branch, pr, containerTag, mergedPrNo) = getVariables(repoName)
-    if (pr ) {
-      sh "echo Building $pr"
-    } else if (branch == "master") {
-      sh "echo Building master branch"
-    } else {
-      currentBuild.result = 'ABORTED'
-      error('Build aborted - not a PR or a master branch')
+  try {
+    stage('Set branch, PR, and containerTag variables') {
+      (branch, pr, containerTag, mergedPrNo, repoUrl, commitSha) = getVariables(repoName)
+      if (pr ) {
+        sh "echo Building $pr"
+      } else if (branch == "master") {
+        sh "echo Building master branch"
+      } else {
+        currentBuild.result = 'ABORTED'
+        error('Build aborted - not a PR or a master branch')
+      }
+      updateGithubCommitStatus('Build started','PENDING',repoUrl, commitSha)
     }
-  }
-  stage('Build test image') {
-    buildTestImage(imageName, BUILD_NUMBER)
-  }
-  stage('Run tests') {
-    runTests(imageName, BUILD_NUMBER)
-  }
-  // note: there should be a `build production image` step here,
-  // but the docker file is currently not set up to create a production only image
-  stage('Push container image') {
-    pushContainerImage(registry, regCredsId, imageName, containerTag)
-  }
-  if (pr != '') {
-    stage('Helm install') {
-      withCredentials([
-          string(credentialsId: 'albTags', variable: 'albTags'),
-          string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
-          string(credentialsId: 'albArn', variable: 'albArn')
-        ]) {
-        def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
-        deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
-        echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
+    stage('Build test image') {
+      buildTestImage(imageName, BUILD_NUMBER)
+    }
+    stage('Run tests') {
+      runTests(imageName, BUILD_NUMBER)
+    }
+    // note: there should be a `build production image` step here,
+    // but the docker file is currently not set up to create a production only image
+    stage('Push container image') {
+      pushContainerImage(registry, regCredsId, imageName, containerTag)
+    }
+    if (pr != '') {
+      stage('Helm install') {
+        withCredentials([
+            string(credentialsId: 'albTags', variable: 'albTags'),
+            string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
+            string(credentialsId: 'albArn', variable: 'albArn')
+          ]) {
+          def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
+          deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+          echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
+        }
       }
     }
-  }
-  if (pr == '') {
-    stage('Publish chart') {
-      publishChart(imageName)
+    if (pr == '') {
+      stage('Publish chart') {
+        publishChart(imageName)
+      }
     }
-  }
-  if (mergedPrNo != '') {
-    stage('Remove merged PR') {
-      sh "echo removing deployment for PR $mergedPrNo"
-      undeployPR(kubeCredsId, imageName, mergedPrNo)
+    if (mergedPrNo != '') {
+      stage('Remove merged PR') {
+        sh "echo removing deployment for PR $mergedPrNo"
+        undeployPR(kubeCredsId, imageName, mergedPrNo)
+      }
     }
+    updateGithubCommitStatus('Complete','SUCCESS', repoUrl, commitSha)
+  } catch(e) {
+    updateGithubCommitStatus(e.message,'FAILURE', repoUrl, commitSha)
+    throw e
   }
 }
 
