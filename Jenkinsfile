@@ -156,7 +156,7 @@ node {
         undeployPR(kubeCredsId, imageName, mergedPrNo)
       }
     }
-    updateGithubCommitStatus("Build successful, available for review at https://ffc-demo-$containerTag.$ingressServer",'SUCCESS', repoUrl, commitSha)
+    updateGithubCommitStatus('Build successful','SUCCESS', repoUrl, commitSha)
   } catch(e) {
     updateGithubCommitStatus(e.message,'FAILURE', repoUrl, commitSha)
     throw e
