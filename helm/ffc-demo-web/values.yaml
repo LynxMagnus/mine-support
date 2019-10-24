@@ -2,7 +2,7 @@ environment: development
 image: ffc-demo-web
 name: ffc-demo-web
 auth:
-imagePullSecret: 
+imagePullSecret:
 service:
   port: 80
   type: ClusterIP
