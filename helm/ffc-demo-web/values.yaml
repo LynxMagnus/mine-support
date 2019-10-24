@@ -19,7 +19,7 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  apiGatewayUrl: http://ffc-demo-api-gateway.default
+  apiGatewayUrl: http://ffc-demo-api-gateway.ffc-demo
   restartPolicy: Always
   restClientTimeoutMillis: 20000
   staticCacheTimeoutMillis: 54000
