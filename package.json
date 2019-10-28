@@ -17,8 +17,8 @@
     "test:lint": "standard",
     "test:unit": "jest",
     "unit:watch": "jest --coverage=false --onlyChanged --watch",
-    "start": "npm-run-all --parallel build:css-watch start:nodemon",
-    "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch index.js"
+    "start": "npm-run-all --parallel build:css-watch start:watch",
+    "start:watch": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch index.js"
   },
   "author": "Defra DDTS",
   "contributors": [
