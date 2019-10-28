@@ -4,7 +4,7 @@ services:
     build: .
     image: ffc-demo-web
     container_name: ffc-demo-web${BUILD_NUMBER:-local}
-    command: npm run start
+    command: npm run start:watch
     depends_on:
       - ffc-demo-web-redis
     environment:
