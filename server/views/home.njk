@@ -2,6 +2,7 @@
 
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block beforeContent %}
   {{ govukBreadcrumbs({
@@ -16,15 +17,18 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">FFC Demo Service</h1>
+      <h1 class="govuk-heading-xl">FFC Demo Service</h1>      
 
-      <p class="govuk-body-l">
+      <p class="govuk-body">
         This is a demo application for the technical investigation of patterns and practices
         in developing production quality containerised, cloud native, microservice based applications.
-        <span class="govuk-!-font-weight-bold">
-          This is not a real service and is for demonstration and investigate purposes only!
-      </span>
       </p>
+
+      {{ govukWarningText({
+        text: "This is not a real service and is for demonstration and investigation purposes only",
+        iconFallbackText: "Warning"
+      }) }}
+
       <p class="govuk-body">Use this example service to:</p>
 
       <ul class="govuk-list govuk-list--bullet">
