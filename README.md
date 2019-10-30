@@ -5,7 +5,7 @@
 
 Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
 
-# Prerequisites
+## Prerequisites
 
 Either:
 - Docker
@@ -19,7 +19,7 @@ Or:
 - Node 10
 - Redis
 
-# Environment variables
+## Environment variables
 
 The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
@@ -36,7 +36,7 @@ The following environment variables are required by the application container. V
 | STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
 | REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
 
-# How to run tests
+## How to run tests
 
 A convenience script is provided to run automated tests in a containerised environment. The first time this is run, container images required for testing will be automatically built. An optional `--build` (or `-b`) flag may be used to rebuild these images in future (for example, to apply dependency updates).
 
@@ -57,14 +57,14 @@ Alternatively, the same tests may be run locally via npm:
 npm run test
 ```
 
-# Running the application
+## Running the application
 
 The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
 
 - Scripts are provided to aid local development and testing using Docker Compose.
 - A Helm chart is provided for production deployments to Kubernetes.
 
-## Build container image
+### Build container image
 
 Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
 
@@ -75,7 +75,7 @@ By default, the start script will build (or rebuild) images so there will rarely
 docker-compose build
 ```
 
-## Start and stop the service
+### Start and stop the service
 
 Use the provided [`start`](./scripts/start) and [`stop`](./scripts/stop) scripts to run the service locally via Docker Compose. Both scripts accept a number of flags to customise their behaviour. For full instructions on the flags available to each script, use the `--help` or `-h` flag:
 
@@ -96,7 +96,7 @@ The underlying `docker-compose up/down` commands can be customised by appending 
 scripts/start -- --detach
 ```
 
-## Deploy to Kubernetes
+### Deploy to Kubernetes
 
 For production deployments, a helm chart is included in the `.\helm` folder. This service connects to an AMQP 1.0 message broker, using credentials defined in [values.yaml](./helm/ffc-demo-web/values.yaml), which must be made available prior to deployment.
 
@@ -110,7 +110,7 @@ scripts/helm/install
 scripts/helm/delete
 ```
 
-### Accessing the pod
+#### Accessing the pod
 
 The service is exposed via a Kubernetes ingress, which requires an ingress controller to be running on the cluster. For example, the NGINX Ingress Controller may be installed via Helm:
 
@@ -128,14 +128,14 @@ kubectl port-forward --namespace=ffc-demo deployment/ffc-demo-web 3000:3000
 
 Once the port is forwarded or an ingress controller is installed, the service can be accessed and tested in the same way as described in the "Test the service" section above.
 
-### Probes
+#### Probes
 
 The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
 
 Readiness: `/healthy`
 Liveness: `/healthz`
 
-### Basic Authentication
+#### Basic Authentication
 
 When deployed with an NGINX Ingress Controller, the ingress may be protected with basic authentication by passing the `--auth` (or `-a`) flag to the [Helm install](./scripts/helm/install) script. This relies on `htpasswd`, which must be available on the host system, and will prompt for a username and password.
 
@@ -155,7 +155,7 @@ If it wasn't defined by the Helm chart, the secret could be created via the foll
 kubectl create secret generic ffc-demo-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
 ```
 
-### Amazon Load Balancer
+#### Amazon Load Balancer
 
 Settings are available in the Helm charts to use the Amazon Load Balancer Ingress Controller rather than an NGINX Ingress Controller.
 Additional child settings below `ingress` are available allowing the user to set [resource tags](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#tags) and the arn of an [SSL certificate](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#certificate-arn), i.e.
@@ -166,7 +166,7 @@ ingress:
     arn: arn:aws:acm:eu-west-2:123456:certificate/abcdef0000-123a-4321-abc8-a1234567z
 ```
 
-## Running without containers
+### Running without containers
 
 The application may be run natively on the local operating if a Redis server is available on `localhost:6379`. First build the application using:
 
@@ -176,7 +176,7 @@ Now the application is ready to run:
 
 `$ node index.js`
 
-# Build Pipeline
+## Build Pipeline
 
 The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 - Runs unit tests
@@ -196,3 +196,19 @@ xx.xx.xx.xx mine-support-pr8.vividcloudsolutions.co.uk
 where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
 
 A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
+
+## License
+
+THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
+
+<http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3>
+
+The following attribution statement MUST be cited in your products and applications when using this information.
+
+> Contains public sector information licensed under the Open Government license v3
+
+### About the license
+
+The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable information providers in the public sector to license the use and re-use of their information under a common open licence.
+
+It is designed to encourage use and re-use of information freely and flexibly, with only a few conditions.
