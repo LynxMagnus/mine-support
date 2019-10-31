@@ -1,4 +1,4 @@
-@Library('defra-library')
+@Library('defra-library@0.0.1')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -41,11 +41,11 @@ node {
         }
       }
     }
-    if (pr == '') {
+    //if (pr == '') {
       stage('Publish chart') {
         defraUtils.publishChart(registry, imageName, containerTag)
       }
-    }
+    //}
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
         defraUtils.undeployPR(kubeCredsId, imageName, mergedPrNo)
