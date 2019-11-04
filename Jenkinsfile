@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.1')
+@Library('defra-library@master')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -26,7 +26,7 @@ node {
       defraUtils.runTests(imageName, BUILD_NUMBER)
     }
     stage('Push container image') {
-      defraUtils.pushContainerImage(registry, regCredsId, imageName, containerTag)
+      defraUtils.pushContainerImage(regCredsId, registry, imageName, containerTag)
     }
     if (pr != '') {
       stage('Helm install') {
@@ -36,7 +36,7 @@ node {
             string(credentialsId: 'albArn', variable: 'albArn')
           ]) {
           def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
-          defraUtils.deployPR(kubeCredsId, registry, imageName, containerTag, extraCommands)
+          defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
@@ -48,7 +48,7 @@ node {
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployPR(kubeCredsId, imageName, mergedPrNo)
+        defraUtils.undeployChart(kubeCredsId, imageName, mergedPrNo)
       }
     }
     defraUtils.updateGithubCommitStatus('Build successful', 'SUCCESS')
