@@ -1,4 +1,4 @@
-@Library('defra-library@master')
+@Library('defra-library@0.0.2')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -26,7 +26,7 @@ node {
       defraUtils.runTests(imageName, BUILD_NUMBER)
     }
     stage('Push container image') {
-      defraUtils.pushContainerImage(regCredsId, registry, imageName, containerTag)
+      defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
     }
     if (pr != '') {
       stage('Helm install') {
