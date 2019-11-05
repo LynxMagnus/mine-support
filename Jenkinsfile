@@ -1,4 +1,4 @@
-@Library('defra-library@github-status')
+@Library('defra-library@master')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
