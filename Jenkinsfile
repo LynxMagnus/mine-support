@@ -45,7 +45,6 @@ node {
       stage('Publish chart') {
         defraUtils.publishChart(registry, imageName, containerTag)
       }
-    }
       stage('Trigger Deployment') {
         withCredentials([
           string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
@@ -54,7 +53,7 @@ node {
           defraUtils.triggerDeploy(jenkinsDeployUrl, 'ffc-demo-web-deploy', jenkinsToken, ['chartVersion':'1.0.0'])
         }
       }
-    // }
+    }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
         defraUtils.undeployChart(kubeCredsId, imageName, mergedPrNo)
