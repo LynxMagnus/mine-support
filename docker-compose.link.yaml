@@ -7,6 +7,8 @@ services:
   ffc-demo-web:
     networks:
       - ffc-demo
+    ports:
+      - "3000:3000"
 
 networks:
   ffc-demo:

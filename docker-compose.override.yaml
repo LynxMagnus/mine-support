@@ -1,8 +1,13 @@
 version: '3'
+
+# This override file should be used when running this service in isolation
+# to provide dependencies and expose ports for local testing
+
 services:
   ffc-demo-web:
     ports:
       - "3000:3000"
+
   ffc-demo-web-redis:
     ports:
       - "6379:6379"

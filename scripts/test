@@ -54,9 +54,10 @@ compose() {
   (
     cd "${projectRoot}"
     docker-compose \
-    -f docker-compose.yaml \
-    -f docker-compose.test.yaml \
-    $@
+      -f docker-compose.yaml \
+      -f docker-compose.test.yaml \
+      -p ffc-demo-web-test \
+      $@
   )
 }
 
