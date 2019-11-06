@@ -13,7 +13,7 @@ services:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: ffc-demo-web-redis
     networks:
-      - ffc-demo-web-redis
+      - ffc-demo-web
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
@@ -22,12 +22,12 @@ services:
     image: redis
     container_name: ffc-demo-web-redis-${BUILD_NUMBER:-local}
     networks:
-      - ffc-demo-web-redis
+      - ffc-demo-web
     volumes:
       - redis_data:/data
 
 networks:
-  ffc-demo-web-redis: {}
+  ffc-demo-web: {}
 
 volumes:
   node_modules:
