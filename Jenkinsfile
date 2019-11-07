@@ -21,7 +21,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(imageName, BUILD_NUMBER)
+      defraUtils.buildTestImage(testServiceName, BUILD_NUMBER)
     }
     stage('Run tests') {
       defraUtils.runTests(testServiceName, BUILD_NUMBER)
