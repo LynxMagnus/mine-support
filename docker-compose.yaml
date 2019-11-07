@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  app:
+  ffc-demo-web:
     build: .
     image: ffc-demo-web
     command: npm run start:watch

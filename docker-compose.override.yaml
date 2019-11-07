@@ -4,7 +4,7 @@ version: '3'
 # to provide dependencies and expose ports for local testing
 
 services:
-  app:
+  ffc-demo-web:
     ports:
       - "3000:3000"
 
