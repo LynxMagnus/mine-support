@@ -1,33 +1,24 @@
 version: '3'
 
 services:
-  ffc-demo-web:
+  app:
     build: .
     image: ffc-demo-web
-    container_name: ffc-demo-web-${BUILD_NUMBER:-local}
     command: npm run start:watch
     depends_on:
-      - ffc-demo-web-redis
+      - redis
     environment:
       API_GATEWAY: http://ffc-demo-api-gateway:3001
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
-      REDIS_HOSTNAME: ffc-demo-web-redis
-    networks:
-      - ffc-demo-web
+      REDIS_HOSTNAME: redis
     volumes:
       - node_modules:/usr/src/app/node_modules
       - .:/usr/src/app
 
-  ffc-demo-web-redis:
+  redis:
     image: redis
-    container_name: ffc-demo-web-redis-${BUILD_NUMBER:-local}
-    networks:
-      - ffc-demo-web
     volumes:
       - redis_data:/data
-
-networks:
-  ffc-demo-web: {}
 
 volumes:
   node_modules:

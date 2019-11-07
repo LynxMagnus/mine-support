@@ -4,9 +4,5 @@ version: '3'
 # isolated container stack
 
 services:
-  ffc-demo-web:
+  app:
     command: npm run test
-    container_name: ffc-demo-web-test-${BUILD_NUMBER:-local}
-
-  ffc-demo-web-redis:
-    container_name: ffc-demo-web-test-redis-${BUILD_NUMBER:-local}
