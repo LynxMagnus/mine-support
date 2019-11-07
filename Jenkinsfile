@@ -8,6 +8,7 @@ def kubeCredsId = 'awskubeconfig002'
 def ingressServer = 'ffc.aws-int.defra.cloud'
 def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
+def testServiceName = 'app'
 def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
@@ -23,7 +24,7 @@ node {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(imageName, BUILD_NUMBER)
+      defraUtils.runTests(testServiceName, BUILD_NUMBER)
     }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
