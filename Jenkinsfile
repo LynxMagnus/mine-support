@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.3')
+@Library('defra-library@psd-190-support-default-image-names')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -6,8 +6,8 @@ def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def kubeCredsId = 'awskubeconfig002'
 def ingressServer = 'ffc.aws-int.defra.cloud'
-def imageName = 'ffc-demo-web_ffc-demo-web'
-def repoName = 'ffc-demo-web'
+def projectName = 'ffc-demo-web'
+def serviceName = 'app'
 def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
@@ -16,17 +16,17 @@ node {
   checkout scm
   try {
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName)
       defraUtils.setGithubStatusPending()
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(imageName, BUILD_NUMBER)
+      defraUtils.buildTestImage(projectName, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(imageName, BUILD_NUMBER)
+      defraUtils.runTests(projectName, serviceName, BUILD_NUMBER)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
+      defraUtils.buildAndPushContainerImage(regCredsId, projectName, serviceName, registry, containerTag)
     }
     if (pr != '') {
       stage('Helm install') {
@@ -36,14 +36,14 @@ node {
             string(credentialsId: 'albArn', variable: 'albArn')
           ]) {
           def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
-          defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
+          defraUtils.deployChart(kubeCredsId, projectName, registry, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
     }
     if (pr == '') {
       stage('Publish chart') {
-        defraUtils.publishChart(registry, imageName, containerTag)
+        defraUtils.publishChart(projectName, serviceName, registry, containerTag)
       }
       stage('Trigger Deployment') {
         withCredentials([
