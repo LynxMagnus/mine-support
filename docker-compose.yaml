@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  ffc-demo-web:
+  app:
     build: .
     command: npm run start:watch
     depends_on:

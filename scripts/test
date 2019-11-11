@@ -4,8 +4,8 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 # Set Docker/Kubernetes resource names managed by this script
-containerName="ffc-demo-web"
 projectName="ffc-demo-web-test"
+serviceName="app"
 
 show_help() {
   echo "
@@ -74,7 +74,7 @@ compose() {
   fi
 
   # Run tests
-  compose run ${containerName}
+  compose run ${serviceName}
 
   # Clean up
   compose down --volumes

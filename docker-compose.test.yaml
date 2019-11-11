@@ -4,5 +4,5 @@ version: '3'
 # isolated container stack
 
 services:
-  ffc-demo-web:
+  app:
     command: npm run test
