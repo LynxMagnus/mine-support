@@ -14,11 +14,15 @@ Build and start service containers.
 Usage: scripts/start [OPTION...] [-- [DOCKER_OPTION...]]
 
 Options:
-  -c, --clean  rebuild images and replace existing containers and volumes
-  -h, --help   display this help text
-  -l, --link   connect services to an external 'ffc-demo' Docker network
-               (uses the docker-compose.link.yaml override configuration)
-  -q, --quick  retain existing containers, images and volumes
+  -b, --build    rebuild images (partially overrides --keep)
+  -c, --clean    rebuild images and replace existing containers and volumes
+                 (incompatible with --keep)
+  -h, --help     display this help text
+  -k, --keep     keep existing containers, images and volumes (incompatible with
+                 --clean)
+  -l, --link     connect services to an external 'ffc-demo' Docker network
+                 (uses the docker-compose.link.yaml override configuration)
+  -v, --volumes  replace existing volumes (partially overrides --keep)
 
 Docker options:
   Any arguments after '--' are passed through to 'docker-compose up'.
@@ -28,8 +32,14 @@ Docker options:
 # Parse arguments/flags
 while :; do
   case $1 in
+    -b|--build)
+      build="true"
+      ;;
+
     -c|--clean)
+      build="true"
       clean="true"
+      replaceVolumes="true"
       ;;
 
     -h|--help)
@@ -37,12 +47,16 @@ while :; do
       exit 0
       ;;
 
+    -k|--keep)
+      keep="true"
+      ;;
+
     -l|--link)
       link="true"
       ;;
 
-    -q|--quick)
-      quick="true"
+    -v|--volumes)
+      replaceVolumes="true"
       ;;
 
     --)
@@ -64,8 +78,8 @@ while :; do
 done
 
 # Validate arguments/flags
-if [ "${clean}" = "true" ] && [ "${quick}" = "true" ]; then
-  echo "Invalid arguments provided. The '--clean' and '--quick' flags cannot be used together."
+if [ "${clean}" = "true" ] && [ "${keep}" = "true" ]; then
+  echo "Invalid arguments provided. The '--clean' and '--keep' flags cannot be used together."
   show_help
   exit 1
 fi
@@ -82,41 +96,44 @@ compose() {
   fi
 }
 
-# show_conflict_warning: function to warn about existing containers/volumes
-show_conflict_warning() {
-  containers="$1"
-  volumes="$2"
+# show_conflicting_volume_warning: function to warn about existing volumes
+show_conflicting_volume_warning() {
+  volumes="$1"
 
-  printf "\nDetected conflicting containers/volumes. These are probably from previously running this service.\n"
-  if [ -n "${containers}" ]; then
-    printf "\nContainers:\n${containers}\n"
-  fi
-  if [ -n "${volumes}" ]; then
-    printf "\nVolumes:\n${volumes}\n"
-  fi
-  printf "\nTo destroy existing volumes, pass the '--clean' or '-c' flag."
-  printf "\nTo retain existing volumes, pass the '--quick' or '-q' flag.\n\n"
+  echo "
+Detected conflicting volumes:
+
+${volumes}
+
+These are probably from previously running this service.
+To proceed, rerun this script with any of the following flags:
+
+  -c, --clean    replace existing volumes and rebuild images
+  -k, --keep     keep existing volumes and images
+  -v, --volumes  replace existing volumes
+"
 }
 
 (
   # Run script body from project root folder
   cd "${projectRoot}"
 
-  # Warn about any conflicting containers/volumes, unless clean or quick flag received
-  existingContainers="$( docker ps --filter name=^${dockerPrefix} --format={{.Names}} )"
-  existingVolumes="$( docker volume ls --filter name=^${dockerPrefix} --format={{.Name}} )"
-  if [ -n "${existingContainers}${existingVolumes}" ] && [ "${quick}" != "true" ] && [ "${clean}" != "true" ]; then
-    show_conflict_warning "${existingContainers}" "${existingVolumes}"
-    exit 1
-  fi
-
-  # Clean up old resources, if clean flag received
+  # Clean up old resources, if requested
   if [ "${clean}" = "true" ]; then
     scripts/stop --clean
+  elif [ "${replaceVolumes}" = "true" ]; then
+    scripts/stop --volumes
+  elif [ "${keep}" != "true" ]; then
+    # No instruction given to handle existing volumes - warn if any exist
+    existingVolumes="$( docker volume ls --filter name=^${dockerPrefix} --format={{.Name}} )"
+    if [ -n "${existingVolumes}" ]; then
+      show_conflicting_volume_warning "${existingVolumes}"
+      exit 1
+    fi
   fi
 
-  # Rebuild images, unless quick flag received
-  if [ "${quick}" != "true" ]; then
+  # Rebuild images, if requested
+  if [ "${build}" = "true" ]; then
     compose build
   fi
 
@@ -126,6 +143,10 @@ show_conflict_warning() {
     docker network create ffc-demo
   fi
 
-  # Start the service, replacing existing containers unless quick flag received
-  compose up --force-recreate $@
+  # Start the service
+  if [ "${keep}" ]; then
+    compose up $@
+  else
+    compose up --force-recreate $@
+  fi
 )

@@ -8,15 +8,17 @@ dockerPrefix="ffc-demo-web"
 
 show_help() {
   echo "
-Stop service containers.
+Stop and remove service containers.
 
 Usage: scripts/stop [OPTION...] [-- [DOCKER_OPTION...]]
 
 Options:
-  -c, --clean  remove images and volumes as well as containers
-  -h, --help   display this help text
-  -l, --link   use this option when services were started with the '--link' flag
-               (uses the docker-compose.link.yaml override configuration)
+  -c, --clean    remove built images and volumes
+  -h, --help     display this help text
+  -i, --images   remove built images
+  -l, --link     use this option when services were started with the '--link' flag
+                 (uses the docker-compose.link.yaml override configuration)
+  -v, --volumes  remove volumes
 
 Docker options:
   Any arguments after '--' are passed through to 'docker-compose down'.
@@ -26,7 +28,8 @@ Docker options:
 while :; do
   case $1 in
     -c|--clean)
-      clean="true"
+      removeImages="true"
+      removeVolumes="true"
       ;;
 
     -h|--help)
@@ -34,8 +37,16 @@ while :; do
       exit 0
       ;;
 
+    -i|--images)
+      removeImages="true"
+      ;;
+
     -l|--link)
       link="true"
+      ;;
+
+    -v|--volumes)
+      removeVolumes="true"
       ;;
 
     --)
@@ -75,12 +86,16 @@ compose() {
 
   # Only bring down services if there are existing containers/volumes
   if [ -n "${existingContainers}${existingVolumes}" ]; then
-    if [ "${clean}" = "true" ]; then
-      # Ensure services exist so docker-compose knows which images to remove
+    if [ "${removeImages}" = "true" ] || [ "${removeVolumes}" = "true" ]; then
+      # Ensure all services exist so docker-compose knows which images to remove
       compose up --no-recreate --no-start
 
       # Remove services, images and volumes
-      compose down --remove-orphans --rmi=local --volumes $@
+      compose down \
+        --remove-orphans \
+        $( [ "${removeImages}" = "true" ] && echo "--rmi=local" || echo "" ) \
+        $( [ "${removeVolumes}" = "true" ] && echo "--volumes" || echo "" ) \
+        $@
     else
       # Remove services, leaving images and volumes intact
       compose down $@
@@ -89,7 +104,7 @@ compose() {
     echo "Services already stopped."
   fi
 
-  if [ "${clean}" = "true" ]; then
+  if [ "${removeImages}" = "true" ]; then
     printf "\nPruning Docker images (this may take a while).\n"
     docker image prune -f
   fi
