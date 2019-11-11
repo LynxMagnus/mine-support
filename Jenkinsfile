@@ -40,8 +40,7 @@ node {
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
-    }
-    if (pr == '') {
+    } else {
       stage('Publish chart') {
         defraUtils.publishChart(registry, imageName, containerTag)
       }
