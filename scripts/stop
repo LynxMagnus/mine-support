@@ -80,7 +80,7 @@ compose() {
       compose up --no-recreate --no-start
 
       # Remove services, images and volumes
-      compose down --remove-orphans --rmi=all --volumes $@
+      compose down --remove-orphans --rmi=local --volumes $@
     else
       # Remove services, leaving images and volumes intact
       compose down $@
