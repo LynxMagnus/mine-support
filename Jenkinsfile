@@ -32,12 +32,12 @@ node {
     if (pr != '') {
       stage('Helm install') {
         withCredentials([
-            string(credentialsId: 'albTags', variable: 'albTags'),
-            string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'albArn', variable: 'albArn')
-          ]) {
+          string(credentialsId: 'albTags', variable: 'albTags'),
+          string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
+          string(credentialsId: 'albArn', variable: 'albArn')
+        ]) {
           def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
-          defraUtils.deployChart(kubeCredsId, repoName, projectName, registry, containerTag, extraCommands)
+          defraUtils.deployChart(kubeCredsId, repoName, registry, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
@@ -57,7 +57,7 @@ node {
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployChart(kubeCredsId, imageName, mergedPrNo)
+        defraUtils.undeployChart(kubeCredsId, repoName, mergedPrNo)
       }
     }
     defraUtils.setGithubStatusSuccess()
