@@ -5,12 +5,13 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/../.." || return
 
 # Set Docker/Kubernetes resource names managed by this script
 basicAuthSecret="ffc-demo-basic-auth"
-projectName="ffc-demo-web"
+containerName="ffc-demo-web"
+dockerPrefix="ffc-demo-web"
 
 (
   cd "${projectRoot}"
 
   helm delete --purge \
-    ${projectName}-redis \
-    ${projectName}
+    ${dockerPrefix}-redis \
+    ${containerName}
 )
