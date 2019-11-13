@@ -10,12 +10,12 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
 
 # Set Docker/Kubernetes resource names managed by this script
 projectName="ffc-demo-web"
-serviceName="app"
+serviceName="ffc-demo-web"
 
 (
   cd "${projectRoot}"
 
-  existingService="$( docker ps -q --filter name=^${projectName}$ )"
+  existingService="$( docker ps -q --filter name=^${projectName}_${serviceName} )"
   existingVolumes="$( docker volume ls --filter name=^${projectName} --format={{.Name}} )"
 
   if [ -z "${existingService}" ]; then
@@ -23,7 +23,7 @@ serviceName="app"
     docker-compose up --detach
   fi
 
-  printf "\nExecuting command in ${projectName}-${serviceName}:\n"
+  printf "\nExecuting command in ${projectName}_${serviceName}:\n"
   echo "$@"
 
   docker-compose exec ${serviceName} $@
