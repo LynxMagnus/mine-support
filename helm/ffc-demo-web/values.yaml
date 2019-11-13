@@ -1,5 +1,5 @@
 environment: development
-image: ffc-demo-web_app
+image: ffc-demo-web_ffc-demo-web
 name: ffc-demo-web
 auth:
 imagePullSecret:
