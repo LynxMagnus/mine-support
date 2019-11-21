@@ -35,7 +35,24 @@ node {
             string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
             string(credentialsId: 'albArn', variable: 'albArn')
           ]) {
-          def extraCommands = "--values ./helm/ffc-demo-web/jenkins-aws.yaml --set name=ffc-demo-$containerTag,ingress.server=$ingressServer,ingress.endpoint=ffc-demo-$containerTag,ingress.alb.tags=\"$albTags\",ingress.alb.arn=\"$albArn\",ingress.alb.securityGroups=\"$albSecurityGroups\""
+
+          def timestamp = new Date().getTime()
+
+          def helmValues = [
+            /name="ffc-demo-$containerTag"/,
+            /ingress.server="$ingressServer"/,
+            /ingress.endpoint="ffc-demo-$containerTag"/,
+            /ingress.alb.tags="$albTags"/,
+            /ingress.alb.arn="$albArn"/,
+            /ingress.alb.securityGroups="$albSecurityGroups"/,
+            /redeployOnChange="$timestamp"/
+          ].concat(',')
+
+          def extraCommands = [
+            "--values ./helm/ffc-demo-web/jenkins-aws.yaml",
+            "--set $helmValues"
+          ].concat(' ')
+
           defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
