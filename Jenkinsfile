@@ -36,8 +36,6 @@ node {
             string(credentialsId: 'albArn', variable: 'albArn')
           ]) {
 
-          def timestamp = new Date().getTime()
-
           def helmValues = [
             /name="ffc-demo-$containerTag"/,
             /ingress.server="$ingressServer"/,
@@ -45,7 +43,7 @@ node {
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /redeployOnChange="$timestamp"/
+            /redeployOnChange="${currentBuild.startTimeInMillis}"/
           ].concat(',')
 
           def extraCommands = [
