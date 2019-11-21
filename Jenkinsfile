@@ -37,13 +37,13 @@ node {
           ]) {
 
           def helmValues = [
-            /name="ffc-demo-$containerTag"/,
-            /ingress.server="$ingressServer"/,
-            /ingress.endpoint="ffc-demo-$containerTag"/,
+            /container.redeployOnChange="${currentBuild.startTimeInMillis}"/
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /redeployOnChange="${currentBuild.startTimeInMillis}"/
+            /ingress.endpoint="ffc-demo-$containerTag"/,
+            /ingress.server="$ingressServer"/,
+            /name="ffc-demo-$containerTag"/,
           ].join(',')
 
           def extraCommands = [
