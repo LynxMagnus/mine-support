@@ -44,12 +44,12 @@ node {
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /redeployOnChange="${currentBuild.startTimeInMillis}"/
-          ].concat(',')
+          ].join(',')
 
           def extraCommands = [
             "--values ./helm/ffc-demo-web/jenkins-aws.yaml",
             "--set $helmValues"
-          ].concat(' ')
+          ].join(' ')
 
           defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
