@@ -37,7 +37,7 @@ node {
           ]) {
 
           def helmValues = [
-            /container.redeployOnChange="${currentBuild.startTimeInMillis}"/,
+            /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
