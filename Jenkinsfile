@@ -33,11 +33,13 @@ node {
         withCredentials([
             string(credentialsId: 'albTags', variable: 'albTags'),
             string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'albArn', variable: 'albArn')
+            string(credentialsId: 'albArn', variable: 'albArn'),
+            string(credentialsId: 'ffc-demo-cookie-password', variable: 'cookiePassword')
           ]) {
 
           def helmValues = [
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
+            /cookiePassword="$cookiePassword"/,
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
