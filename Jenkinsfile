@@ -25,6 +25,17 @@ node {
     stage('Run tests') {
       defraUtils.runTests(imageName, BUILD_NUMBER)
     }
+    stage('SonarQube analysis') {
+      def scannerHome = tool 'SonarScanner'
+      withSonarQubeEnv(credentialsId: 'sonarQubeToken', installationName: 'SonarQube') {
+        sh "${scannerHome}/bin/sonar-scanner"
+      }
+    }
+    stage("Code quality gate") {
+      steps {
+        waitForQualityGate abortPipeline: true
+      }
+    }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
     }
