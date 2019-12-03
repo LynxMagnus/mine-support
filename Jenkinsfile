@@ -19,12 +19,6 @@ node {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
       defraUtils.setGithubStatusPending()
     }
-    stage('Build test image') {
-      defraUtils.buildTestImage(imageName, BUILD_NUMBER)
-    }
-    stage('Run tests') {
-      defraUtils.runTests(imageName, BUILD_NUMBER)
-    }
     stage('SonarQube analysis') {
       def scannerHome = tool 'SonarScanner'
       withSonarQubeEnv('SonarQube') {
@@ -35,6 +29,12 @@ node {
       steps {
         waitForQualityGate abortPipeline: true
       }
+    }
+    stage('Build test image') {
+      defraUtils.buildTestImage(imageName, BUILD_NUMBER)
+    }
+    stage('Run tests') {
+      defraUtils.runTests(imageName, BUILD_NUMBER)
     }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
