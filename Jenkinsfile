@@ -12,6 +12,10 @@ def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
 
+def lintHelm(imageName) {
+  sh "helm lint ./helm/$imageName"
+}
+
 node {
   checkout scm
   try {
@@ -20,7 +24,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Helm lint') {
-      sh "helm lint ./helm/ffc-demo-web"
+      lintHelm(imageName)
     }
     stage('Build test image') {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
