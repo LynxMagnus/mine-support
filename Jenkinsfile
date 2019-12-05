@@ -19,6 +19,9 @@ node {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
       defraUtils.setGithubStatusPending()
     }
+    stage('Helm lint') {
+      
+    }
     stage('Build test image') {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
     }
