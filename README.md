@@ -78,9 +78,13 @@ docker-compose build
 
 Use Docker Compose to run service locally. 
 
-Example:
+`docker-compose up`
+
+Additional Docker Compose files are provided for scenarios such as linking to other running services.
+
+Link to other services:
 ```
-docker-compose -f docker-compose.yaml -f docker-compose.link.yaml up --detach
+docker-compose -f docker-compose.yaml -f docker-compose.link.yaml up
 ```
 
 ### Deploy to Kubernetes
