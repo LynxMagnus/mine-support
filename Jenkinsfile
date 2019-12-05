@@ -20,7 +20,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Helm lint') {
-      
+      sh "helm lint ./helm/ffc-demo-web"
     }
     stage('Build test image') {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
