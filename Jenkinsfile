@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.4')
+@Library('defra-library@0.0.5')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -12,10 +12,6 @@ def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
 
-def lintHelm(imageName) {
-  sh "helm lint ./helm/$imageName"
-}
-
 node {
   checkout scm
   try {
@@ -24,7 +20,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Helm lint') {
-      lintHelm(imageName)
+      defraUtils.lintHelm(imageName)
     }
     stage('Build test image') {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
