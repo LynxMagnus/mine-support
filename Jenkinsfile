@@ -1,10 +1,10 @@
-@Library('defra-library@0.0.4')
+@Library('defra-library@0.0.5')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
-def kubeCredsId = 'awskubeconfig002'
+def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
 def ingressServer = 'ffc.aws-int.defra.cloud'
 def imageName = 'ffc-demo-web'
 def repoName = 'ffc-demo-web'
@@ -29,6 +29,8 @@ node {
       steps {
         waitForQualityGate abortPipeline: true
       }
+    stage('Helm lint') {
+      defraUtils.lintHelm(imageName)
     }
     stage('Build test image') {
       defraUtils.buildTestImage(imageName, BUILD_NUMBER)
