@@ -29,6 +29,7 @@ node {
       steps {
         waitForQualityGate abortPipeline: true
       }
+    }
     stage('Helm lint') {
       defraUtils.lintHelm(imageName)
     }
