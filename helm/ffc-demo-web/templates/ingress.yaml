@@ -1,10 +1,10 @@
-{{- if not quote .Values.ingress.alb }}
+{{- if not .Values.ingress.alb }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
-{{- if quote .Values.auth }}
+{{- if .Values.auth }}
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: ffc-demo-basic-auth
     nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ffc-demo"
@@ -22,7 +22,7 @@ metadata:
   name: {{ quote .Values.name }}
 spec:
   rules:
-{{- if quote .Values.ingress.endpoint }}
+{{- if .Values.ingress.endpoint }}
   - host: {{ quote .Values.ingress.endpoint }}.{{quote .Values.ingress.server}}
     http:
 {{ else }}
@@ -32,5 +32,5 @@ spec:
       - path: /?(.*)
         backend:
           serviceName: {{ quote .Values.name }}
-          servicePort: {{ quote .Values.service.port }}
+          servicePort: {{ .Values.service.port }}
 {{- end }}

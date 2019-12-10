@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: {{ quote .Values.name }}
 spec:
-  replicas: {{ quote .Values.replicas }}
-  minReadySeconds: {{ quote .Values.minReadySeconds }}
+  replicas: {{ .Values.replicas }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
   strategy: {}
   template:
     metadata:
@@ -14,29 +14,29 @@ spec:
         redeployOnChange: {{ quote .Values.container.redeployOnChange }}
     spec:
       restartPolicy: {{ quote .Values.container.restartPolicy }}
-      {{- if quote .Values.imagePullSecret }}
+      {{- if .Values.imagePullSecret }}
       imagePullSecrets:
       - name: {{ quote .Values.imagePullSecret }}
       {{- end }}
       containers:
       - name: {{ quote .Values.name }}
         image: {{ quote .Values.image }}
-        {{- if quote .Values.container.command }}
-        {{- with quote .Values.container.command }}
+        {{- if .Values.container.command }}
+        {{- with .Values.container.command }}
         command:
           {{- toYaml . | nindent 12 }}
         {{- end }}
-        {{- with quote .Values.container.args }}
+        {{- with .Values.container.args }}
         args:
           {{- toYaml . | nindent 12 }}
         {{- end }}
         {{- end }}
         imagePullPolicy: {{ quote .Values.container.imagePullPolicy }}
         securityContext:
-          runAsUser: {{ quote .Values.container.runAsUser }}
-          runAsNonRoot: {{ quote .Values.container.runAsNonRoot }}
-          readOnlyRootFilesystem: {{ quote .Values.container.readOnlyRootFilesystem }}
-          allowPrivilegeEscalation: {{ quote .Values.container.allowPrivilegeEscalation }}
+          runAsUser: {{ .Values.container.runAsUser }}
+          runAsNonRoot: {{ .Values.container.runAsNonRoot }}
+          readOnlyRootFilesystem: {{ .Values.container.readOnlyRootFilesystem }}
+          allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
         env:
         - name: NODE_ENV
           value: {{ quote .Values.environment }}
@@ -49,9 +49,9 @@ spec:
         - name: API_GATEWAY
           value: {{ quote .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ quote .Values.container.restClientTimeoutMillis }}
+          value: {{ .Values.container.restClientTimeoutMillis }}
         - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
-          value: {{ quote .Values.container.staticCacheTimeoutMillis }}
+          value: {{ .Values.container.staticCacheTimeoutMillis }}
         ports:
         - name: http
           containerPort: 3000
@@ -66,14 +66,14 @@ spec:
         livenessProbe:
           httpGet:
             path: {{ quote .Values.livenessProbe.path }}
-            port: {{ quote .Values.livenessProbe.port }}
-          initialDelaySeconds: {{ quote .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ quote .Values.livenessProbe.periodSeconds }}
-          failureThreshold: {{ quote .Values.livenessProbe.failureThreshold }}
+            port: {{ .Values.livenessProbe.port }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
             path: {{ quote .Values.readinessProbe.path }}
-            port: {{ quote .Values.readinessProbe.port }}
-          initialDelaySeconds: {{ quote .Values.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ quote .Values.readinessProbe.periodSeconds }}
-          failureThreshold: {{ quote .Values.readinessProbe.failureThreshold }}
+            port: {{ .Values.readinessProbe.port }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}

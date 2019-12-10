@@ -1,4 +1,4 @@
-{{- if quote .Values.ingress.alb }}
+{{- if .Values.ingress.alb }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -12,7 +12,7 @@ metadata:
     external-dns.alpha.kubernetes.io/aws-zone-type-private: "true"
 spec:
   rules:
-{{- if quote .Values.ingress.endpoint }}
+{{- if .Values.ingress.endpoint }}
   - host: {{ quote .Values.ingress.endpoint }}.{{quote .Values.ingress.server}}
     http:
 {{ else }}
@@ -22,5 +22,5 @@ spec:
       - path: /*
         backend:
           serviceName: {{ quote .Values.name }}
-          servicePort: {{ quote .Values.service.port }}
+          servicePort: {{ .Values.service.port }}
 {{- end }}
