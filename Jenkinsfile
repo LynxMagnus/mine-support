@@ -21,8 +21,8 @@ node {
     }
     stage('SonarQube analysis') {
       def scannerHome = tool 'SonarScanner'
-      withSonarQubeEnv('SonarQube') {
-        sh "${scannerHome}/bin/sonar-scanner"
+      withSonarQubeEnv('SonarQube') {        
+        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=FFC -Dsonar.sources=."
       }
     }
     stage("Code quality gate") {
