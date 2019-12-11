@@ -49,9 +49,9 @@ spec:
         - name: API_GATEWAY
           value: {{ quote .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ .Values.container.restClientTimeoutMillis }}
+          value: {{ quote .Values.container.restClientTimeoutMillis }}
         - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
-          value: {{ .Values.container.staticCacheTimeoutMillis }}
+          value: {{ quote .Values.container.staticCacheTimeoutMillis }}
         ports:
         - name: http
           containerPort: 3000
