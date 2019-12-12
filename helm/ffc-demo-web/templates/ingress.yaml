@@ -23,7 +23,7 @@ metadata:
 spec:
   rules:
 {{- if .Values.ingress.endpoint }}
-  - host: {{ quote .Values.ingress.endpoint }}.{{quote .Values.ingress.server}}
+  - host: {{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}
     http:
 {{ else }}
   - http:
