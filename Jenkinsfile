@@ -16,7 +16,8 @@ def sonarScanner = 'SonarScanner'
 
 def analyseCode(sonarQubeEnv, sonarScanner, params) {
   def scannerHome = tool sonarScanner
-  withSonarQubeEnv(sonarQubeEnv) {    
+  withSonarQubeEnv(sonarQubeEnv) { 
+    def args = ''   
     params.each { param ->
       args = args + " -D$param.key=$param.value"
     }
