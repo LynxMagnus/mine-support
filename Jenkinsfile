@@ -26,11 +26,11 @@ def analyseCode(sonarQubeEnv, sonarScanner, params) {
   }
 }
 
-def waitForQualityGate(timeoutInMinutes) {
+def waitForQualityGateResult(timeoutInMinutes) {
   timeout(time: timeoutInMinutes, unit: 'MINUTES') {
-    def qg = waitForQualityGate()
-    if (qg.status != 'OK') {
-      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    def qualityGateResult = waitForQualityGate()
+    if (qualityGateResult.status != 'OK') {
+      error "Pipeline aborted due to quality gate failure: ${qualityGateResult.status}"
     }
   }
 }
@@ -46,7 +46,7 @@ node {
       analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : 'FFC', 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
-      waitForQualityGate(5)
+      waitForQualityGateResult(5)
     }
     stage('Helm lint') {
       defraUtils.lintHelm(imageName)
