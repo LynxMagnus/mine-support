@@ -26,7 +26,9 @@ node {
       }
     }
     stage("Code quality gate") {
-      waitForQualityGate abortPipeline: true
+      timeout(time: 1, unit: 'HOURS') {
+        waitForQualityGate abortPipeline: true
+      }
     }
     stage('Helm lint') {
       defraUtils.lintHelm(imageName)
