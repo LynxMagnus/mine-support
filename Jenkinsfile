@@ -22,7 +22,7 @@ def analyseCode(sonarQubeEnv, sonarScanner, params) {
       args = args + " -D$param.key=$param.value"
     }
 
-    sh "${scannerHome}/bin/sonar-scanner $args"
+    sh "${scannerHome}/bin/sonar-scanner$args"
   }
 }
 
