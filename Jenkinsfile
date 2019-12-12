@@ -15,14 +15,14 @@ def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 
 def analyseCode(sonarQubeEnv, sonarScanner, params) {
-  def scannerHome = tool $sonarScanner
-  withSonarQubeEnv($sonarQubeEnv) {        
+  def scannerHome = tool sonarScanner
+  withSonarQubeEnv(sonarQubeEnv) {        
     sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=FFC -Dsonar.sources=."
   }
 }
 
 def waitForQualityGate(timeoutInMinutes) {
-  timeout(time: $timeoutInMinutes, unit: 'MINUTES') {
+  timeout(time: timeoutInMinutes, unit: 'MINUTES') {
     def qg = waitForQualityGate()
     if (qg.status != 'OK') {
       error "Pipeline aborted due to quality gate failure: ${qg.status}"
