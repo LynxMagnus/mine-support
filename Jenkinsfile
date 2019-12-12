@@ -16,8 +16,12 @@ def sonarScanner = 'SonarScanner'
 
 def analyseCode(sonarQubeEnv, sonarScanner, params) {
   def scannerHome = tool sonarScanner
-  withSonarQubeEnv(sonarQubeEnv) {        
-    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=FFC -Dsonar.sources=."
+  withSonarQubeEnv(sonarQubeEnv) {    
+    params.each { param ->
+      args = args + " -D$param.key=$param.value"
+    }
+
+    sh "${scannerHome}/bin/sonar-scanner $args"
   }
 }
 
@@ -38,7 +42,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('SonarQube analysis') {
-      analyseCode(sonarQubeEnv, sonarScanner, '')
+      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : 'FFC', 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       waitForQualityGate(5)
@@ -105,7 +109,7 @@ node {
     }
     defraUtils.setGithubStatusSuccess()
   } catch(e) {
-    defraUtils.setGithubStatusFailure(e.message)
+      defraUtils.setGithubStatusFailure(e.message)
     throw e
   }
 }
