@@ -11,6 +11,24 @@ def repoName = 'ffc-demo-web'
 def pr = ''
 def mergedPrNo = ''
 def containerTag = ''
+def sonarQubeEnv = 'SonarQube'
+def sonarScanner = 'SonarScanner'
+
+def analyseCode(sonarQubeEnv, sonarScanner, params) {
+  def scannerHome = tool $sonarScanner
+  withSonarQubeEnv($sonarQubeEnv) {        
+    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=FFC -Dsonar.sources=."
+  }
+}
+
+def waitForQualityGate(timeoutInMinutes) {
+  timeout(time: $timeoutInMinutes, unit: 'MINUTES') {
+    def qg = waitForQualityGate()
+    if (qg.status != 'OK') {
+      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
+}
 
 node {
   checkout scm
@@ -20,18 +38,10 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('SonarQube analysis') {
-      def scannerHome = tool 'SonarScanner'
-      withSonarQubeEnv('SonarQube') {        
-        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=FFC -Dsonar.sources=."
-      }
+      analyseCode(sonarQubeEnv, sonarScanner, '')
     }
     stage("Code quality gate") {
-      timeout(time: 5, unit: 'MINUTES') {
-        def qg = waitForQualityGate()
-        if (qg.status != 'OK') {
-          error "Pipeline aborted due to quality gate failure: ${qg.status}"
-        }
-      }
+      waitForQualityGate(5)
     }
     stage('Helm lint') {
       defraUtils.lintHelm(imageName)
