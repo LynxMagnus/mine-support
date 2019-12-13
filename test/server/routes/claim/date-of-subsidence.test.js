@@ -1,9 +1,9 @@
-describe('Healthz test', () => {
+describe('Date of Subsidence test', () => {
   let createServer
   let server
 
   beforeAll(async () => {
-    createServer = require('../../server')
+    createServer = require('../../../../app/server')
   })
 
   beforeEach(async () => {
@@ -11,10 +11,10 @@ describe('Healthz test', () => {
     await server.initialize()
   })
 
-  test('GET /healthz route returns 200', async () => {
+  test('GET /claim/date-of-subsidence route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/healthz'
+      url: '/claim/date-of-subsidence'
     }
 
     const response = await server.inject(options)

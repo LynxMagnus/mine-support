@@ -5,7 +5,7 @@ module.exports = [{
   path: '/robots.txt',
   options: {
     handler: {
-      file: 'server/public/static/robots.txt'
+      file: 'app/static/robots.txt'
     },
     cache: {
       expiresIn: config.staticCacheTimeoutMillis,
@@ -14,10 +14,30 @@ module.exports = [{
   }
 }, {
   method: 'GET',
-  path: '/assets/all.js',
+  path: '/node_modules/govuk-frontend/govuk/{path*}',
   options: {
     handler: {
-      file: 'node_modules/govuk-frontend/govuk/all.js'
+      directory: {
+        path: [
+          'node_modules/govuk-frontend/govuk'
+        ]
+      }
+    },
+    cache: {
+      expiresIn: config.staticCacheTimeoutMillis,
+      privacy: 'private'
+    }
+  }
+}, {
+  method: 'GET',
+  path: '/static/{path*}',
+  options: {
+    handler: {
+      directory: {
+        path: [
+          'app/static'
+        ]
+      }
     },
     cache: {
       expiresIn: config.staticCacheTimeoutMillis,
@@ -31,8 +51,6 @@ module.exports = [{
     handler: {
       directory: {
         path: [
-          'server/public/static',
-          'server/public/build',
           'node_modules/govuk-frontend/govuk/assets'
         ]
       }

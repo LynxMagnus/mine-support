@@ -1,9 +1,9 @@
-describe('Healthy test', () => {
+describe('Property Type test', () => {
   let createServer
   let server
 
   beforeAll(async () => {
-    createServer = require('../../server')
+    createServer = require('../../../../app/server')
   })
 
   beforeEach(async () => {
@@ -11,10 +11,10 @@ describe('Healthy test', () => {
     await server.initialize()
   })
 
-  test('GET /healthy route returns 200', async () => {
+  test('GET /claim/property-type route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/healthy'
+      url: '/claim/property-type'
     }
 
     const response = await server.inject(options)

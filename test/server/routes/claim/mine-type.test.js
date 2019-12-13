@@ -1,9 +1,9 @@
-describe('Email test', () => {
+describe('MineType test', () => {
   let createServer
   let server
 
   beforeAll(async () => {
-    createServer = require('../../../server')
+    createServer = require('../../../../app/server')
   })
 
   beforeEach(async () => {
@@ -11,10 +11,10 @@ describe('Email test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/email route returns 200', async () => {
+  test('GET /claim/mine-type route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/claim/email'
+      url: '/claim/mine-type'
     }
 
     const response = await server.inject(options)

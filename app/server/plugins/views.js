@@ -1,7 +1,7 @@
 const path = require('path')
 const nunjucks = require('nunjucks')
 const config = require('../config')
-const pkg = require('../../package.json')
+const pkg = require('../../../package.json')
 const analyticsAccount = config.analyticsAccount
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
     isCached: !config.isDev,
     context: {
       appVersion: pkg.version,
-      assetPath: '/assets',
+      assetPath: '/static',
       serviceName: 'FFC Demo Service',
       pageTitle: 'FFC Demo Service - GOV.UK',
       analyticsAccount: analyticsAccount

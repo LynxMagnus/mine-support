@@ -1,8 +1,7 @@
 module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.js',
-    '!**/*.test.js'
+    'app/**/*.js'
   ],
   coverageDirectory: 'test-output',
   coverageReporters: [

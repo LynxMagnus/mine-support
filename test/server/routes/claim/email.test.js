@@ -1,9 +1,9 @@
-describe('Property Type test', () => {
+describe('Email test', () => {
   let createServer
   let server
 
   beforeAll(async () => {
-    createServer = require('../../../server')
+    createServer = require('../../../../app/server')
   })
 
   beforeEach(async () => {
@@ -11,10 +11,10 @@ describe('Property Type test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/property-type route returns 200', async () => {
+  test('GET /claim/email route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/claim/property-type'
+      url: '/claim/email'
     }
 
     const response = await server.inject(options)
