@@ -52,7 +52,7 @@ node {
       defraUtils.runTests(imageName, BUILD_NUMBER)
     }
     stage('SonarQube analysis') {
-      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : imageName, 'sonar.sources' : '.'])
+      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       waitForQualityGateResult(5)
