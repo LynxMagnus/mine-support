@@ -43,7 +43,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('SonarQube analysis') {
-      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : 'FFC', 'sonar.sources' : '.'])
+      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : 'ffc-demo-web', 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       waitForQualityGateResult(5)
