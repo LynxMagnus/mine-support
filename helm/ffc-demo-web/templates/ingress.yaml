@@ -19,11 +19,11 @@ metadata:
       proxy_set_header l5d-dst-override {{.Values.name }}.default.svc.cluster.local:{{ .Values.service.port }};
       proxy_hide_header l5d-remote-ip;
       proxy_hide_header l5d-server-id;
-  name: {{ .Values.name }}
+  name: {{ quote .Values.name }}
 spec:
   rules:
 {{- if .Values.ingress.endpoint }}
-  - host: {{ .Values.ingress.endpoint }}.{{.Values.ingress.server}}
+  - host: {{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}
     http:
 {{ else }}
   - http:
@@ -31,6 +31,6 @@ spec:
       paths:
       - path: /?(.*)
         backend:
-          serviceName: {{ .Values.name }}
+          serviceName: {{ quote .Values.name }}
           servicePort: {{ .Values.service.port }}
 {{- end }}

@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
+  name: {{ quote .Values.name }}
 spec:
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
@@ -9,18 +9,18 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ quote .Values.name }}
       annotations:
-        redeployOnChange: {{ .Values.container.redeployOnChange | quote }}
+        redeployOnChange: {{ quote .Values.container.redeployOnChange }}
     spec:
-      restartPolicy: {{ .Values.container.restartPolicy }}
+      restartPolicy: {{ quote .Values.container.restartPolicy }}
       {{- if .Values.imagePullSecret }}
       imagePullSecrets:
-      - name: {{ .Values.imagePullSecret }}
+      - name: {{ quote .Values.imagePullSecret }}
       {{- end }}
       containers:
-      - name: {{ .Values.name }}
-        image: {{ .Values.image }}
+      - name: {{ quote .Values.name }}
+        image: {{ quote .Values.image }}
         {{- if .Values.container.command }}
         {{- with .Values.container.command }}
         command:
@@ -31,7 +31,7 @@ spec:
           {{- toYaml . | nindent 12 }}
         {{- end }}
         {{- end }}
-        imagePullPolicy: {{ .Values.container.imagePullPolicy }}
+        imagePullPolicy: {{ quote .Values.container.imagePullPolicy }}
         securityContext:
           runAsUser: {{ .Values.container.runAsUser }}
           runAsNonRoot: {{ .Values.container.runAsNonRoot }}
@@ -39,40 +39,40 @@ spec:
           allowPrivilegeEscalation: {{ .Values.container.allowPrivilegeEscalation }}
         env:
         - name: NODE_ENV
-          value: {{ .Values.environment }}
+          value: {{ quote .Values.environment }}
         - name: PORT
           value: "3000"
         - name: COOKIE_PASSWORD
-          value: {{ .Values.cookiePassword }}
+          value: {{ quote .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
-          value: {{ .Values.container.redisname }}
+          value: {{ quote .Values.container.redisname }}
         - name: API_GATEWAY
-          value: {{ .Values.container.apiGatewayUrl }}
+          value: {{ quote .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ .Values.container.restClientTimeoutMillis | quote }}
+          value: {{ quote .Values.container.restClientTimeoutMillis }}
         - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
-          value: {{ .Values.container.staticCacheTimeoutMillis | quote }}
+          value: {{ quote .Values.container.staticCacheTimeoutMillis }}
         ports:
         - name: http
           containerPort: 3000
           protocol: TCP
         resources:
           requests:
-            memory: {{ .Values.container.requestMemory }}
-            cpu: {{ .Values.container.requestCpu }}
+            memory: {{ quote .Values.container.requestMemory }}
+            cpu: {{ quote .Values.container.requestCpu }}
           limits:
-            memory: {{ .Values.container.limitMemory }}
-            cpu: {{ .Values.container.limitCpu }}
+            memory: {{ quote .Values.container.limitMemory }}
+            cpu: {{ quote .Values.container.limitCpu }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.livenessProbe.path }}
+            path: {{ quote .Values.livenessProbe.path }}
             port: {{ .Values.livenessProbe.port }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.readinessProbe.path }}
+            path: {{ quote .Values.readinessProbe.path }}
             port: {{ .Values.readinessProbe.port }}
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
