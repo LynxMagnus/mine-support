@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.5')
+@Library('defra-library@0.0.6')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -13,27 +13,6 @@ def mergedPrNo = ''
 def containerTag = ''
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-
-def analyseCode(sonarQubeEnv, sonarScanner, params) {
-  def scannerHome = tool sonarScanner
-  withSonarQubeEnv(sonarQubeEnv) { 
-    def args = ''   
-    params.each { param ->
-      args = args + " -D$param.key=$param.value"
-    }
-
-    sh "${scannerHome}/bin/sonar-scanner$args"
-  }
-}
-
-def waitForQualityGateResult(timeoutInMinutes) {
-  timeout(time: timeoutInMinutes, unit: 'MINUTES') {
-    def qualityGateResult = waitForQualityGate()
-    if (qualityGateResult.status != 'OK') {
-      error "Pipeline aborted due to quality gate failure: ${qualityGateResult.status}"
-    }
-  }
-}
 
 node {
   checkout scm
@@ -52,10 +31,10 @@ node {
       defraUtils.runTests(imageName, BUILD_NUMBER)
     }
     stage('SonarQube analysis') {
-      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
+      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
-      waitForQualityGateResult(5)
+      defraUtils.waitForQualityGateResult(5)
     }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
