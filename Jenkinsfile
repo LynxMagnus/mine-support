@@ -41,13 +41,7 @@ node {
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
       defraUtils.setGithubStatusPending()
-    }
-    stage('SonarQube analysis') {
-      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : 'ffc-demo-web', 'sonar.sources' : '.'])
-    }
-    stage("Code quality gate") {
-      waitForQualityGateResult(5)
-    }
+    }    
     stage('Helm lint') {
       defraUtils.lintHelm(imageName)
     }
@@ -56,6 +50,12 @@ node {
     }
     stage('Run tests') {
       defraUtils.runTests(imageName, BUILD_NUMBER)
+    }
+    stage('SonarQube analysis') {
+      analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : 'ffc-demo-web', 'sonar.sources' : '.'])
+    }
+    stage("Code quality gate") {
+      waitForQualityGateResult(5)
     }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
