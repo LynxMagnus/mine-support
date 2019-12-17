@@ -1,4 +1,3 @@
-[![Build Status](https://defradev.visualstudio.com/DEFRA_FutureFarming/_apis/build/status/defra-ffc-demo-web?branchName=develop)](https://defradev.visualstudio.com/DEFRA_FutureFarming/_build/latest?definitionId=579&branchName=develop)
 [![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-demo-web/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-demo-web?targetFile=package.json)
 
 # FFC Demo Service
