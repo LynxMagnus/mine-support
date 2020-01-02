@@ -23,5 +23,5 @@ CMD [ "npm", "run", "test" ]
 # Production stage exposes service port, copies in built app code and declares the Node app as the default command
 FROM base AS production
 EXPOSE ${PORT}
-COPY --from=builder /home/node/app/ /home/node/app/
+COPY --from=development /home/node/app/ /home/node/app/
 CMD [ "node", "app/index" ]
