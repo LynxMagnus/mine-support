@@ -12,8 +12,10 @@ services:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
     volumes:
-      - node_modules:/usr/src/app/node_modules
-      - .:/usr/src/app
+      - ./server/:/usr/src/app/server/
+      - ./index.js:/usr/src/app/index.js
+      - ./package.json:/usr/src/app/package.json
+      - ./util:/usr/src/app/util/
 
   redis:
     image: redis
