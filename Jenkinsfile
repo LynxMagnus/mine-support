@@ -89,7 +89,7 @@ node {
       }
       stage('Trigger GitHub release') {
         withCredentials([
-          string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'gitToken') 
+          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken') 
         ]) {
           defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
