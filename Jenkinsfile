@@ -18,7 +18,7 @@ def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
 node {
-  checkout scm  
+  checkout scm
   try {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
