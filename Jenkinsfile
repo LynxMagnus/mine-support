@@ -24,7 +24,7 @@ node {
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
       defraUtils.setGithubStatusPending()
-    }    
+    }
     stage('Helm lint') {
       defraUtils.lintHelm(imageName)
     }
