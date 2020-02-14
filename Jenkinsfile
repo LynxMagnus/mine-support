@@ -25,13 +25,7 @@ node {
     }    
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
-    }    
-    stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
-    }    
-    stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
-    }    
+    }
     stage('Helm lint') {
       defraUtils.lintHelm(repoName)
     }
