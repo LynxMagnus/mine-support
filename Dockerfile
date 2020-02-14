@@ -1,7 +1,6 @@
 FROM node:10.15.3-alpine
 
-WORKDIR /usr/src/app
-RUN chown node:node /usr/src/app
+WORKDIR /home/node
 
 USER node
 
@@ -15,10 +14,11 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY --chown=node:node . .
+COPY --chown=node:node app/ ./app/
 RUN npm run build
 
 ARG PORT=3000
 ENV PORT ${PORT}
 EXPOSE ${PORT} 9229 9230
-CMD [ "node", "index" ]
+
+CMD [ "node", "app" ]

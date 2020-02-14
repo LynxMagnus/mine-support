@@ -75,7 +75,7 @@ docker-compose build
 
 ### Start and stop the service
 
-Use Docker Compose to run service locally. 
+Use Docker Compose to run service locally.
 
 `docker-compose up`
 
@@ -164,7 +164,7 @@ The application may be run natively on the local operating if a Redis server is 
 
 Now the application is ready to run:
 
-`$ node index.js`
+`$ node app`
 
 ## Build Pipeline
 
