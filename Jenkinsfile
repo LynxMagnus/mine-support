@@ -17,8 +17,15 @@ def localSrcFolder = '.'
 def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
+def getCommitMsg() {
+  def commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
+  echo commit
+}
+
+
 node {
   checkout scm
+  
   try {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
@@ -27,6 +34,7 @@ node {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
     }
     stage('Helm lint') {
+      getCommitMsg()
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
