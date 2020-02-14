@@ -91,7 +91,7 @@ node {
         withCredentials([
           string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken') 
         ]) {
-          defraUtils.triggerRelease(containerTag, repoName, defraUtils.getCommitMessage(), gitToken)
+          defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
