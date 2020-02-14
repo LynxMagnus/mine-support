@@ -37,7 +37,7 @@ The following environment variables are required by the application container. V
 
 ## How to run tests
 
-A convenience script is provided to run automated tests in a containerised environment. The first time this is run, container images required for testing will be automatically built. An optional `--build` (or `-b`) flag may be used to rebuild these images in future (for example, to apply dependency updates).
+A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before each test run.
 
 ```
 # Run tests
@@ -54,6 +54,17 @@ Alternatively, the same tests may be run locally via npm:
 ```
 # Run tests without Docker
 npm run test
+```
+
+### Test watch and custom commands
+
+Custom commands can be run in the test container by appending the commands to the `scripts/test` invocation. All arguments are passed straight to `docker-compose run`.
+
+For example:
+
+```
+# Run unit test file watcher
+scripts/run npm run test:unit-watch
 ```
 
 ## Running the application
@@ -83,7 +94,7 @@ Additional Docker Compose files are provided for scenarios such as linking to ot
 
 Link to other services:
 ```
-docker-compose -f docker-compose.yaml -f docker-compose.link.yaml up
+docker-compose -f docker-compose.yaml -f docker-compose.override.yaml -f docker-compose.link.yaml up
 ```
 
 ### Deploy to Kubernetes
