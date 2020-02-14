@@ -1,4 +1,4 @@
-@Library('defra-library@update-helm-in-chart')
+@Library('defra-library@0.0.15')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -27,7 +27,6 @@ node {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
     }
     stage('Helm lint') {
-      defraUtils.publishChart(registry, repoName, containerTag)
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
