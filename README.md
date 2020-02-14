@@ -37,17 +37,17 @@ The following environment variables are required by the application container. V
 
 ## How to run tests
 
-A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before each test run.
+A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before running tests via docker-compose, using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`. The command given to `docker-compose run` may be customised by passing arguments to the test script.
+
+Examples:
 
 ```
-# Run tests
+# Run all tests
 scripts/test
 
-# Rebuild images and run tests
-scripts/test --build
+# Run only unit tests
+scripts/test npm run test:unit
 ```
-
-This runs tests via a `docker-compose run` command. If tests complete successfully, all containers, networks and volumes are cleaned up before the script exits. If there is an error or any tests fail, the associated Docker resources will be left available for inspection.
 
 Alternatively, the same tests may be run locally via npm:
 
@@ -56,16 +56,24 @@ Alternatively, the same tests may be run locally via npm:
 npm run test
 ```
 
-### Test watch and custom commands
+### Test watcher
 
-Custom commands can be run in the test container by appending the commands to the `scripts/test` invocation. All arguments are passed straight to `docker-compose run`.
-
-For example:
+A more convenient way to run tests in development is to use a file watcher to automatically run tests each time associated files are modified. For this purpose, the default docker-compose configuration mounts all app, test and git files into the main `app` container, enabling the test watcher to be run as shown below. The same approach may be used to execute arbitrary commands in the running app.
 
 ```
 # Run unit test file watcher
-scripts/run npm run test:unit-watch
+docker-compose exec app npm run test:unit-watch
+
+# Run all tests
+docker-compose exec app npm test
+
+# Open an interactive shell in the app container
+docker-compose exec app sh
 ```
+
+### Why docker-compose.test.yaml exists
+
+Given that tests can be run in the main app container during development, it may not be obvious why `docker-compose.test.yaml` exists. It's main purpose is for CI pipelines, where tests need to run in a container without any ports forwarded from the host machine.
 
 ## Running the application
 

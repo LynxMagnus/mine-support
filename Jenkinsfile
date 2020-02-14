@@ -1,38 +1,39 @@
-@Library('defra-library@0.0.9')
+@Library('defra-library@psd-40-clarify-variables')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
-def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
-def regCredsId = 'ecr:eu-west-2:ecr-user'
-def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
-def ingressServer = 'ffc.aws-int.defra.cloud'
-def imageName = 'ffc-demo-web'
-def repoName = 'ffc-demo-web'
-def pr = ''
-def mergedPrNo = ''
+def containerSrcFolder = '\\/usr\\/src\\/app'
 def containerTag = ''
+def deployJobName = 'ffc-demo-web-deploy'
+def ingressServer = 'ffc.aws-int.defra.cloud'
+def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
+def lcovFile = './test-output/lcov.info'
+def localSrcFolder = '.'
+def mergedPrNo = ''
+def pr = ''
+def projectName = 'ffc-demo-web'
+def regCredsId = 'ecr:eu-west-2:ecr-user'
+def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
+def dockerServiceName = 'app'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def containerSrcFolder = '\\/usr\\/src\\/app'
-def localSrcFolder = '.'
-def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
 node {
   checkout scm
   try {
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName)
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName)
       defraUtils.setGithubStatusPending()
     }
     stage('Helm lint') {
-      defraUtils.lintHelm(imageName)
+      defraUtils.lintHelm(projectName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(imageName, BUILD_NUMBER)
+      defraUtils.buildTestImage(projectName, dockerServiceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(imageName, BUILD_NUMBER)
+      defraUtils.runTests(projectName, dockerServiceName, BUILD_NUMBER)
     }
     stage('Create Test Report JUnit'){
       defraUtils.createTestReportJUnit()
@@ -41,13 +42,13 @@ node {
       defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
-      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
+      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : projectName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, imageName, containerTag)
+      defraUtils.buildAndPushContainerImage(regCredsId, registry, projectName, containerTag)
     }
     if (pr != '') {
       stage('Helm install') {
@@ -70,31 +71,31 @@ node {
           ].join(',')
 
           def extraCommands = [
-            "--values ./helm/ffc-demo-web/jenkins-aws.yaml",
+            "--values ./helm/$projectName/jenkins-aws.yaml",
             "--set $helmValues"
           ].join(' ')
 
-          defraUtils.deployChart(kubeCredsId, registry, imageName, containerTag, extraCommands)
+          defraUtils.deployChart(kubeCredsId, registry, projectName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
     }
     if (pr == '') {
       stage('Publish chart') {
-        defraUtils.publishChart(registry, imageName, containerTag)
+        defraUtils.publishChart(registry, projectName, containerTag)
       }
       stage('Trigger Deployment') {
         withCredentials([
           string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
           string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, 'ffc-demo-web-deploy', jenkinsToken, ['chartVersion':'1.0.0'])
+          defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion':'1.0.0'])
         }
       }
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployChart(kubeCredsId, imageName, mergedPrNo)
+        defraUtils.undeployChart(kubeCredsId, projectName, mergedPrNo)
       }
     }
     defraUtils.setGithubStatusSuccess()
@@ -102,6 +103,6 @@ node {
     defraUtils.setGithubStatusFailure(e.message)
     throw e
   } finally {
-    defraUtils.deleteTestOutput(imageName)
+    defraUtils.deleteTestOutput(projectName)
   }
 }

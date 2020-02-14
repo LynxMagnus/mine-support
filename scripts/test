@@ -4,8 +4,8 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 command="$@"
-projectName="ffc-demo-web-test"
-service="ffc-demo-web"
+project="ffc-demo-web"
+service="app"
 
 # Default command to npm test script
 if [ "${command}" = "" ]; then
@@ -13,7 +13,11 @@ if [ "${command}" = "" ]; then
 fi
 
 compose() {
-  docker-compose -p "${projectName}" $@
+  docker-compose \
+    -f docker-compose.yaml \
+    -f docker-compose.test.yaml \
+    -p "${project}-test" \
+    $@
 }
 
 (
