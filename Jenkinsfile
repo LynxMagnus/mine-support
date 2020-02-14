@@ -22,10 +22,7 @@ node {
   try {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
-    }
-    stage('Verify version incremented') {
-      defraUtils.verifyPackageJsonVersionIncremented()
-    }
+    }    
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
     }    
@@ -57,6 +54,9 @@ node {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag)
     }
     if (pr != '') {
+      stage('Verify version incremented') {
+        defraUtils.verifyPackageJsonVersionIncremented()
+      }
       stage('Helm install') {
         withCredentials([
             string(credentialsId: 'albTags', variable: 'albTags'),
