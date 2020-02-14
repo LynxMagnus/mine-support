@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.15')
+@Library('defra-library@0.0.16')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -17,15 +17,8 @@ def localSrcFolder = '.'
 def lcovFile = './test-output/lcov.info'
 def timeoutInMinutes = 5
 
-def getCommitMsg() {
-  def commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
-  echo commit
-}
-
-
 node {
-  checkout scm
-  
+  checkout scm  
   try {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
@@ -34,7 +27,6 @@ node {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
     }
     stage('Helm lint') {
-      getCommitMsg()
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
@@ -99,7 +91,7 @@ node {
         withCredentials([
           string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken') 
         ]) {
-          defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
+          defraUtils.triggerRelease(containerTag, repoName, defraUtils.getCommitMessage(), gitToken)
         }
       }
       stage('Trigger Deployment') {
