@@ -5,6 +5,8 @@ version: '3.7'
 
 services:
   ffc-demo-web:
+    build:
+      target: development
     ports:
       - "3000:3000"
 
