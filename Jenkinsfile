@@ -12,9 +12,9 @@ def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
 def projectName = 'ffc-demo-web'
+def projectServiceName = 'app'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
-def dockerServiceName = 'app'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
@@ -30,10 +30,10 @@ node {
       defraUtils.lintHelm(projectName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(projectName, dockerServiceName, BUILD_NUMBER)
+      defraUtils.buildTestImage(projectName, projectServiceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(projectName, dockerServiceName, BUILD_NUMBER)
+      defraUtils.runTests(projectName, projectServiceName, BUILD_NUMBER)
     }
     stage('Create Test Report JUnit'){
       defraUtils.createTestReportJUnit()
