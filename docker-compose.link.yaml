@@ -6,7 +6,7 @@ version: '3.7'
 # separately.
 
 services:
-  app:
+  ffc-demo-web:
     networks:
       - default
       - ffc-demo

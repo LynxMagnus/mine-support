@@ -1,4 +1,4 @@
-@Library('defra-library@psd-40-clarify-variables')
+@Library('defra-library@0.0.9')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -34,10 +34,10 @@ node {
       defraUtils.lintHelm(projectName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(projectName, projectServiceName, BUILD_NUMBER)
+      defraUtils.buildTestImage(projectName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(projectName, projectServiceName, BUILD_NUMBER)
+      defraUtils.runTests(projectName, BUILD_NUMBER)
     }
     stage('Create Test Report JUnit'){
       defraUtils.createTestReportJUnit()
