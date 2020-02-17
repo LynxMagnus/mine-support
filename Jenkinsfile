@@ -23,7 +23,11 @@ node {
   checkout scm
   try {
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName)
+      try {
+        (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName)
+      } catch (error) {
+        echo "Error getting variables: ${error.message}"
+      }
       defraUtils.setGithubStatusPending()
     }
     stage('Helm lint') {
@@ -100,7 +104,6 @@ node {
     }
     defraUtils.setGithubStatusSuccess()
   } catch(e) {
-    echo "Error: ${e.message}"
     defraUtils.setGithubStatusFailure(e.message)
     throw e
   } finally {
