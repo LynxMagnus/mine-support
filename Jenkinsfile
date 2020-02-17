@@ -22,7 +22,7 @@ def timeoutInMinutes = 5
 node {
   checkout scm
   try {
-    stage('Set PR, and containerTag variables') {
+    stage('Set variables') {
       try {
         (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName)
       } catch (error) {
@@ -39,10 +39,10 @@ node {
     stage('Run tests') {
       defraUtils.runTests(projectName, BUILD_NUMBER)
     }
-    stage('Create Test Report JUnit'){
+    stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
     }
-    stage('Fix absolute paths in lcov file') {
+    stage('Fix lcov report') {
       defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
