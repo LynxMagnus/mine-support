@@ -5,7 +5,7 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
 
 command="$@"
 project="ffc-demo-web"
-service="ffc-demo-web"
+service="app"
 
 # Default command to npm test script
 if [ "${command}" = "" ]; then

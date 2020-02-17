@@ -5,7 +5,7 @@ version: '3.7'
 # ports to the host machine.
 
 services:
-  ffc-demo-web:
+  app:
     build:
       target: development
     command: npm test
