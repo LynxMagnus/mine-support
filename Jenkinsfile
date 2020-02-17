@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.9')
+@Library('defra-library@psd-40-clarify-variables')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -12,7 +12,7 @@ def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
 def projectName = 'ffc-demo-web'
-def projectServiceName = 'app'
+def projectServiceName = 'ffc-demo-web'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def sonarQubeEnv = 'SonarQube'
@@ -24,7 +24,8 @@ node {
   try {
     stage('Set variables') {
       try {
-        (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName)
+        def version = defraUtils.getPackageJsonVersion()
+        (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName, version)
       } catch (error) {
         echo "Error getting variables: ${error.message}"
       }
@@ -34,10 +35,10 @@ node {
       defraUtils.lintHelm(projectName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(projectName, BUILD_NUMBER)
+      defraUtils.buildTestImage(projectName, projectServiceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(projectName, BUILD_NUMBER)
+      defraUtils.runTests(projectName, projectServiceName, 'npm test', BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
