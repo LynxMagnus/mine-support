@@ -8,6 +8,7 @@ services:
   app:
     build:
       target: development
+    image: ffc-demo-web-development
     command: npm test
     volumes:
       - ./test/:/home/node/test/
