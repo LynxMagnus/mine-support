@@ -7,11 +7,6 @@ command="$@"
 project="ffc-demo-web"
 service="app"
 
-# Default command to npm test script
-if [ "${command}" = "" ]; then
-  command="npm test"
-fi
-
 compose() {
   docker-compose \
     -f docker-compose.yaml \
