@@ -100,6 +100,7 @@ node {
     }
     defraUtils.setGithubStatusSuccess()
   } catch(e) {
+    echo "Error: ${e.message}"
     defraUtils.setGithubStatusFailure(e.message)
     throw e
   } finally {
