@@ -38,7 +38,7 @@ node {
       defraUtils.buildTestImage(projectName, projectServiceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(projectName, projectServiceName, 'npm test', BUILD_NUMBER)
+      defraUtils.runTests(projectName, projectServiceName, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
