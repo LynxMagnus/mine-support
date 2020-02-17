@@ -22,14 +22,11 @@ def timeoutInMinutes = 5
 node {
   checkout scm
   try {
-    stage('Set variables') {
-      try {
-        def version = defraUtils.getPackageJsonVersion()
-        (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName, version)
-      } catch (error) {
-        echo "Error getting variables: ${error.message}"
-      }
+    stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
+    }
+    stage('Set PR, and containerTag variables') {
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
       defraUtils.lintHelm(projectName)
@@ -56,6 +53,9 @@ node {
       defraUtils.buildAndPushContainerImage(regCredsId, registry, projectName, containerTag)
     }
     if (pr != '') {
+      stage('Verify version incremented') {
+        defraUtils.verifyPackageJsonVersionIncremented()
+      }
       stage('Helm install') {
         withCredentials([
             string(credentialsId: 'albTags', variable: 'albTags'),
@@ -89,12 +89,19 @@ node {
       stage('Publish chart') {
         defraUtils.publishChart(registry, projectName, containerTag)
       }
+      stage('Trigger GitHub release') {
+        withCredentials([
+          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken')
+        ]) {
+          defraUtils.triggerRelease(containerTag, projectName, containerTag, gitToken)
+        }
+      }
       stage('Trigger Deployment') {
         withCredentials([
           string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
           string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion':'1.0.0'])
+          defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
       }
     }
@@ -103,9 +110,12 @@ node {
         defraUtils.undeployChart(kubeCredsId, projectName, mergedPrNo)
       }
     }
-    defraUtils.setGithubStatusSuccess()
+    stage('Set GitHub status as success'){
+      defraUtils.setGithubStatusSuccess()
+    }
   } catch(e) {
     defraUtils.setGithubStatusFailure(e.message)
+    defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
     defraUtils.deleteTestOutput(projectName)
