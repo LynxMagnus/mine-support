@@ -1,4 +1,4 @@
-@Library('defra-library@0.0.17')
+@Library('defra-library@customise-output-mount-path')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -118,6 +118,6 @@ node {
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(projectName)
+    defraUtils.deleteTestOutput(projectName, containerSrcFolder)
   }
 }
