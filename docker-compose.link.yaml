@@ -2,8 +2,7 @@ version: '3.7'
 
 # This override file should be used in development environments to
 # connect this service to sibling services from other repositories.
-# Dependencies which are shared with other projects should be started
-# separately.
+# Dependencies shared with other projects should be started separately.
 
 services:
   app:
