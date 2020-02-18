@@ -19,5 +19,4 @@ services:
       - redis_data:/data
 
 volumes:
-  node_modules:
   redis_data:
