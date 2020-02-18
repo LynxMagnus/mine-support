@@ -2,7 +2,7 @@
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
-def containerSrcFolder = '\\/usr\\/src\\/app'
+def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
 def deployJobName = 'ffc-demo-web-deploy'
 def ingressServer = 'ffc.aws-int.defra.cloud'
