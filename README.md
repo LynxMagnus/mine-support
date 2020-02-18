@@ -6,6 +6,8 @@ Digital service mock to claim public money in the event property subsides into m
 
 ## Prerequisites
 
+AWS credentials with access to the container registry where FFC parent images are stored.
+
 Either:
 - Docker
 - Docker Compose
@@ -88,6 +90,9 @@ Container images are built using Docker Compose, with the same images used to ru
 By default, the start script will build (or rebuild) images so there will rarely be a need to build images manually. However, this can be achieved through the Docker Compose [build](https://docs.docker.com/compose/reference/build/) command:
 
 ```
+# Authenticate with FFC container image registry (requires pre-configured AWS credentials on your machine)
+aws ecr get-login --no-include-email | sh
+
 # Build container images
 docker-compose build
 ```
