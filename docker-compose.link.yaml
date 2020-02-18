@@ -6,12 +6,14 @@ version: '3.7'
 
 services:
   app:
+    build:
+      target: development
+    image: ffc-demo-web-development
     networks:
       - default
       - ffc-demo
     ports:
       - "3000:3000"
-      - "9229:9229"
     volumes:
       - ./.git/:/home/node/.git/ # Git is required by Jest file watcher
       - ./app/:/home/node/app/
