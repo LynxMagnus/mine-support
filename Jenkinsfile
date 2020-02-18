@@ -12,9 +12,9 @@ def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
-def projectName = 'ffc-demo-web'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
+def repoName = 'ffc-demo-web'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
@@ -26,16 +26,16 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(projectName, defraUtils.getPackageJsonVersion())
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
-      defraUtils.lintHelm(projectName)
+      defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(projectName, dockerTestService, BUILD_NUMBER)
+      defraUtils.buildTestImage(repoName, dockerTestService, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(projectName, dockerTestService, BUILD_NUMBER)
+      defraUtils.runTests(repoName, dockerTestService, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
@@ -44,13 +44,13 @@ node {
       defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
-      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : projectName, 'sonar.sources' : '.'])
+      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, projectName, containerTag)
+      defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag)
     }
     if (pr != '') {
       stage('Verify version incremented') {
@@ -76,24 +76,24 @@ node {
           ].join(',')
 
           def extraCommands = [
-            "--values ./helm/$projectName/jenkins-aws.yaml",
+            "--values ./helm/$repoName/jenkins-aws.yaml",
             "--set $helmValues"
           ].join(' ')
 
-          defraUtils.deployChart(kubeCredsId, registry, projectName, containerTag, extraCommands)
+          defraUtils.deployChart(kubeCredsId, registry, repoName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
     }
     if (pr == '') {
       stage('Publish chart') {
-        defraUtils.publishChart(registry, projectName, containerTag)
+        defraUtils.publishChart(registry, repoName, containerTag)
       }
       stage('Trigger GitHub release') {
         withCredentials([
           string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken')
         ]) {
-          defraUtils.triggerRelease(containerTag, projectName, containerTag, gitToken)
+          defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
@@ -107,7 +107,7 @@ node {
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployChart(kubeCredsId, projectName, mergedPrNo)
+        defraUtils.undeployChart(kubeCredsId, repoName, mergedPrNo)
       }
     }
     stage('Set GitHub status as success'){
@@ -118,6 +118,6 @@ node {
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(projectName, containerSrcFolder)
+    defraUtils.deleteTestOutput(repoName, containerSrcFolder)
   }
 }
