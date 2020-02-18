@@ -1,4 +1,4 @@
-@Library('defra-library@psd-40-clarify-variables')
+@Library('defra-library@0.0.17')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
