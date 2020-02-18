@@ -5,6 +5,7 @@ def defraUtils = new DefraUtils()
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
 def deployJobName = 'ffc-demo-web-deploy'
+def dockerTestService = 'ffc-demo-web'
 def ingressServer = 'ffc.aws-int.defra.cloud'
 def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
 def lcovFile = './test-output/lcov.info'
@@ -12,7 +13,6 @@ def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
 def projectName = 'ffc-demo-web'
-def projectServiceName = 'ffc-demo-web'
 def regCredsId = 'ecr:eu-west-2:ecr-user'
 def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
 def sonarQubeEnv = 'SonarQube'
@@ -32,10 +32,10 @@ node {
       defraUtils.lintHelm(projectName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(projectName, projectServiceName, BUILD_NUMBER)
+      defraUtils.buildTestImage(projectName, dockerTestService, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(projectName, projectServiceName, BUILD_NUMBER)
+      defraUtils.runTests(projectName, dockerTestService, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
