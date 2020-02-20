@@ -8,4 +8,4 @@ npm-debug.log
 lcov.info
 auth
 test-output
-server/public/build
+app/public/build

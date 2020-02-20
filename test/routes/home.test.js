@@ -3,7 +3,7 @@ describe('Home test', () => {
   let server
 
   beforeAll(async () => {
-    createServer = require('../../server')
+    createServer = require('../../app/server')
   })
 
   beforeEach(async () => {

@@ -1,20 +1,22 @@
-@Library('defra-library@0.0.16')
+@Library('defra-library@1.0.0')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
-def registry = '171014905211.dkr.ecr.eu-west-2.amazonaws.com'
-def regCredsId = 'ecr:eu-west-2:ecr-user'
-def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
-def ingressServer = 'ffc.aws-int.defra.cloud'
-def repoName = 'ffc-demo-web'
-def pr = ''
-def mergedPrNo = ''
+def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
+def deployJobName = 'ffc-demo-web-deploy'
+def ingressServer = 'ffc.aws-int.defra.cloud'
+def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
+def lcovFile = './test-output/lcov.info'
+def localSrcFolder = '.'
+def mergedPrNo = ''
+def pr = ''
+def regCredsId = 'ecr:eu-west-2:ecr-user'
+def registry = '540975735942.dkr.ecr.eu-west-2.amazonaws.com'
+def repoName = 'ffc-demo-web'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def containerSrcFolder = '\\/usr\\/src\\/app'
-def localSrcFolder = '.'
-def lcovFile = './test-output/lcov.info'
+def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
 node {
@@ -22,9 +24,9 @@ node {
   try {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
-    }    
+    }
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())      
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
       defraUtils.lintHelm(repoName)
@@ -33,12 +35,12 @@ node {
       defraUtils.buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(repoName, BUILD_NUMBER)
+      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
     }
-    stage('Create Test Report JUnit'){
+    stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
     }
-    stage('Fix absolute paths in lcov file') {
+    stage('Fix lcov report') {
       defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     // stage('SonarQube analysis') {
@@ -74,7 +76,7 @@ node {
           ].join(',')
 
           def extraCommands = [
-            "--values ./helm/ffc-demo-web/jenkins-aws.yaml",
+            "--values ./helm/$repoName/jenkins-aws.yaml",
             "--set $helmValues"
           ].join(' ')
 
@@ -83,13 +85,13 @@ node {
         }
       }
     }
-    if (pr == '') {      
+    if (pr == '') {
       stage('Publish chart') {
         defraUtils.publishChart(registry, repoName, containerTag)
       }
       stage('Trigger GitHub release') {
         withCredentials([
-          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken') 
+          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken')
         ]) {
           defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
@@ -99,7 +101,7 @@ node {
           string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
           string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, 'ffc-demo-web-deploy', jenkinsToken, ['chartVersion': containerTag])
+          defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
       }
     }
@@ -110,12 +112,12 @@ node {
     }
     stage('Set GitHub status as success'){
       defraUtils.setGithubStatusSuccess()
-    }    
+    }
   } catch(e) {
     defraUtils.setGithubStatusFailure(e.message)
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(repoName)
+    defraUtils.deleteTestOutput(repoName, containerSrcFolder)
   }
 }

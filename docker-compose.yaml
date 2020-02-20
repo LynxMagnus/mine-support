@@ -2,20 +2,16 @@ version: '3.7'
 
 services:
   ffc-demo-web:
-    build: .
+    build:
+      context: .
+      target: production
     image: ffc-demo-web
-    command: npm run start:watch
     depends_on:
       - redis
     environment:
       API_GATEWAY: http://ffc-demo-api-gateway:3001
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
-    volumes:
-      - ./server/:/usr/src/app/server/
-      - ./index.js:/usr/src/app/index.js
-      - ./package.json:/usr/src/app/package.json
-      - ./util:/usr/src/app/util/
 
   redis:
     image: redis
@@ -23,5 +19,4 @@ services:
       - redis_data:/data
 
 volumes:
-  node_modules:
   redis_data:
