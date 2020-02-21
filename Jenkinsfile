@@ -1,4 +1,5 @@
 @Library('defra-library@1.0.0')
+@Library('github.com/releaseworks/jenkinslib') _
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
