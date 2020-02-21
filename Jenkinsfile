@@ -40,13 +40,12 @@ node {
     stage('Helm lint') {
       defraUtils.lintHelm(repoName)
     }
-    stage('Build test image') {      
-      sh 'echo dsdffd'
-      defraUtils.buildTestImage(repoName, BUILD_NUMBER)
+    stage('Build test image') {
+      sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:pr85'
+      buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-        sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:pr85'
+      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {        
         defraUtils.runTests(repoName, testService, BUILD_NUMBER)
       }
     }
