@@ -20,12 +20,12 @@ def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
 def buildTestImage(projectName, serviceName, buildNumber) {
-  // withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {    
+  withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {    
     sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:pr85'
     sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
     sh 'docker image prune -f || echo could not prune images'
     sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
-  // }
+  }
 }
 
 node {
@@ -34,14 +34,14 @@ node {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
     }
+    stage('Build test image') {      
+      buildTestImage(repoName, BUILD_NUMBER)
+    }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
       defraUtils.lintHelm(repoName)
-    }
-    stage('Build test image') {      
-      buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {      
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
