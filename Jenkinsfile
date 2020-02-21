@@ -20,9 +20,11 @@ def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
 def buildTestImage(projectName, serviceName, buildNumber) {
-  sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
-  sh 'docker image prune -f || echo could not prune images'
-  sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"  
+  withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {  
+    sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
+    sh 'docker image prune -f || echo could not prune images'
+    sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
+  }
 }
 
 node {
