@@ -34,14 +34,14 @@ node {
     stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
     }
-    stage('Build test image') {      
-      buildTestImage(repoName, BUILD_NUMBER)
-    }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
       defraUtils.lintHelm(repoName)
+    }
+    stage('Build test image') {      
+      buildTestImage(repoName, testService, BUILD_NUMBER)
     }
     stage('Run tests') {      
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
