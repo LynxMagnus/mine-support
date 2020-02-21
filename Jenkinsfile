@@ -19,7 +19,7 @@ def sonarScanner = 'SonarScanner'
 def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
-def test(projectName, serviceName, buildNumber) {
+def buildTestImage(projectName, serviceName, buildNumber) {
   withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
     sh 'echo $AWS_ACCESS_KEY_ID'
     sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
@@ -41,10 +41,14 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {      
-      test(repoName, BUILD_NUMBER)
+      sh 'echo dsdffd'
+      defraUtils.buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
+      withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+        sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-demo-web:pr85'
+        defraUtils.runTests(repoName, testService, BUILD_NUMBER)
+      }
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
