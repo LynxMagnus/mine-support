@@ -58,10 +58,10 @@ node {
       }
       stage('Helm install') {
         withCredentials([
-            string(credentialsId: 'albTags', variable: 'albTags'),
-            string(credentialsId: 'albSecurityGroups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'albArn', variable: 'albArn'),
-            string(credentialsId: 'ffc-demo-cookie-password', variable: 'cookiePassword')
+            string(credentialsId: 'ffc-demo-web-alb-tags', variable: 'albTags'),
+            string(credentialsId: 'ffc-demo-web-alb-security-groups', variable: 'albSecurityGroups'),
+            string(credentialsId: 'ffc-demo-web-alb-arn', variable: 'albArn'),
+            string(credentialsId: 'ffc-demo-web-cookie-password', variable: 'cookiePassword')
           ]) {
 
           def helmValues = [
@@ -91,14 +91,14 @@ node {
       }
       stage('Trigger GitHub release') {
         withCredentials([
-          string(credentialsId: 'github_ffc_platform_repo', variable: 'gitToken')
+          string(credentialsId: 'github-auth-token', variable: 'gitToken')
         ]) {
           defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
         withCredentials([
-          string(credentialsId: 'JenkinsDeployUrl', variable: 'jenkinsDeployUrl'),
+          string(credentialsId: 'jenkins-deploy-site-root', variable: 'jenkinsDeployUrl'),
           string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'jenkinsToken')
         ]) {
           defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
