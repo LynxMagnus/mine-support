@@ -19,14 +19,6 @@ def sonarScanner = 'SonarScanner'
 def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
-def buildTestImage(registry, credentialsId, projectName, serviceName, buildNumber) {
-  docker.withRegistry("https://$registry", credentialsId) {
-    sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
-    sh 'docker image prune -f || echo could not prune images'
-    sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
-  }
-}
-
 node {
   checkout scm
   try {
@@ -40,6 +32,7 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
+      sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
       defraUtils.buildTestImage(repoName, BUILD_NUMBER)
     }
     stage('Run tests') {
