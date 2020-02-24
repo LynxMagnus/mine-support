@@ -20,7 +20,7 @@ def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
 def buildTestImage(projectName, serviceName, buildNumber, containerTag) {
-  docker.withRegistry('https://'registry, regCredsId) {  
+  docker.withRegistry("https://$registry", regCredsId) {  
     sh 'docker image prune -f || echo could not prune images'
     sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-node-development:1.0.0-node12.16.0-pr5'    
     sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
