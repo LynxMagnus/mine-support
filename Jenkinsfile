@@ -19,13 +19,11 @@ def sonarScanner = 'SonarScanner'
 def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
-def buildTestImage(projectName, serviceName, buildNumber) {
-  withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'devffc-user', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {    
-    sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-node-development:1.0.0-node12.16.0-pr5'
-    // sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
-    // sh 'docker image prune -f || echo could not prune images'
-    // sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
-  }
+def buildTestImage(projectName, serviceName, buildNumber) {  
+  sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-node-development:1.0.0-node12.16.0-pr5'
+  // sh 'aws ecr get-login --registry-ids 171014905211 --no-include-email --region eu-west-2'
+  // sh 'docker image prune -f || echo could not prune images'
+  // sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"  
 }
 
 node {
