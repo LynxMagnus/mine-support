@@ -70,10 +70,10 @@ node {
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /cookiePassword="$cookiePassword"/,
             // /ingress.alb.tags="$albTags"/,
-            // /ingress.alb.arn="$albArn"/,
-            // /ingress.alb.securityGroups="$albSecurityGroups"/,
-            // /ingress.endpoint="ffc-demo-$containerTag"/,
-            // /ingress.server="$ingressServer"/,
+            /ingress.alb.arn="$albArn"/,
+            /ingress.alb.securityGroups="$albSecurityGroups"/,
+            /ingress.endpoint="ffc-demo-$containerTag"/,
+            /ingress.server="$ingressServer"/,
             /name="ffc-demo-$containerTag"/
           ].join(',')
 
