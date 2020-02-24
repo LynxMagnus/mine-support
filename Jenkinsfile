@@ -4,8 +4,6 @@ def defraUtils = new DefraUtils()
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
-def deployJobName = 'ffc-demo-web-deploy'
-def ingressServer = 'ffc.aws-int.defra.cloud'
 def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
 def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
@@ -61,6 +59,7 @@ node {
             string(credentialsId: 'ffc-demo-web-alb-tags', variable: 'albTags'),
             string(credentialsId: 'ffc-demo-web-alb-security-groups', variable: 'albSecurityGroups'),
             string(credentialsId: 'ffc-demo-web-alb-arn', variable: 'albArn'),
+            string(credentialsId: 'ffc-demo-web-ingress-server', variable: 'ingressServer'),
             string(credentialsId: 'ffc-demo-web-cookie-password', variable: 'cookiePassword')
           ]) {
 
@@ -99,6 +98,7 @@ node {
       stage('Trigger Deployment') {
         withCredentials([
           string(credentialsId: 'jenkins-deploy-site-root', variable: 'jenkinsDeployUrl'),
+          string(credentialsId: 'ffc-demo-web-deploy-job-name', variable: 'deployJobName'),
           string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'jenkinsToken')
         ]) {
           defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
