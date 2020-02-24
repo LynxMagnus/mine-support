@@ -7,6 +7,7 @@ version: '3.7'
 services:
   ffc-demo-web:
     build:
+      context: .
       target: development
     image: ffc-demo-web-development
     command: npm test
