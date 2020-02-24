@@ -39,12 +39,12 @@ node {
     // stage('Run tests') {      
     //   defraUtils.runTests(repoName, testService, BUILD_NUMBER)
     // }
-    stage('Create JUnit report'){
-      defraUtils.createTestReportJUnit()
-    }
-    stage('Fix lcov report') {
-      defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
-    }
+    // stage('Create JUnit report'){
+    //   defraUtils.createTestReportJUnit()
+    // }
+    // stage('Fix lcov report') {
+    //   defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
+    // }
     stage('SonarQube analysis') {
       defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
     }
