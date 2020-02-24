@@ -32,9 +32,9 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
-      docker.withRegistry("https://$registry", regCredsId) { 
+      // docker.withRegistry("https://$registry", regCredsId) { 
         defraUtils.buildTestImage(repoName, BUILD_NUMBER)
-      }
+      // }
     }
     // stage('Run tests') {      
     //   defraUtils.runTests(repoName, testService, BUILD_NUMBER)
