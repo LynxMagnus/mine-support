@@ -69,7 +69,7 @@ node {
           def helmValues = [
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /cookiePassword="$cookiePassword"/,
-            /ingress.alb.tags=\"$albTags"/,
+            /ingress.alb.tags=""$albTags""/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.endpoint="ffc-demo-$containerTag"/,
