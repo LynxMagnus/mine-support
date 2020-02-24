@@ -19,11 +19,11 @@ def sonarScanner = 'SonarScanner'
 def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
 
-def buildTestImage(projectName, serviceName, buildNumber, containerTag) {
+def buildTestImage(projectName, serviceName, buildNumber) {
   docker.withRegistry(registry, regCredsId) {  
     sh 'docker image prune -f || echo could not prune images'
     sh 'docker pull 171014905211.dkr.ecr.eu-west-2.amazonaws.com/ffc-node-development:1.0.0-node12.16.0-pr5'    
-    sh "docker-compose -p $projectName-$containerTag-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
+    sh "docker-compose -p $projectName-pr85-$buildNumber -f docker-compose.yaml -f docker-compose.test.yaml build --no-cache $serviceName"
   }
 }
 
@@ -40,7 +40,7 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {    
-      buildTestImage(repoName, testService, BUILD_NUMBER, containerTag)
+      buildTestImage(repoName, testService, BUILD_NUMBER)
     }
     stage('Run tests') {      
       defraUtils.runTests(repoName, testService, BUILD_NUMBER)
