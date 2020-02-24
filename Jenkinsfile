@@ -10,12 +10,18 @@ def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
 def regCredsId = 'ecr:eu-west-2:ecr-user'
-def registry = '562955126301.dkr.ecr.eu-west-2.amazonaws.com'
-def repoName = 'ffc-demo-web'
+def serviceName = 'ffc-demo-web'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
-def testService = 'ffc-demo-web'
 def timeoutInMinutes = 5
+
+def getRegistry() {
+  withCredentials([
+    string(credentialsId: 'ffc-demo-registry', variable: 'dockerRegistry'),
+  ]) { 
+    return dockerRegistry
+  }
+}
 
 node {
   checkout scm
@@ -24,16 +30,19 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(repoName, defraUtils.getPackageJsonVersion())
+      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
+       echo "DOCKER_REGISTRY: {$DOCKER_REGISTRY}"
+       echo "DOCKER_REGISTRY_CREDENTIALS_ID: {$DOCKER_REGISTRY_CREDENTIALS_ID}"
+       echo "KUBE_CREDENTIALS_ID: {$KUBE_CREDENTIALS_ID}"
     }
     stage('Helm lint') {
-      defraUtils.lintHelm(repoName)
+      defraUtils.lintHelm(serviceName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(repoName, BUILD_NUMBER)
+      defraUtils.buildTestImage(serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
+      defraUtils.runTests(serviceName, serviceName, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
@@ -42,13 +51,13 @@ node {
       defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
-      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
+      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
       defraUtils.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(regCredsId, registry, repoName, containerTag)
+      defraUtils.buildAndPushContainerImage(regCredsId, getRegistry(), serviceName, containerTag)
     }
     if (pr != '') {
       stage('Verify version incremented') {
@@ -75,24 +84,24 @@ node {
           ].join(',')
 
           def extraCommands = [
-            "--values ./helm/$repoName/jenkins-aws.yaml",
+            "--values ./helm/$serviceName/jenkins-aws.yaml",
             "--set $helmValues"
           ].join(' ')
 
-          defraUtils.deployChart(kubeCredsId, registry, repoName, containerTag, extraCommands)
+          defraUtils.deployChart(kubeCredsId, getRegistry(), serviceName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
         }
       }
     }
     if (pr == '') {
       stage('Publish chart') {
-        defraUtils.publishChart(registry, repoName, containerTag)
+        defraUtils.publishChart(getRegistry(), serviceName, containerTag)
       }
       stage('Trigger GitHub release') {
         withCredentials([
           string(credentialsId: 'github-auth-token', variable: 'gitToken')
         ]) {
-          defraUtils.triggerRelease(containerTag, repoName, containerTag, gitToken)
+          defraUtils.triggerRelease(containerTag, serviceName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
@@ -107,7 +116,7 @@ node {
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployChart(kubeCredsId, repoName, mergedPrNo)
+        defraUtils.undeployChart(kubeCredsId, serviceName, mergedPrNo)
       }
     }
     stage('Set GitHub status as success'){
@@ -118,6 +127,6 @@ node {
     defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(repoName, containerSrcFolder)
+    defraUtils.deleteTestOutput(serviceName, containerSrcFolder)
   }
 }
