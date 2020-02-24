@@ -32,12 +32,12 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test image') {
-      docker.withRegistry("https://$registry", regCredsId) {   
-        defraUtils.buildTestImage(repoName, testService)
+      docker.withRegistry("https://$registry", regCredsId) { 
+        defraUtils.buildTestImage(repoName, BUILD_NUMBER)
       }
     }
     stage('Run tests') {      
-      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
+      defraUtils.runTests(repoName, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
@@ -69,7 +69,7 @@ node {
           def helmValues = [
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /cookiePassword="$cookiePassword"/,
-            /ingress.alb.tags=""$albTags""/,
+            /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.endpoint="ffc-demo-$containerTag"/,
