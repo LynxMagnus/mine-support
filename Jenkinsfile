@@ -41,7 +41,7 @@ node {
     }
     stage('Build test image') {
       docker.withRegistry("https://$registry", regCredsId) {   
-        defraUtils.buildTestImage(repoName, testService, BUILD_NUMBER)
+        defraUtils.buildTestImage(repoName, testService)
       }
     }
     stage('Run tests') {      
