@@ -37,7 +37,7 @@ node {
       }
     }
     stage('Run tests') {      
-      defraUtils.runTests(repoName, BUILD_NUMBER)
+      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       defraUtils.createTestReportJUnit()
