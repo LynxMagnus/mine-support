@@ -5,7 +5,7 @@ def defraUtils = new DefraUtils()
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
 def deployJobName = 'ffc-demo-web-deploy'
-def ingressServer = 'ffc.aws-int.defra.cloud'
+def ingressServer = 'ffc-dev.aws-int.defra.cloud'
 def kubeCredsId = 'FFCLDNEKSAWSS001_KUBECONFIG'
 def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
@@ -32,19 +32,19 @@ node {
       defraUtils.lintHelm(repoName)
     }
     stage('Build test images') {
-      // docker.withRegistry("https://$registry", regCredsId) { 
-      defraUtils.buildTestImage(repoName, BUILD_NUMBER)
-      // }
+      docker.withRegistry("https://$registry", regCredsId) {
+        defraUtils.buildTestImage(repoName, BUILD_NUMBER)
+      }
     }
-    // stage('Run tests') {      
-    //   defraUtils.runTests(repoName, testService, BUILD_NUMBER)
-    // }
-    // stage('Create JUnit report'){
-    //   defraUtils.createTestReportJUnit()
-    // }
-    // stage('Fix lcov report') {
-    //   defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
-    // }
+    stage('Run tests') {      
+      defraUtils.runTests(repoName, testService, BUILD_NUMBER)
+    }
+    stage('Create JUnit report'){
+      defraUtils.createTestReportJUnit()
+    }
+    stage('Fix lcov report') {
+      defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
+    }
     stage('SonarQube analysis') {
       defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : repoName, 'sonar.sources' : '.'])
     }
