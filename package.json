@@ -10,8 +10,8 @@
   "main": "app/index.js",
   "scripts": {
     "build": "npm run build:css",
-    "build:css": "node-sass --output-style=expanded --output=app/public/build/stylesheets app/public/src/stylesheets",
-    "build:css-watch": "node-sass --output-style=expanded --output=app/public/build/stylesheets --watch app/public/src/stylesheets",
+    "build:css": "node-sass --output=app/static/stylesheets --output-style=expanded app/static/stylesheets",
+    "build:css-watch": "node-sass --output=app/static/stylesheets --output-style=expanded --source-map true --watch app/static/stylesheets",
     "pretest": "npm run test:lint",
     "test": "npm run test:unit",
     "test:lint": "standard",

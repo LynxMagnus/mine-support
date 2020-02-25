@@ -1,6 +1,6 @@
-node_modules
-npm-debug.log
-Dockerfile
+node_modules/
+test-output/
 .dockerignore
-auth
-test-output
+app/static/stylesheets/*.css*
+Dockerfile
+npm-debug.log

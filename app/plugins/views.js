@@ -33,11 +33,12 @@ module.exports = {
     relativeTo: __dirname,
     isCached: !config.isDev,
     context: {
+      analyticsAccount: analyticsAccount,
       appVersion: pkg.version,
-      assetPath: '/assets',
+      assetPath: '/static',
+      govukAssetPath: '/assets',
       serviceName: 'FFC Demo Service',
-      pageTitle: 'FFC Demo Service - GOV.UK',
-      analyticsAccount: analyticsAccount
+      pageTitle: 'FFC Demo Service - GOV.UK'
     }
   }
 }
