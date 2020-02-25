@@ -76,7 +76,8 @@ node {
           ].join(' ')
 
           defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
-          echo "Build available for review at https://ffc-demo-$containerTag.$ingressServer"
+          def ingressServerVisible = ingressServer.toLowerCase()
+          echo "Build available for review at https://ffc-demo-$containerTag.$ingressServerVisible"
         }
       }
     }
