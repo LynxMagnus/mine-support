@@ -55,7 +55,6 @@ node {
             string(credentialsId: 'web-alb-tags', variable: 'albTags'),
             string(credentialsId: 'web-alb-security-groups', variable: 'albSecurityGroups'),
             string(credentialsId: 'web-alb-arn', variable: 'albArn'),
-            string(credentialsId: 'web-ingress-server', variable: 'ingressServer'),
             string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
           ]) {
 
@@ -66,7 +65,6 @@ node {
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.endpoint="ffc-demo-$containerTag"/,
-            /ingress.server="$ingressServer"/,
             /name="ffc-demo-$containerTag"/
           ].join(',')
 
@@ -76,8 +74,7 @@ node {
           ].join(' ')
 
           defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
-          def ingressServerVisible = ingressServer.toLowerCase()
-          echo "Build available for review at https://ffc-demo-$containerTag.$ingressServerVisible"
+          echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
         }
       }
     }
