@@ -52,11 +52,11 @@ node {
       }
       stage('Helm install') {
         withCredentials([
-            string(credentialsId: 'ffc-demo-web-alb-tags', variable: 'albTags'),
-            string(credentialsId: 'ffc-demo-web-alb-security-groups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'ffc-demo-web-alb-arn', variable: 'albArn'),
-            string(credentialsId: 'ffc-demo-web-ingress-server', variable: 'ingressServer'),
-            string(credentialsId: 'ffc-demo-web-cookie-password', variable: 'cookiePassword')
+            string(credentialsId: 'web-alb-tags', variable: 'albTags'),
+            string(credentialsId: 'web-alb-security-groups', variable: 'albSecurityGroups'),
+            string(credentialsId: 'web-alb-arn', variable: 'albArn'),
+            string(credentialsId: 'web-ingress-server', variable: 'ingressServer'),
+            string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
           ]) {
 
           def helmValues = [
@@ -94,8 +94,8 @@ node {
       stage('Trigger Deployment') {
         withCredentials([
           string(credentialsId: 'jenkins-deploy-site-root', variable: 'jenkinsDeployUrl'),
-          string(credentialsId: 'ffc-demo-web-deploy-job-name', variable: 'deployJobName'),
-          string(credentialsId: 'ffc-demo-web-deploy-token', variable: 'jenkinsToken')
+          string(credentialsId: 'web-deploy-job-name', variable: 'deployJobName'),
+          string(credentialsId: 'web-deploy-token', variable: 'jenkinsToken')
         ]) {
           defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
