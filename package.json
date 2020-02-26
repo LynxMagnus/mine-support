@@ -47,7 +47,7 @@
     "@hapi/good-console": "^8.1.2",
     "@hapi/good-squeeze": "^5.2.1",
     "blipp": "^4.0.1",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "jest-junit": "^8.0.0",
     "node-sass": "^4.13.1",
     "nodemon": "^1.19.3",
