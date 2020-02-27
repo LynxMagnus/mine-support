@@ -91,11 +91,10 @@ node {
       }
       stage('Trigger Deployment') {
         withCredentials([
-          string(credentialsId: 'jenkins-deploy-site-root', variable: 'jenkinsDeployUrl'),
           string(credentialsId: 'web-deploy-job-name', variable: 'deployJobName'),
           string(credentialsId: 'web-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(jenkinsDeployUrl, deployJobName, jenkinsToken, ['chartVersion': containerTag])
+          defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
       }
     }
