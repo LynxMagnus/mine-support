@@ -1,6 +1,7 @@
 environment: development
 image: ffc-demo-web
 name: ffc-demo-web
+namespace: ffc-demo
 auth:
 imagePullSecret:
 service:

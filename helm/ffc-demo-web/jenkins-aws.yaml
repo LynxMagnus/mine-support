@@ -1,5 +1,6 @@
 environment: production
 imagePullSecret: myregistrykey
+namespace: ffc-demo
 service:
   port: 443
   type: NodePort
