@@ -4,9 +4,6 @@ describe('Accessible test', () => {
 
   beforeAll(async () => {
     createServer = require('../../../app/server')
-  })
-
-  beforeEach(async () => {
     server = await createServer()
     await server.initialize()
   })
@@ -21,7 +18,7 @@ describe('Accessible test', () => {
     expect(response.statusCode).toBe(200)
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await server.stop()
   })
 })
