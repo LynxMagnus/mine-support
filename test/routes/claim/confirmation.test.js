@@ -4,6 +4,9 @@ describe('Confirmation test', () => {
 
   beforeAll(async () => {
     createServer = require('../../../app/server')
+  })
+
+  beforeEach(async () => {
     server = await createServer()
     await server.initialize()
   })
@@ -18,7 +21,7 @@ describe('Confirmation test', () => {
     expect(response.statusCode).toBe(200)
   })
 
-  afterAll(async () => {
+  afterEach(async () => {
     await server.stop()
   })
 })
