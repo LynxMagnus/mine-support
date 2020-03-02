@@ -13,6 +13,7 @@ ENV PORT ${PORT}
 ARG PORT_DEBUG
 EXPOSE ${PORT} ${PORT_DEBUG}
 COPY --chown=node:node package*.json ./
+COPY --chown=node:node jest.setup.js ./
 RUN npm install
 COPY --chown=node:node app/ ./app/
 RUN npm run build
@@ -27,7 +28,6 @@ ARG PORT
 ENV PORT ${PORT}
 EXPOSE ${PORT}
 COPY --from=development /home/node/app/ ./app/
-COPY --from=development /home/node/jest.setup.js ./
 COPY --from=development /home/node/package*.json ./
 RUN npm ci
 CMD [ "node", "app" ]
