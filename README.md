@@ -107,7 +107,7 @@ Additional Docker Compose files are provided for scenarios such as linking to ot
 
 Link to other services:
 ```
-docker-compose -f docker-compose.yaml -f docker-compose.link.yaml up
+docker-compose -f docker-compose.yaml -f docker-compose.override.yaml -f docker-compose.link.yaml up
 ```
 
 ### Deploy to Kubernetes
