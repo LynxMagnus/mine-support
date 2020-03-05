@@ -16,7 +16,7 @@ services:
       REDIS_HOSTNAME: redis
 
   redis:
-    image: redis
+    image: redis:4.0.14
     volumes:
       - redis_data:/data
 
