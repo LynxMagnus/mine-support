@@ -8,6 +8,8 @@ services:
     build:
       target: development
     image: ffc-demo-web-development
+    depends_on:
+      - redis
     ports:
       - "3000:3000"
       - "9229:9229"
@@ -20,5 +22,8 @@ services:
       - ./package.json:/home/node/package.json
 
   redis:
+    image: redis:4.0.14
+    volumes:
+      - redis_data:/data
     ports:
       - "6379:6379"

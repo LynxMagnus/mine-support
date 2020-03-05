@@ -10,6 +10,8 @@ services:
       target: development
     image: ffc-demo-web-development
     command: npm test
+    environment:
+      NODE_ENV: test
     volumes:
       - ./test/:/home/node/test/
       - ./test-output/:/home/node/test-output/
