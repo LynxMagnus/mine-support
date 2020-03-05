@@ -11,9 +11,6 @@ async function createServer () {
         options: {
           abortEarly: false
         }
-      // },
-      // cache: {
-      //   otherwise: 'no-cache, must-revalidate, max-age=0, no-store'
       }
     },
     cache: [{
@@ -23,7 +20,7 @@ async function createServer () {
         options: {
           host: config.redisHost,
           port: config.redisPort,
-          partition: 'mine-support'
+          partition: config.redisPartition
         }
       }
     }]

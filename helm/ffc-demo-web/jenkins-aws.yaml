@@ -10,4 +10,4 @@ container:
   imagePullPolicy: Always
 ingress:
   endPoint: ffc-demo-web
-  server: ffc.aws-int.defra.cloud
+  server: dev-ffc.aws-int.defra.cloud

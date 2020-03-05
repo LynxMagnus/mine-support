@@ -9,7 +9,8 @@ service:
   type: ClusterIP
 
 container:
-  redisname: redis-redis-ha.default
+  redisHostname: redis-redis-ha.default
+  redisPartition: ffc-demo
   priorityClassName: low
   imagePullPolicy: IfNotPresent
   redeployOnChange: update this field to force a change

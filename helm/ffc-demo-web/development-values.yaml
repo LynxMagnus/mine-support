@@ -4,7 +4,7 @@ container:
   args: ["node app"]
   allowPrivilegeEscalation: true
   readOnlyRootFilesystem: false
-  redisname: ffc-demo-web-redis-headless.ffc-demo.svc.cluster.local
+  redisHostname: ffc-demo-web-redis-headless.ffc-demo.svc.cluster.local
 ingress:
   endpoint:
 replicaCount: 1

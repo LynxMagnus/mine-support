@@ -47,7 +47,9 @@ spec:
         - name: COOKIE_PASSWORD
           value: {{ quote .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
-          value: {{ quote .Values.container.redisname }}
+          value: {{ quote .Values.container.redisHostname }}
+        - name: REDIS_PARTITION
+          value: {{ quote .Values.container.redisPartition }}
         - name: API_GATEWAY
           value: {{ quote .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS
