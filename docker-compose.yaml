@@ -12,6 +12,3 @@ services:
       API_GATEWAY: http://ffc-demo-api-gateway:3001
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
-
-volumes:
-  redis_data:
