@@ -1,5 +1,6 @@
 environment: production
 imagePullSecret: myregistrykey
+namespace: ffc-demo
 service:
   port: 443
   type: NodePort
@@ -9,4 +10,4 @@ container:
   imagePullPolicy: Always
 ingress:
   endPoint: ffc-demo-web
-  server: ffc.aws-int.defra.cloud
+  server: ffc-dev.aws-int.defra.cloud

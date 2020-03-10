@@ -9,7 +9,10 @@ metadata:
     app.kubernetes.io/component: {{ quote .Values.labels.component }}
     app.kubernetes.io/part-of: {{ quote .Values.namespace }}
     app.kubernetes.io/managed-by: {{ quote .Values.labels.managedBy }}
+
+  namespace: {{ quote .Values.namespace }}
 spec:
+  priorityClassName: {{ quote .Values.container.priorityClassName }}
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy: {}
@@ -52,7 +55,9 @@ spec:
         - name: COOKIE_PASSWORD
           value: {{ quote .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
-          value: {{ quote .Values.container.redisname }}
+          value: {{ quote .Values.container.redisHostname }}
+        - name: REDIS_PARTITION
+          value: {{ quote .Values.container.redisPartition }}
         - name: API_GATEWAY
           value: {{ quote .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS

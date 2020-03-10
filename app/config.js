@@ -4,9 +4,10 @@ const Joi = require('@hapi/joi')
 const schema = Joi.object({
   port: Joi.number().default(3000),
   env: Joi.string().valid('development', 'test', 'production').default('development'),
-  cacheName: Joi.string().default('redisCache'),
+  cacheName: Joi.string(),
   redisHost: Joi.string().default('localhost'),
   redisPort: Joi.number().default(6379),
+  redisPartition: Joi.string().default('ffc-demo'),
   cookiePassword: Joi.string().required(),
   sessionTimeoutMinutes: Joi.number().default(30),
   staticCacheTimeoutMillis: Joi.number().default(15 * 60 * 1000),
@@ -18,7 +19,8 @@ const schema = Joi.object({
 const config = {
   port: process.env.PORT,
   env: process.env.NODE_ENV,
-  cacheName: process.env.CACHE_NAME,
+  cacheName: 'redisCache',
+  redisPartition: process.env.REDIS_PARTITION,
   redisHost: process.env.REDIS_HOSTNAME,
   redisPort: process.env.REDIS_PORT,
   cookiePassword: process.env.COOKIE_PASSWORD,
