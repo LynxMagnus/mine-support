@@ -63,7 +63,8 @@ node {
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.endpoint="ffc-demo-$containerTag"/,
             /ingress.server="$ingressServer"/,
-            /name="ffc-demo-$containerTag"/
+            /name="ffc-demo-$containerTag"/,
+            /labels.version="$containerTag"/
           ].join(',')
 
           def extraCommands = [
