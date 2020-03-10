@@ -16,37 +16,16 @@ def timeoutInMinutes = 5
 node {
   checkout scm
   try {
-    stage('Set GitHub status as pending'){
-
-      // Debug Jenkins variables
-      def creds = com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(
-        com.cloudbees.plugins.credentials.Credentials.class
-      )
-
-      for (c in creds) {
-        println(c.id)
-        if (c.properties.username) {
-          println("   description: " + c.description)
-        }
-        if (c.properties.username) {
-          println("   username: " + c.username)
-        }
-        if (c.properties.password) {
-          println("   password: " + c.password)
-        }
-        if (c.properties.passphrase) {
-          println("   passphrase: " + c.passphrase)
-        }
-        if (c.properties.secret) {
-          println("   secret: " + c.secret)
-        }
-        if (c.properties.privateKeySource) {
-          println("   privateKey: " + c.getPrivateKey())
-        }
-        println("")
+    stage('Debug') {
+      withCredentials([
+          string(credentialsId: "$serviceName-alb-tags", variable: 'albTags')
+      ]) {
+        print "Echoing tags"
+        sh "echo $albTags | base64"
+        exit 1
       }
-
-
+    }
+    stage('Set GitHub status as pending'){
       defraUtils.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
