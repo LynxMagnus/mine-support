@@ -1,4 +1,0 @@
-environment: production
-image: jwminesupport.azurecr.io/ffc-demo-web:master
-container:
-    imagePullPolicy: Always

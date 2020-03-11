@@ -3,10 +3,8 @@
 set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/../.." || return; pwd)"
 
-# Set Docker/Kubernetes resource names managed by this script
-containerName="ffc-demo-web"
-dockerPrefix="ffc-demo-web"
-kubernetesNamespace="ffc-demo"
+chartName="ffc-demo-web"
+namespace="ffc-demo"
 
 show_help() {
   echo "
@@ -61,20 +59,20 @@ fi
   helm upgrade \
     --atomic \
     --install \
-    --namespace ${kubernetesNamespace} \
-    --values helm/ffc-demo-web/redis-values.yaml \
+    --namespace ${namespace} \
+    --values helm/${chartName}/redis-values.yaml \
     --wait \
-    ${dockerPrefix}-redis \
+    ${chartName}-redis \
     stable/redis
 
   echo "Deploying web service"
   helm upgrade \
     --atomic \
     --install \
-    --namespace ${kubernetesNamespace} \
-    --values helm/ffc-demo-web/development-values.yaml \
+    --namespace ${namespace} \
+    --values helm/${chartName}/development-values.yaml \
     --set auth="${credentials}" \
     --wait \
-    ${containerName} \
+    ${chartName} \
     ./helm
 )

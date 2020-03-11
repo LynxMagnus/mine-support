@@ -5,9 +5,28 @@ version: '3.7'
 
 services:
   ffc-demo-web:
+    build:
+      target: development
+    image: ffc-demo-web-development
+    depends_on:
+      - redis
     ports:
       - "3000:3000"
+      - "9229:9229"
+    volumes:
+      - ./.git/:/home/node/.git/ # Git is required by Jest file watcher
+      - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/
+      - ./jest.config.js:/home/node/jest.config.js
+      - ./package.json:/home/node/package.json
 
   redis:
+    image: redis:4.0.14
+    volumes:
+      - redis_data:/data
     ports:
       - "6379:6379"
+
+volumes:
+  redis_data:

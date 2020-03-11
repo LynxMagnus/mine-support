@@ -12,7 +12,9 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     environment: {{ quote .Values.environment }}
+  namespace: {{ quote .Values.namespace }}
 spec:
+  priorityClassName: {{ quote .Values.container.priorityClassName }}
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy: {}
@@ -28,6 +30,7 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
         environment: {{ quote .Values.environment }}
+      namespace: {{ quote .Values.namespace }}
       annotations:
         redeployOnChange: {{ quote .Values.container.redeployOnChange }}
     spec:
@@ -63,7 +66,9 @@ spec:
         - name: COOKIE_PASSWORD
           value: {{ quote .Values.cookiePassword }}
         - name: REDIS_HOSTNAME
-          value: {{ quote .Values.container.redisname }}
+          value: {{ quote .Values.container.redisHostname }}
+        - name: REDIS_PARTITION
+          value: {{ quote .Values.container.redisPartition }}
         - name: API_GATEWAY
           value: {{ quote .Values.container.apiGatewayUrl }}
         - name: REST_CLIENT_TIMEOUT_IN_MILLIS

@@ -5,7 +5,7 @@ module.exports = [{
   path: '/robots.txt',
   options: {
     handler: {
-      file: 'server/public/static/robots.txt'
+      file: 'app/public/static/robots.txt'
     },
     cache: {
       expiresIn: config.staticCacheTimeoutMillis,
@@ -31,8 +31,8 @@ module.exports = [{
     handler: {
       directory: {
         path: [
-          'server/public/static',
-          'server/public/build',
+          'app/public/static',
+          'app/public/build',
           'node_modules/govuk-frontend/govuk/assets'
         ]
       }
