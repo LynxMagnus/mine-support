@@ -32,7 +32,7 @@ container:
   staticCacheTimeoutMillis: 54000
 ingress:
   endPoint: ffc-demo
-  server: vividcloudsolutions.co.uk
+  server:
 replicas: 1
 minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword
