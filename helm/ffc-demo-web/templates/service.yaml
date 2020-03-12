@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
   name: {{ quote .Values.name }}
   labels:
-    app: {{ quote .Values.name }}
+    app: {{ quote .Values.namespace }}
     app.kubernetes.io/name: {{ quote .Values.name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ quote .Values.labels.version }}
@@ -28,5 +28,5 @@ spec:
   selector:
     app.kubernetes.io/name: {{ quote .Values.name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app: {{ quote .Values.name }}
+    app: {{ quote .Values.namespace }}
   type: {{ quote .Values.service.type }}
