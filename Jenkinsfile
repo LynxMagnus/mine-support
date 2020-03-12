@@ -69,7 +69,6 @@ node {
             /ingress.endpoint="ffc-demo-$containerTag"/,
             /name="ffc-demo-$containerTag"/,
             /labels.version="$containerTag"/
-
           ].join(',')
 
           def extraCommands = [
