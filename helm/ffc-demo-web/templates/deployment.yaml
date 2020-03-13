@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ quote .Values.name }}
-  labels: {{ include "labels" . | trimSuffix "\n" | indent 2 }}
+  labels: {{ include "ffc-demo.labels" . | trimSuffix "\n" | indent 2 }}
   namespace: {{ quote .Values.namespace }}
 spec:
   priorityClassName: {{ quote .Values.container.priorityClassName }}
@@ -11,7 +11,7 @@ spec:
   strategy: {}
   template:
     metadata:
-      labels: {{ include "labels" . | trimSuffix "\n" | indent 6 }}
+      labels: {{ include "ffc-demo.labels" . | trimSuffix "\n" | indent 6 }}
       namespace: {{ quote .Values.namespace }}
       annotations:
         redeployOnChange: {{ quote .Values.container.redeployOnChange }}
