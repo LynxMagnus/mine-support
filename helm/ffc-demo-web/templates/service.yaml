@@ -19,6 +19,5 @@ spec:
     targetPort: http
   selector:
     app.kubernetes.io/name: {{ quote .Values.name }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
     app: {{ quote .Values.namespace }}
   type: {{ quote .Values.service.type }}
