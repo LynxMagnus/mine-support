@@ -2,6 +2,7 @@ environment: development
 image: ffc-demo-web
 name: ffc-demo-web
 namespace: ffc-demo
+workstream: ffc-demo
 auth:
 imagePullSecret:
 labels:
