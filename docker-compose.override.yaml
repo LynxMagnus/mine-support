@@ -14,7 +14,6 @@ services:
       - "3000:3000"
       - "9229:9229"
     volumes:
-      - ./.git/:/home/node/.git/ # Git is required by Jest file watcher
       - ./app/:/home/node/app/
       - ./package.json:/home/node/package.json
 

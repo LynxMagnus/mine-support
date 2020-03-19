@@ -3,9 +3,9 @@
 .npm/
 .standard-v12-cache/
 .vscode
+app/static/stylesheets/*.css*
+auth
+lcov.info
 node_modules
 npm-debug.log
-lcov.info
-auth
 test-output
-app/public/build

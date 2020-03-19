@@ -1,6 +1,5 @@
-node_modules
-npm-debug.log
-Dockerfile
+node_modules/
+test-output/
 .dockerignore
 auth
 test-output
@@ -12,3 +11,6 @@ docker-compose*
 Jenkinsfile
 License
 README.md
+app/static/stylesheets/*.css*
+Dockerfile
+npm-debug.log
