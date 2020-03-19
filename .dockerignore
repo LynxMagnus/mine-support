@@ -4,3 +4,11 @@ Dockerfile
 .dockerignore
 auth
 test-output
+
+helm
+scripts
+test-output
+docker-compose*
+Jenkinsfile
+License
+README.md
