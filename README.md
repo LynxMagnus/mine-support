@@ -72,22 +72,22 @@ npm run test
 
 ### Test watcher
 
-A more convenient way to run tests in development is to use a file watcher to automatically run tests each time associated files are modified. For this purpose, the default docker-compose configuration mounts all app, test and git files into the main `app` container, enabling the test watcher to be run as shown below. The same approach may be used to execute arbitrary commands in the running app.
+A more convenient way to run tests in development is to use a file watcher to automatically run tests each time associated files are modified. For this purpose, the default docker-compose configuration mounts all app, test and git files into the main `ffc-demo-web` container, enabling the test watcher to be run as shown below. The same approach may be used to execute arbitrary commands in the running app.
 
 ```
 # Run unit test file watcher
-docker-compose exec app npm run test:unit-watch
+docker-compose run ffc-demo-web npm run test:unit-watch
 
 # Run all tests
-docker-compose exec app npm test
+docker-compose run ffc-demo-web npm test
 
 # Open an interactive shell in the app container
-docker-compose exec app sh
+docker-compose run ffc-demo-web sh
 ```
 
 ### Why docker-compose.test.yaml exists
 
-Given that tests can be run in the main app container during development, it may not be obvious why `docker-compose.test.yaml` exists. It's main purpose is for CI pipelines, where tests need to run in a container without any ports forwarded from the host machine.
+Given that tests can be run in the main ffc-demo-web container during development, it may not be obvious why `docker-compose.test.yaml` exists. It's main purpose is for CI pipelines, where tests need to run in a container without any ports forwarded from the host machine.
 
 ## Running the application
 
