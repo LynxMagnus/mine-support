@@ -6,6 +6,7 @@ ARG REGISTRY
 # Development
 FROM ${REGISTRY}/ffc-node-development:${PARENT_VERSION} AS development
 ARG PARENT_VERSION
+ARG REGISTRY
 LABEL uk.gov.defra.ffc.parent-image=${REGISTRY}/ffc-node-development:${PARENT_VERSION}
 ARG PORT
 ENV PORT ${PORT}
@@ -20,6 +21,7 @@ CMD [ "npm", "run", "start:watch" ]
 # Production
 FROM ${REGISTRY}/ffc-node:${PARENT_VERSION} AS production
 ARG PARENT_VERSION
+ARG REGISTRY
 LABEL uk.gov.defra.ffc.parent-image=${REGISTRY}/ffc-node:${PARENT_VERSION}
 ARG PORT
 ENV PORT ${PORT}
