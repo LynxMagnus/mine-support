@@ -9,6 +9,9 @@ spec:
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy: {}
+  selector:
+    app.kubernetes.io/name: {{ quote .Values.name }}
+    app: {{ quote .Values.namespace }}
   template:
     metadata:
       labels: {{ include "ffc-demo.labels" . | trimSuffix "\n" | indent 6 }}
