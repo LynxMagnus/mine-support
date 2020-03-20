@@ -221,7 +221,7 @@ The builds will be available at the URL `http://ffc-demo-{identifier}.{ingress-s
 
 The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this could be
 
-xx.xx.xx.xx mine-support-pr8.my-ingress-server.co.uk
+xx.xx.xx.xx ffc-demo-pr8.my-ingress-server.co.uk
 
 where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
 
