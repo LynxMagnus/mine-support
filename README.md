@@ -208,7 +208,7 @@ Now the application is ready to run:
 
 ## Build Pipeline
 
-The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
+The [Jenkinsfile](Jenkinsfile) performs the following tasks:
 - Runs unit tests
 - Publishes test result
 - Pushes containers to the registry tagged with the PR number or release version
@@ -217,11 +217,11 @@ The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
 
 Builds will be deployed into a namespace with the format `ffc-demo-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
 
-The builds will be available at the URL `http://ffc-demo-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/ffc-demo-web/values.yaml),  which is `vividcloudsolutions.co.uk` by default.
+The builds will be available at the URL `http://ffc-demo-{identifier}.{ingress-server}`, where `{ingress-server}` is r defined the [`values.yaml`](./helm/ffc-demo-web/values.yaml) at `ingress.server`. This is empty by default and is set during the build pipeline.
 
-The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this would be
+The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this could be
 
-xx.xx.xx.xx mine-support-pr8.vividcloudsolutions.co.uk
+xx.xx.xx.xx mine-support-pr8.my-ingress-server.co.uk
 
 where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
 
