@@ -85,7 +85,7 @@ docker-compose run ffc-demo-web npm test
 docker-compose run ffc-demo-web sh
 ```
 
-### Why docker-compose.test.yaml exists
+### Why the docker-compose.test.yaml exists
 
 Given that tests can be run in the main ffc-demo-web container during development, it may not be obvious why `docker-compose.test.yaml` exists. It's main purpose is for CI pipelines, where tests need to run in a container without any ports forwarded from the host machine.
 
