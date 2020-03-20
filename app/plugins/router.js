@@ -9,7 +9,7 @@ const routes = [].concat(
   require('../routes/claim/email'),
   require('../routes/claim/confirmation'),
   require('../routes/clear-session'),
-  require('../routes/public')
+  require('../routes/static')
 )
 
 module.exports = {

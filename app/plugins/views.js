@@ -2,7 +2,6 @@ const path = require('path')
 const nunjucks = require('nunjucks')
 const config = require('../config')
 const pkg = require('../../package.json')
-const analyticsAccount = config.analyticsAccount
 
 module.exports = {
   plugin: require('@hapi/vision'),
@@ -33,7 +32,6 @@ module.exports = {
     relativeTo: __dirname,
     isCached: !config.isDev,
     context: {
-      analyticsAccount: analyticsAccount,
       appVersion: pkg.version,
       assetPath: '/static',
       govukAssetPath: '/assets',

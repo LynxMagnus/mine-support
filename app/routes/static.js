@@ -30,7 +30,7 @@ module.exports = [{
   }
 }, {
   method: 'GET',
-  path: '/node_modules/govuk-frontend/govuk/{path*}',
+  path: '/govuk-frontend/govuk/{path*}',
   options: {
     handler: {
       directory: {
