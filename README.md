@@ -1,4 +1,4 @@
-[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-demo-web/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-demo-web?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/DEFRA/ffc-demo-web/badge.svg?targetFile=package.json)](https://snyk.io/test/github/DEFRA/ffc-demo-web?targetFile=package.json)
 
 # FFC Demo Service
 
@@ -99,7 +99,7 @@ The application is designed to run in containerised environments, using Docker C
 
 Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
 
-When using the Docker Compose files in development the local `app` folder will be mounted on top of the `app` folder within the Docker container, hiding the css files that were generated during the Docker build. 
+When using the Docker Compose files in development the local `app` folder will be mounted on top of the `app` folder within the Docker container, hiding the css files that were generated during the Docker build.
 For the site to render correctly locally `npm run build` must be run on the host system.
 
 
