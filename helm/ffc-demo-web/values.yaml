@@ -15,10 +15,6 @@ secret:
 
 auth:
 
-service:
-  port: 80
-  type: ClusterIP
-
 container:
   redisHostname: redis-redis-ha.default
   redisPartition: ffc-demo
