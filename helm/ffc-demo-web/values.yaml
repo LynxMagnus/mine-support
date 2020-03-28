@@ -5,8 +5,6 @@ image: ffc-demo-web
 workstream: ffc-demo
 
 labels:
-  instance:
-  version: 1.0.0
   component: web
 
 secret:
