@@ -7,7 +7,7 @@ workstream: ffc-demo
 labels:
   instance:
   version: 1.0.0
-  component: service
+  component: web
 
 secret:
   name: ffc-demo-basic-auth
