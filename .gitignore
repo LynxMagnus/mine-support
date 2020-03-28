@@ -10,4 +10,4 @@ node_modules
 npm-debug.log
 test-output
 *.tgz
-requirements.lock
+helm/**/*.lock
