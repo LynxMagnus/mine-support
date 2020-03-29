@@ -1,44 +1,8 @@
-{{- include "ffc-helm-library.deployment" (list . "ffc-demo-web.deployment") -}}
+{{- template "ffc-helm-library.deployment" (list . "ffc-demo-web.deployment") -}}
 {{- define "ffc-demo-web.deployment" -}}
 spec:
   template:
     spec:
       containers:
-      - name: {{ quote .Values.name }}
-        env:
-        - name: NODE_ENV
-          value: {{ quote .Values.environment }}
-        - name: PORT
-          value: {{ .Values.container.port }}
-        - name: COOKIE_PASSWORD
-          value: {{ quote .Values.container.cookiePassword }}
-        - name: REDIS_HOSTNAME
-          value: {{ quote .Values.container.redisHostname }}
-        - name: REDIS_PARTITION
-          {{- if .Values.pr }}
-          value: "{{ .Values.container.redisPartition }}-{{ .Values.pr }}"
-          {{- else }}
-          value: {{ quote .Values.container.redisPartition }}
-          {{- end }}
-        - name: API_GATEWAY
-          value: {{ quote .Values.container.apiGatewayUrl }}
-        - name: REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ quote .Values.container.restClientTimeoutMillis }}
-        - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
-          value: {{ quote .Values.container.staticCacheTimeoutMillis }}
-        ports:
-        - name: http
-          containerPort: {{ .Values.container.port }}
-          protocol: TCP
-        livenessProbe:
-          httpGet:
-            path: {{ quote .Values.livenessProbe.path }}
-            port: {{ .Values.livenessProbe.port }}
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
-        readinessProbe:
-          httpGet:
-            path: {{ quote .Values.readinessProbe.path }}
-            port: {{ .Values.readinessProbe.port }}
+      - {{ template "ffc-helm-library.container" (list . "ffc-demo-web.container") }}
 {{- end -}}
