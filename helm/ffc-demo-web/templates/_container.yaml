@@ -4,7 +4,7 @@ env:
 - name: NODE_ENV
   value: {{ quote .Values.environment }}
 - name: PORT
-  value: {{ .Values.container.port }}
+  value: {{ quote .Values.container.port }}
 - name: COOKIE_PASSWORD
   value: {{ quote .Values.container.cookiePassword }}
 - name: REDIS_HOSTNAME
