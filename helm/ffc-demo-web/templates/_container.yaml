@@ -32,4 +32,7 @@ readinessProbe:
   httpGet:
     path: {{ quote .Values.readinessProbe.path }}
     port: {{ .Values.readinessProbe.port }}
+  initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+  periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+  failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
 {{- end -}}
