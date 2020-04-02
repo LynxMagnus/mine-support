@@ -1,4 +1,4 @@
-@Library('defra-library@4')
+@Library('defra-library@psd-643-global-variables')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
