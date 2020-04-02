@@ -17,13 +17,13 @@ node {
   checkout scm
   try {
     stage('Set GitHub status as pending'){
-      defraUtils.setGithubStatusPending()
+      github.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
-      defraUtils.lintHelm(serviceName)
+      test.lintHelm(serviceName)
     }
     stage('Build test image') {
       defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
