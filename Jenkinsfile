@@ -1,4 +1,4 @@
-@Library('defra-library@4')
+@Library('defra-library@psd-650-evaluate-repo-name')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -8,6 +8,7 @@ def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
+def repoName = ''
 def serviceName = 'ffc-demo-web'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
@@ -20,7 +21,7 @@ node {
       defraUtils.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
+      (repoName, pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
