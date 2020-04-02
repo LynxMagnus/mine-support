@@ -22,7 +22,7 @@ node {
     }
     stage('Set PR, and containerTag variables') {
       (repoName, pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
-      echo repoName
+      echo $repoName
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
