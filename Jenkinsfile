@@ -1,6 +1,4 @@
 @Library('defra-library@psd-643-strike-two')
-import uk.gov.defra.ffc.DefraUtils
-def defraUtils = new DefraUtils()
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
@@ -20,35 +18,35 @@ node {
       github.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
+      (pr, containerTag, mergedPrNo) = github.getVariables(serviceName, version.getPackageJsonVersion())
     }
     stage('Helm lint') {
       test.lintHelm(serviceName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
+      test.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(serviceName, serviceName, BUILD_NUMBER)
+      test.runTests(serviceName, serviceName, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
-      defraUtils.createTestReportJUnit()
+      test.createTestReportJUnit()
     }
     stage('Fix lcov report') {
-      defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
+      test.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
-      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
+      test.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
     }
     stage("Code quality gate") {
-      defraUtils.waitForQualityGateResult(timeoutInMinutes)
+      test.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      defraUtils.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
+      docker.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
     }
     if (pr != '') {
       stage('Verify version incremented') {
-        defraUtils.verifyPackageJsonVersionIncremented()
+        version.verifyPackageJsonVersionIncremented()
       }
       stage('Helm install') {
         withCredentials([
@@ -76,20 +74,20 @@ node {
             "--set $helmValues"
           ].join(' ')
 
-          defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
+          helm.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
           echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
         }
       }
     }
     if (pr == '') {
       stage('Publish chart') {
-        defraUtils.publishChart(DOCKER_REGISTRY, serviceName, containerTag)
+        helm.publishChart(DOCKER_REGISTRY, serviceName, containerTag)
       }
       stage('Trigger GitHub release') {
         withCredentials([
           string(credentialsId: 'github-auth-token', variable: 'gitToken')
         ]) {
-          defraUtils.triggerRelease(containerTag, serviceName, containerTag, gitToken)
+          release.triggerRelease(containerTag, serviceName, containerTag, gitToken)
         }
       }
       stage('Trigger Deployment') {
@@ -97,23 +95,23 @@ node {
           string(credentialsId: 'web-deploy-job-name', variable: 'deployJobName'),
           string(credentialsId: 'web-deploy-token', variable: 'jenkinsToken')
         ]) {
-          defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
+          deploy.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
       }
     }
     if (mergedPrNo != '') {
       stage('Remove merged PR') {
-        defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
+        helm.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
     }
     stage('Set GitHub status as success'){
-      defraUtils.setGithubStatusSuccess()
+      github.setGithubStatusSuccess()
     }
   } catch(e) {
-    defraUtils.setGithubStatusFailure(e.message)
-    defraUtils.notifySlackBuildFailure(e.message, "#generalbuildfailures")
+    github.setGithubStatusFailure(e.message)
+    notifySlack.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
-    defraUtils.deleteTestOutput(serviceName, containerSrcFolder)
+    test.deleteTestOutput(serviceName, containerSrcFolder)
   }
 }
