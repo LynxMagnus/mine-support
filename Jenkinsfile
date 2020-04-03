@@ -15,19 +15,19 @@ node {
   checkout scm
   try {
     stage('Set GitHub status as pending'){
-      github.setGithubStatusPending()
+      build.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
-      (pr, containerTag, mergedPrNo) = github.getVariables(serviceName, version.getPackageJsonVersion())
+      (pr, containerTag, mergedPrNo) = build.getVariables(serviceName, version.getPackageJsonVersion())
     }
     stage('Helm lint') {
       test.lintHelm(serviceName)
     }
     stage('Build test image') {
-      github.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
+      build.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      github.runTests(serviceName, serviceName, BUILD_NUMBER)
+      build.runTests(serviceName, serviceName, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       test.createTestReportJUnit()
@@ -42,7 +42,7 @@ node {
       test.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
-      github.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
+      build.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
     }
     if (pr != '') {
       stage('Verify version incremented') {
@@ -105,10 +105,10 @@ node {
       }
     }
     stage('Set GitHub status as success'){
-      github.setGithubStatusSuccess()
+      build.setGithubStatusSuccess()
     }
   } catch(e) {
-    github.setGithubStatusFailure(e.message)
+    build.setGithubStatusFailure(e.message)
     notifySlack.notifySlackBuildFailure(e.message, "#generalbuildfailures")
     throw e
   } finally {
