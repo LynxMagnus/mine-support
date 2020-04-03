@@ -26,7 +26,7 @@ node {
       test.lintHelm(serviceName)
     }
     stage('Build test image') {
-      defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
+      github.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
       test.runTests(serviceName, serviceName, BUILD_NUMBER)
