@@ -1,6 +1,4 @@
 @Library('defra-library@psd-643-strike-two')
-import uk.gov.defra.ffc.DefraUtils
-def defraUtils = new DefraUtils()
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
