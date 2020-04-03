@@ -1,4 +1,6 @@
 @Library('defra-library@psd-643-strike-two')
+import uk.gov.defra.ffc.DefraUtils
+def defraUtils = new DefraUtils()
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
@@ -24,7 +26,7 @@ node {
       test.lintHelm(serviceName)
     }
     stage('Build test image') {
-      docker.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
+      defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
       test.runTests(serviceName, serviceName, BUILD_NUMBER)
