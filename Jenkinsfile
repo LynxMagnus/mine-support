@@ -35,7 +35,7 @@ node {
       test.createTestReportJUnit()
     }
     stage('Fix lcov report') {
-      test.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
+      utils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
     }
     stage('SonarQube analysis') {
       test.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
