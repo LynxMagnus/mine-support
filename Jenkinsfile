@@ -44,6 +44,7 @@ node {
       test.waitForQualityGateResult(timeoutInMinutes)
     }
     stage('Push container image') {
+      echo "containerTag...$containerTag"
       docker.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
     }
     if (pr != '') {
