@@ -29,7 +29,7 @@ node {
       github.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      test.runTests(serviceName, serviceName, BUILD_NUMBER)
+      github.runTests(serviceName, serviceName, BUILD_NUMBER)
     }
     stage('Create JUnit report'){
       test.createTestReportJUnit()
