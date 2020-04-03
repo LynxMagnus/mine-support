@@ -24,7 +24,7 @@ node {
       test.lintHelm(serviceName)
     }
     stage('Build test image') {
-      test.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
+      docker.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
       test.runTests(serviceName, serviceName, BUILD_NUMBER)
