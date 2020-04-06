@@ -1,4 +1,4 @@
-@Library('defra-library@4')
+@Library('defra-library@psd-646-deploy-helm-with-values')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -51,34 +51,34 @@ node {
         defraUtils.verifyPackageJsonVersionIncremented()
       }
       stage('Helm install') {
-        withCredentials([
-            string(credentialsId: 'web-alb-tags', variable: 'albTags'),
-            string(credentialsId: 'web-alb-security-groups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'web-alb-arn', variable: 'albArn'),
-            string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
-          ]) {
+        // withCredentials([
+        //     string(credentialsId: 'web-alb-tags', variable: 'albTags'),
+        //     string(credentialsId: 'web-alb-security-groups', variable: 'albSecurityGroups'),
+        //     string(credentialsId: 'web-alb-arn', variable: 'albArn'),
+        //     string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
+        //   ]) {
 
-          def helmValues = [
-            /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
-            /container.redisHostname="$REDIS_HOSTNAME"/,
-            /container.redisPartition="ffc-demo-$containerTag"/,
-            /cookiePassword="$cookiePassword"/,
-            /ingress.alb.tags="$albTags"/,
-            /ingress.alb.arn="$albArn"/,
-            /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /ingress.endpoint="ffc-demo-$containerTag"/,
-            /name="ffc-demo-$containerTag"/,
-            /labels.version="$containerTag"/
-          ].join(',')
+        //   def helmValues = [
+        //     /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
+        //     /container.redisHostname="$REDIS_HOSTNAME"/,
+        //     /container.redisPartition="ffc-demo-$containerTag"/,
+        //     /cookiePassword="$cookiePassword"/,
+        //     /ingress.alb.tags="$albTags"/,
+        //     /ingress.alb.arn="$albArn"/,
+        //     /ingress.alb.securityGroups="$albSecurityGroups"/,
+        //     /ingress.endpoint="ffc-demo-$containerTag"/,
+        //     /name="ffc-demo-$containerTag"/,
+        //     /labels.version="$containerTag"/
+        //   ].join(',')
 
-          def extraCommands = [
-            "--values ./helm/$serviceName/jenkins-aws.yaml",
-            "--set $helmValues"
-          ].join(' ')
+        //   def extraCommands = [
+        //     "--values ./helm/$serviceName/jenkins-aws.yaml",
+        //     "--set $helmValues"
+        //   ].join(' ')
 
-          defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
+          helm.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
           echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
-        }
+        // }
       }
     }
     if (pr == '') {
