@@ -4,11 +4,6 @@ def defraUtils = new DefraUtils()
 
 node {
   checkout scm
-  
-  stage('Pending') {
-    build.setGithubStatusPending()
-  }
-  stage('Complete') {
-    build.setGithubStatusSuccess()
-  }
+  build.setGithubStatusPending()
+  build.setGithubStatusSuccess()
 }
