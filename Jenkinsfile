@@ -1,7 +1,14 @@
 @Library('defra-library@feature/PSD-652-node-js-pipeline')
+import uk.gov.defra.ffc.DefraUtils
+def defraUtils = new DefraUtils()
 
 node {
   checkout scm
   
-  pipeline.nodeStandard()
+  stage('Pending') {
+    build.setGithubStatusPending()
+  }
+  stage('Complete') {
+    build.setGithubStatusSuccess()
+  }
 }
