@@ -25,24 +25,24 @@ node {
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
     }
-    stage('Build test image') {
-      defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
-    }
-    stage('Run tests') {
-      defraUtils.runTests(serviceName, serviceName, BUILD_NUMBER)
-    }
-    stage('Create JUnit report'){
-      defraUtils.createTestReportJUnit()
-    }
-    stage('Fix lcov report') {
-      defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
-    }
-    stage('SonarQube analysis') {
-      defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
-    }
-    stage("Code quality gate") {
-      defraUtils.waitForQualityGateResult(timeoutInMinutes)
-    }
+    // stage('Build test image') {
+    //   defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
+    // }
+    // stage('Run tests') {
+    //   defraUtils.runTests(serviceName, serviceName, BUILD_NUMBER)
+    // }
+    // stage('Create JUnit report'){
+    //   defraUtils.createTestReportJUnit()
+    // }
+    // stage('Fix lcov report') {
+    //   defraUtils.replaceInFile(containerSrcFolder, localSrcFolder, lcovFile)
+    // }
+    // stage('SonarQube analysis') {
+    //   defraUtils.analyseCode(sonarQubeEnv, sonarScanner, ['sonar.projectKey' : serviceName, 'sonar.sources' : '.'])
+    // }
+    // stage("Code quality gate") {
+    //   defraUtils.waitForQualityGateResult(timeoutInMinutes)
+    // }
     stage('Push container image') {
       defraUtils.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag)
     }
