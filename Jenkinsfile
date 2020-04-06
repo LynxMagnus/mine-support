@@ -4,6 +4,6 @@ import uk.gov.defra.ffc.DefraUtils
 node {
   checkout scm
   build.setGithubStatusPending()
-  pipeline.test()
+  build.test()
   build.setGithubStatusSuccess()
 }
