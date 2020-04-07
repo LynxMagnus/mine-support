@@ -1,7 +1,3 @@
-@Library('defra-library@feature/PSD-652-node-js-pipeline')
-import uk.gov.defra.ffc.DefraUtils
+@Library('defra-library@feature/PSD-652-node-js-pipeline') _
 
-node {
-  checkout scm
-  pipelines.nodeStandard()
-}
+pipelines.nodeStandard([ serviceName: 'ffc-demo-web' ])
