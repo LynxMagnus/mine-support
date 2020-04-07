@@ -11,7 +11,7 @@ node {
   checkout scm
   try {
     stage('Set PR, and containerTag variables') {
-      (repoName, pr, containerTag, mergedPrNo) = build.getVariables(build.getPackageJsonVersion())
+      (repoName, pr, containerTag, mergedPrNo) = build.getVariables()
       echo "repoName: $repoName"
       echo "pr: $pr"
       echo "containerTag: $containerTag"
