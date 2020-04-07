@@ -5,6 +5,7 @@ node {
   checkout scm
   build.setGithubStatusPending()
   build.test()
+  drainpipe.test()
   pipeline.test()
   build.setGithubStatusSuccess()
 }
