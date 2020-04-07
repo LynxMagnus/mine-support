@@ -3,5 +3,5 @@ import uk.gov.defra.ffc.DefraUtils
 
 node {
   checkout scm
-  pipelines.test()
+  pipelines.nodeStandard()
 }
