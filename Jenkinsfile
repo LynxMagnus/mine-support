@@ -1,4 +1,4 @@
-@Library('defra-library@refactor-global-vars')
+@Library('defra-library@refactor-global-vars') _
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
