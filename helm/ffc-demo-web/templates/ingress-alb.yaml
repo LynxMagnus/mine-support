@@ -15,7 +15,11 @@ metadata:
 spec:
   rules:
 {{- if .Values.ingress.endpoint }}
+{{- if .Values.pr }}
+  - host: {{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}  
+{{- else }}
   - host: {{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}
+{{- end }}
     http:
 {{ else }}
   - http:
