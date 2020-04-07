@@ -6,6 +6,6 @@ node {
   build.setGithubStatusPending()
   build.test()
   drainpipe.test()
-  pipeline.test()
+  pipelines.test()
   build.setGithubStatusSuccess()
 }
