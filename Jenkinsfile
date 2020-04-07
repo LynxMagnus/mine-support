@@ -77,8 +77,7 @@ node {
         //   ].join(' ')
 
           helm.deployChart(KUBE_CREDENTIALS_ID, 'dev', DOCKER_REGISTRY, serviceName, containerTag)
-          echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
-        // }
+        }
         stage("Test Remote Helm install"){
           helm.deployRemoteChart(KUBE_CREDENTIALS_ID, 'dev', 'ffc-demo-web-pr119a', serviceName, '1.0.32')
         }
