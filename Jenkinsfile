@@ -10,15 +10,15 @@ def repoName = ''
 node {
   checkout scm
   try {
+    stage('Set GitHub status as pending'){
+      build.setGithubStatusPending()
+    }
     stage('Set PR, and containerTag variables') {
       (repoName, pr, containerTag, mergedPrNo) = build.getVariables()
       echo "repoName: $repoName"
       echo "pr: $pr"
       echo "containerTag: $containerTag"
       echo "mergedPrNo: $mergedPrNo"
-    }
-    stage('Set GitHub status as pending'){
-      build.setGithubStatusPending()
     }
     stage('Set GitHub status as success'){
       build.setGithubStatusSuccess()
