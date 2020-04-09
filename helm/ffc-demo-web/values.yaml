@@ -32,7 +32,7 @@ container:
   restClientTimeoutMillis: 20000
   staticCacheTimeoutMillis: 54000
 ingress:
-  endPoint: ffc-demo
+  endpoint: ffc-demo
   server:
 replicas: 1
 minReadySeconds: 5
