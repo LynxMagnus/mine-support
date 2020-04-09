@@ -1,4 +1,4 @@
-{{- if not .Values.ingress.alb }}
+{{- if not .Values.ingress.alb.arn }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
