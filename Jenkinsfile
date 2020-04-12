@@ -56,6 +56,10 @@ node {
             string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
           ]) {
 
+          sh "echo $albArn | base64"
+          sh "echo $albTags | base64"
+          sh "echo $cookiePassword | base64"
+
           def helmValues = [
             /deployment.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /container.redisHostname="$REDIS_HOSTNAME"/,
