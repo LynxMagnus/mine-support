@@ -64,7 +64,7 @@ node {
             /deployment.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /container.redisHostname="$REDIS_HOSTNAME"/,
             /container.redisPartition="ffc-demo-$containerTag"/,
-            /cookiePassword="$cookiePassword"/,
+            /container.cookiePassword="$cookiePassword"/,
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
