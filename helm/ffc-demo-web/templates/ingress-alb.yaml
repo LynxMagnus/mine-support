@@ -23,7 +23,7 @@ spec:
   - http:
 {{- end }}
       paths:
-      - path: /*
+      - path: /?(.*)
         backend:
           serviceName: {{ .Values.name | quote }}
           servicePort: {{ .Values.service.port }}
