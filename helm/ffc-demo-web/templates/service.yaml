@@ -1,4 +1,4 @@
-{{- include "ffc-helm-library.cluster-ip-service" (list . "ffc-demo-web.service") -}}
+{{- include "ffc-helm-library.service" (list . "ffc-demo-web.service") -}}
 {{- define "ffc-demo-web.service" -}}
 metadata:
   annotations:
@@ -9,4 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/session-cookie-name: "route"
     nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+spec:
+  ports:
+  - port: {{ .Values.service.port}}
+    name: http
+    targetPort: http
+  selector:
+    {{- include "ffc-helm-library.selector-labels" . | nindent 4 }}
 {{- end -}}
