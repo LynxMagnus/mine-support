@@ -1,7 +1,7 @@
 {{- if .Values.ingress.alb }}
-{{- include "ffc-helm-library.ingress" (list . "ffc-demo-web.ingress") -}}
+{{- include "ffc-helm-library.ingress" (list . "ffc-demo-web.ingress-alb") -}}
 {{- end }}
-{{- define "ffc-demo-web.ingress" -}}
+{{- define "ffc-demo-web.ingress-alb" -}}
 {{- if .Values.ingress.alb }}
 metadata:
   annotations:

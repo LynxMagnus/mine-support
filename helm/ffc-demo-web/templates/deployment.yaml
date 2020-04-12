@@ -1,8 +1,8 @@
-{{- template "ffc-helm-library.deployment" (list . "ffc-demo-web.deployment") -}}
+{{- include "ffc-helm-library.deployment" (list . "ffc-demo-web.deployment") -}}
 {{- define "ffc-demo-web.deployment" -}}
 spec:
   template:
     spec:
       containers:
-      - {{ template "ffc-helm-library.container" (list . "ffc-demo-web.container") }}
+      - {{ include "ffc-helm-library.container" (list . "ffc-demo-web.container") }}
 {{- end -}}
