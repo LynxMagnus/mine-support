@@ -63,13 +63,13 @@ node {
           def helmValues = [
             /deployment.redeployOnChange="$pr-$BUILD_NUMBER"/,
             /container.redisHostname="$REDIS_HOSTNAME"/,
-            /container.redisPartition="ffc-demo-$containerTag"/,
+            /container.redisPartition="ffc-demo-web-$containerTag"/,
             /container.cookiePassword="$cookiePassword"/,
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /ingress.endpoint="ffc-demo-$containerTag"/,
-            /name="ffc-demo-$containerTag"/,
+            /ingress.endpoint="ffc-demo-web-$containerTag"/,
+            /name="ffc-demo-web-$containerTag"/,
             /labels.version="$containerTag"/
           ].join(',')
 
@@ -79,7 +79,7 @@ node {
           ].join(' ')
 
           defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
-          echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
+          echo "Build available for review at https://ffc-demo-web-$containerTag.$INGRESS_SERVER"
         }
       }
     }

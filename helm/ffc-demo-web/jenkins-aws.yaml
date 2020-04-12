@@ -9,6 +9,6 @@ container:
   apiGatewayUrl: http://ffc-demo-api-gateway.ffc-demo
   imagePullPolicy: Always
 ingress:
-  endPoint: ffc-demo-web
+  endpoint: ffc-demo-web
   server: ffc-dev.aws-int.defra.cloud
   class: alb

@@ -35,7 +35,7 @@ container:
 
 ingress:
   class: nginx
-  endPoint: ffc-demo
+  endpoint: ffc-demo
   server:
 
 deployment:
