@@ -15,8 +15,6 @@ secret:
   name: ffc-demo-basic-auth
   type: Opaque
 
-auth:
-
 container:
   redisHostname: redis-redis-ha.default
   redisPartition: ffc-demo
@@ -36,7 +34,6 @@ container:
 ingress:
   class: nginx
   endpoint: ffc-demo
-  server:
 
 deployment:
   restartPolicy: Always

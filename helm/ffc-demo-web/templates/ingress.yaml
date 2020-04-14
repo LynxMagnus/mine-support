@@ -5,7 +5,7 @@
 {{- if not .Values.ingress.alb }}
 metadata:
   annotations:
-    {{- if .Values.auth }}
+    {{- if .Values.secret.auth }}
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: ffc-demo-basic-auth
     nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - ffc-demo"
