@@ -10,22 +10,5 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: {{ quote .Values.ingress.alb.arn}}
     alb.ingress.kubernetes.io/tags: {{ quote .Values.ingress.alb.tags }}
     external-dns.alpha.kubernetes.io/aws-zone-type-private: "true"
-spec:
-  rules:
-{{- if .Values.ingress.endpoint }}
-  {{- if .Values.pr }}
-  - host: {{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}
-  {{ else }}
-  - host: {{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}
-  {{- end }}
-    http:
-{{ else }}
-  - http:
-{{- end }}
-      paths:
-      - path: /*
-        backend:
-          serviceName: {{ .Values.name | quote }}
-          servicePort: {{ .Values.service.port }}
 {{- end }}
 {{- end -}}
