@@ -1,3 +1,5 @@
 @Library('defra-library@4') _
 
-buildNodeJs environment: 'dev'
+stage
+
+buildNodeJs environment: 'dev', { sh 'echo $HELM_CHART_REPO | base64' }
