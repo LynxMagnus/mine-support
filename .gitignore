@@ -11,3 +11,4 @@ npm-debug.log
 test-output
 *.tgz
 helm/**/*.lock
+.env
