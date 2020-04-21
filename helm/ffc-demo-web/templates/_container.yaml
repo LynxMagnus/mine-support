@@ -17,6 +17,14 @@ env:
   value: {{ quote .Values.container.restClientTimeoutMillis }}
 - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
   value: {{ quote .Values.container.staticCacheTimeoutMillis }}
+- name: CLAIM_QUEUE_NAME
+  value: {{ quote .Values.container.claimQueueName }}
+- name: CLAIM_ENDPOINT
+  value: {{ quote .Values.container.claimQueueEndpoint }}
+- name: CLAIM_QUEUE_REGION
+  value: {{ quote .Values.container.claimQueueRegion }}
+- name: CREATE_CLAIM_QUEUE
+  value: {{ quote .Values.container.claimCreateQueue }}
 ports:
 - containerPort: {{ .Values.container.port }}
   name: http

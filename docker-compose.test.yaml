@@ -9,8 +9,14 @@ services:
     build:
       target: development
     image: ffc-demo-web-development
-    command: npm test
+    command: >
+      sh -c "
+        scripts/wait-for/wait-for ffc-demo-claim-message-queue:9324 --
+        npm run test"
     environment:
       NODE_ENV: test
     volumes:
       - ./test-output/:/home/node/test-output/
+    depends_on:
+      - ffc-demo-claim-message-queue
+

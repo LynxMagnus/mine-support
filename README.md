@@ -36,6 +36,14 @@ The following environment variables are required by the application container. V
 | SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
 | STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
 | REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
+| DEV_ACCESS_KEY_ID                | Local dev only access key Id   | no       |           |                             |                                   |
+| DEV_ACCESS_KEY                   | Local dev only access key Id   | no       |           |                             |                                   |
+| CLAIM_QUEUE_NAME                 | Message queue name             | yes      |           |                             |                                   |
+| CLAIM_ENDPOINT                   | Message base url               | yes      |           |                             |                                   |
+| CLAIM_QUEUE_URL                  | Message queue url              | no       |           |                             |                                   |
+| CLAIM_QUEUE_REGION               | AWS region                     | no       | eu-west-2 |                             | Ignored in local dev              |
+| CREATE_CLAIM_QUEUE               | Create queue before connection | no       | false     |                             | For local development set to true |
+
 
 ## Building the project locally
 

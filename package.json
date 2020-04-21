@@ -1,7 +1,7 @@
 {
   "name": "ffc-demo-web",
   "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
-  "version": "1.0.34",
+  "version": "2.0.0",
   "homepage": "https://github.com/DEFRA/ffc-demo-web",
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "Mark Harrop mark.harrop@defra.gov.uk",
     "Matthew Collins matthew.collins@defra.gov.uk",
     "David Bingham david.bingham@defra.gov.uk",
+    "Paul Andrews paul.andrews@defra.gov.uk",
     "Fay Toward fay.toward@rpa.gov.uk"
   ],
   "license": "OGL-UK-3.0",
