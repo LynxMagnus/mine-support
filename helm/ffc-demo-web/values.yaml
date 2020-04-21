@@ -15,6 +15,9 @@ secret:
   name: ffc-demo-basic-auth
   type: Opaque
 
+serviceAccount:
+  name: ffc-demo-web-account
+
 container:
   redisHostname: redis-redis-ha.default
   redisPartition: ffc-demo

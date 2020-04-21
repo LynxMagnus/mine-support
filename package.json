@@ -41,7 +41,8 @@
     "@hapi/yar": "^10.1.0",
     "govuk-frontend": "^3.2.0",
     "moment": "^2.24.0",
-    "nunjucks": "^3.2.0"
+    "nunjucks": "^3.2.0",
+    "aws-sdk": "^2.610.0"
   },
   "devDependencies": {
     "@hapi/catbox-memory": "^5.0.0",
