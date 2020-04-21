@@ -17,6 +17,7 @@ services:
       NODE_ENV: test
     volumes:
       - ./test-output/:/home/node/test-output/
+      - ./scripts/:/home/node/scripts/
     depends_on:
       - ffc-demo-claim-message-queue
 
