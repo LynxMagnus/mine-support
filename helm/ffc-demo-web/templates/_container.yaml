@@ -11,8 +11,6 @@ env:
   value: {{ quote .Values.container.redisHostname }}
 - name: REDIS_PARTITION
   value: {{ quote .Values.container.redisPartition }}
-- name: API_GATEWAY
-  value: {{ quote .Values.container.apiGatewayUrl }}
 - name: REST_CLIENT_TIMEOUT_IN_MILLIS
   value: {{ quote .Values.container.restClientTimeoutMillis }}
 - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
