@@ -1,16 +1,11 @@
 @Library('defra-library@4') _
 
-node {
-  stage('REPORT ENV1') {
-    sh 'whoami'
-    sh 'pwd'
-    sh 'ls -l'
-    sh 'ls -l test-output'
-  }
+def containerSrcFolder = '\\/home\\/node'
 
+node {
   checkout scm
 
-  stage('REPORT ENV2') {
+  stage('REPORT ENV1') {
     sh 'pwd'
     sh 'ls -l'
     sh 'ls -l test-output'
@@ -20,15 +15,9 @@ node {
     (repoName, pr, containerTag, mergedPrNo) = build.getVariables(version.getPackageJsonVersion())
   }
 
-  stage('Build test image') {
-    build.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, repoName, BUILD_NUMBER)
-  }
+  test.deleteOutput(repoName, containerSrcFolder)
 
-  stage('Run tests') {
-    build.runTests(repoName, repoName, BUILD_NUMBER)
-  }
-
-  stage('REPORT ENV3') {
+  stage('REPORT ENV2') {
     sh 'ls -l test-output'
     sh 'head -20 test-output/lcov.info'
   }
