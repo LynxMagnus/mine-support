@@ -41,7 +41,7 @@ describe('Test send claim', () => {
     })
 
     const result = await sendClaimMessage.submit('dummy')
-    expect(mockMessageService.publishClaim).toHaveBeenCalledTimes(1)
+    expect(mockMessageService.publishClaim).toThrow(Error)
     expect(result).toBe(false)
   })
 
