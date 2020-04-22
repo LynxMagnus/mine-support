@@ -1,14 +1,19 @@
 @Library('defra-library@4') _
 
 node {
-  checkout scm
-
-  stage('REPORT ENV') {
+  stage('REPORT ENV1') {
+    sh 'whoami'
     sh 'pwd'
     sh 'ls -l'
-    sh 'whoami'
     sh 'ls -l test-output'
-    sh 'head -20 test-output/lcov.info'
+  }
+
+  checkout scm
+
+  stage('REPORT ENV2') {
+    sh 'pwd'
+    sh 'ls -l'
+    sh 'ls -l test-output'
   }
 
   stage('Set PR, and containerTag variables') {
@@ -23,7 +28,7 @@ node {
     build.runTests(repoName, repoName, BUILD_NUMBER)
   }
 
-  stage('REPORT ENV2') {
+  stage('REPORT ENV3') {
     sh 'ls -l test-output'
     sh 'head -20 test-output/lcov.info'
   }
