@@ -15,7 +15,7 @@
     "pretest": "npm run test:lint",
     "test": "npm run test:unit",
     "test:lint": "standard",
-    "test:unit": "jest --forceExit",
+    "test:unit": "jest",
     "test:unit-watch": "jest --coverage=false --onlyChanged --watch",
     "start:watch": "npm-run-all --parallel build:css-watch start:nodemon",
     "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
