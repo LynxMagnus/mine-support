@@ -15,7 +15,9 @@ node {
     (repoName, pr, containerTag, mergedPrNo) = build.getVariables(version.getPackageJsonVersion())
   }
 
-  test.deleteOutput(repoName, containerSrcFolder)
+  stage('Delete test output') {
+    test.deleteOutput(repoName, containerSrcFolder)
+  }
 
   stage('REPORT ENV2') {
     sh 'ls -l test-output'
