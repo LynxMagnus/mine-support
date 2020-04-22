@@ -1,4 +1,3 @@
-const config = require('../config')
 const sessionHandler = require('./session-handler')
 const messageService = require('./message-service')
 
