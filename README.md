@@ -32,7 +32,6 @@ The following environment variables are required by the application container. V
 | REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
 | REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
 | COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
-| API_GATEWAY                           | Url of service API Gateway | no       | http://localhost:3001 |                             |
 | SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
 | STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
 | REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
