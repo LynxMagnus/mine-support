@@ -13,7 +13,7 @@
     "build:css": "node-sass --output=app/static/stylesheets --output-style=expanded app/static/stylesheets",
     "build:css-watch": "node-sass --output=app/static/stylesheets --output-style=expanded --source-map true --watch app/static/stylesheets",
     "pretest": "npm run test:lint",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit --forceExit",
     "test:lint": "standard",
     "test:unit": "jest",
     "test:unit-watch": "jest --coverage=false --onlyChanged --watch",
