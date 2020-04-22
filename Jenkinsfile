@@ -15,6 +15,10 @@ node {
     (repoName, pr, containerTag, mergedPrNo) = build.getVariables(version.getPackageJsonVersion())
   }
 
+  stage('Push container image') {
+    build.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, repoName, containerTag)
+  }
+
   stage('Delete test output') {
     test.deleteOutput(repoName, containerSrcFolder)
   }
