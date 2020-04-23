@@ -33,7 +33,6 @@ node {
 
   stage('REPORT ENV2') {
     sh 'ls -l test-output'
-    sh 'head -20 test-output/lcov.info'
     sh 'docker image ls'
   }
 }
