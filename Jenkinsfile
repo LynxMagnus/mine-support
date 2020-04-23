@@ -23,9 +23,9 @@ node {
   //   build.runTests(repoName, repoName, BUILD_NUMBER)
   // }
 
-  // stage('Push container image') {
-  //   build.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, repoName, containerTag)
-  // }
+  stage('Push container image') {
+    build.buildAndPushContainerImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, repoName, containerTag)
+  }
 
   // stage('Delete test output') {
   //   test.deleteOutput(repoName, containerSrcFolder)
