@@ -8,14 +8,15 @@ describe('account page', () => {
     server = await createServer()
     await server.initialize()
   })
-  test('GET /account returns unauthorised', async () => {
+  test('GET /account redirects when unauthorised', async () => {
     const options = {
       method: 'GET',
       url: '/account'
     }
 
     const response = await server.inject(options)
-    expect(response.statusCode).toBe(401)
+    expect(response.statusCode).toBe(302)
+    expect(response.headers.location).toBe('/auth/okta')
   })
   afterEach(async () => {
     await server.stop()
