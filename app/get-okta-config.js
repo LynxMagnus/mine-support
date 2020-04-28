@@ -18,7 +18,8 @@ function getOktaConfig () {
     clientSecret: process.env.OKTA_CLIENT_SECRET,
     authorizationServerId: process.env.OKTA_AUTH_SERVER_ID,
     url: process.env.SITE_URL,
-    scopes: ['ffc-demo.payments.read', 'ffc-demo.payments.manage', 'ffc-demo.payments.read.self']
+    // this a temporary hack until we can add the 'ffc-demo.accounts.read.self' scope in Okta
+    scopes: ['ffc-demo.payments.read.self']
   }
   // Validate config
   const result = schema.validate(oktaConfig, {
