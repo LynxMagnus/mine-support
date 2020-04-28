@@ -11,7 +11,7 @@ bell.providers['okta-custom'] = require('./okta-custom-provider')
 function registerSessionAuth (server) {
   server.auth.strategy('session', 'cookie', {
     cookie: {
-      name: 'ffc-demo-payment-service',
+      name: 'ffc-demo-web',
       path: '/',
       password: config.cookiePassword,
       isSecure
