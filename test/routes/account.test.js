@@ -16,7 +16,7 @@ describe('account page', () => {
 
     const response = await server.inject(options)
     expect(response.statusCode).toBe(302)
-    expect(response.headers.location).toBe('/auth/okta')
+    expect(response.headers.location).toBe('/auth/dev')
   })
   afterEach(async () => {
     await server.stop()

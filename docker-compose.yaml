@@ -9,7 +9,7 @@ services:
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
-      OKTA_ENABLED: ${OKTA_ENABLED:-true}
+      OKTA_ENABLED: ${OKTA_ENABLED:-false}
       OKTA_DOMAIN: ${OKTA_DOMAIN}
       OKTA_CLIENT_ID: ${OKTA_CLIENT_ID}
       OKTA_CLIENT_SECRET: ${OKTA_CLIENT_SECRET}
