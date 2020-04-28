@@ -5,7 +5,6 @@ const routes = [].concat(
   authRoute,
   require('../routes/home'),
   require('../routes/account'),
-  require('../routes/dev-login'),
   require('../routes/healthy'),
   require('../routes/healthz'),
   require('../routes/claim/property-type'),
