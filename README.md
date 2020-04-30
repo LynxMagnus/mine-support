@@ -42,6 +42,20 @@ The following environment variables are required by the application container. V
 | CLAIM_QUEUE_URL                  | Message queue url              | no       |           |                             |                                   |
 | CLAIM_QUEUE_REGION               | AWS region                     | no       | eu-west-2 |                             | Ignored in local dev              |
 | CREATE_CLAIM_QUEUE               | Create queue before connection | no       | false     |                             | For local development set to true |
+| OKTA_ENABLED                          | set to true to enable Okta authentication | no       | "true"                |                             |
+| OKTA_DOMAIN                           | Okta domain, i.e. `mysite.okta.com`       | no       |                       |                             |
+| OKTA_CLIENT_ID                        | Client ID of Okta OpenID Connect app      | no       |                       |                             |
+| OKTA_CLIENT_SECRET                    | Client Secret of Okta OpenID Connect app  | no       |                       |                             |
+| OKTA_AUTH_SERVER_ID                   | ID of Okta custom authorisation server    | no       |                       |                             |
+| SITE_URL                              | URL of site, i.e. https://mysite.com      | no       |                       |                             |
+
+The `/account` page is accessible only by authenticated users. Authentication uses either [Okta](https://www.okta.com/) or stubbed authentication (for local development only). 
+To use the stubbed authentication set `OKTA_ENABLED` to `"false"`
+
+Okta specific environment variables must be set if `OKTA_ENABLED` is set to `"true"`.
+A valid Okta OpenID Connect application is required, and the Okta domain, client ID, Client Secret, Custom Authorisation
+Server ID, and URL of the site must be set in the environment variables
+`OKTA_DOMAIN`, `OKTA_CLIENT_ID`, `OKTA_CLIENT_SECRET`, `OKTA_AUTH_SERVER_ID`, and `SITE_URL` respectively.
 
 ## How to run tests
 
