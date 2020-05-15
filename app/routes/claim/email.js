@@ -1,4 +1,4 @@
-const apiGateway = require('../../services/api-gateway')
+const sendClaimMessage = require('../../services/send-claim')
 const idService = require('../../services/id-service')
 const schema = require('../../schemas/claim/email')
 const sessionHandler = require('../../services/session-handler')
@@ -31,7 +31,7 @@ module.exports = [{
       if (!claim.submitted) {
         request.payload.claimId = idService.generateId()
         sessionHandler.update(request, 'claim', request.payload)
-        const submitted = await apiGateway.submit(request)
+        const submitted = await sendClaimMessage.submit(request)
         if (!submitted) {
           console.log('claim submission failed')
           return h.view('service-unavailable')

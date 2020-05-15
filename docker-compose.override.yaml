@@ -8,8 +8,13 @@ services:
     build:
       target: development
     image: ffc-demo-web-development
+    command: >
+      sh -c "
+        scripts/wait-for/wait-for ffc-demo-claim-message-queue:9324 --
+        npm run start:watch"
     depends_on:
       - redis
+      - ffc-demo-claim-message-queue
     ports:
       - "3000:3000"
       - "9229:9229"
@@ -17,6 +22,7 @@ services:
       - ./app/:/home/node/app/
       - ./test/:/home/node/test/
       - ./test-output/:/home/node/test-output/
+      - ./scripts/:/home/node/scripts/
       - ./.git/:/home/node/.git/
       - ./jest.config.js:/home/node/jest.config.js
       - ./jest.setup.js:/home/node/jest.setup.js
@@ -27,6 +33,9 @@ services:
       - redis_data:/data
     ports:
       - "6379:6379"
+  ffc-demo-claim-message-queue:
+    ports:
+      - "9324:9324"
 
 volumes:
   redis_data:

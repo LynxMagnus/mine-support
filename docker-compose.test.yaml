@@ -9,8 +9,19 @@ services:
     build:
       target: development
     image: ffc-demo-web-development
-    command: npm test
+    command: >
+      sh -c "
+        scripts/wait-for/wait-for ffc-demo-claim-message-queue:9324 --
+        npm run test"
     environment:
       NODE_ENV: test
+      OKTA_DOMAIN: mydomain.otka.com
+      OKTA_CLIENT_ID: placeholderclientid
+      OKTA_CLIENT_SECRET: placeholdersecret
+      OKTA_AUTH_SERVER_ID: placeholderauthserverid
     volumes:
       - ./test-output/:/home/node/test-output/
+      - ./scripts/:/home/node/scripts/
+    depends_on:
+      - ffc-demo-claim-message-queue
+

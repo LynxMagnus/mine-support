@@ -1,4 +1,5 @@
 const Joi = require('@hapi/joi')
+const getOktaConfig = require('./get-okta-config')
 
 // Define config schema
 const schema = Joi.object({
@@ -11,8 +12,8 @@ const schema = Joi.object({
   cookiePassword: Joi.string().required(),
   sessionTimeoutMinutes: Joi.number().default(30),
   staticCacheTimeoutMillis: Joi.number().default(15 * 60 * 1000),
-  apiGateway: Joi.string().uri().default('http://localhost:3001'),
-  restClientTimeoutMillis: Joi.number().default(20000)
+  restClientTimeoutMillis: Joi.number().default(20000),
+  oktaEnabled: Joi.boolean().default(true)
 })
 
 // Build config
@@ -24,8 +25,8 @@ const config = {
   redisHost: process.env.REDIS_HOSTNAME,
   redisPort: process.env.REDIS_PORT,
   cookiePassword: process.env.COOKIE_PASSWORD,
+  oktaEnabled: process.env.OKTA_ENABLED,
   sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,
-  apiGateway: process.env.API_GATEWAY,
   restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS,
   staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS
 }
@@ -47,4 +48,7 @@ const value = result.value
 value.isDev = (value.env === 'development' || value.env === 'test')
 value.isTest = value.env === 'test'
 value.isProd = value.env === 'production'
+if (value.oktaEnabled) {
+  value.okta = getOktaConfig()
+}
 module.exports = value

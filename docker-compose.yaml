@@ -5,10 +5,22 @@ services:
     build:
       context: .
       target: production
-      args:
-        REGISTRY: ${DOCKER_REGISTRY}
     image: ffc-demo-web
     environment:
-      API_GATEWAY: http://ffc-demo-api-gateway:3001
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
+      OKTA_ENABLED: ${OKTA_ENABLED:-false}
+      OKTA_DOMAIN: ${OKTA_DOMAIN}
+      OKTA_CLIENT_ID: ${OKTA_CLIENT_ID}
+      OKTA_CLIENT_SECRET: ${OKTA_CLIENT_SECRET}
+      OKTA_AUTH_SERVER_ID: ${OKTA_AUTH_SERVER_ID}
+      SITE_URL: http://localhost:3000
+      DEV_ACCESS_KEY_ID: elasticmq
+      DEV_ACCESS_KEY: elasticmq
+      CLAIM_QUEUE_NAME: claim
+      CLAIM_QUEUE_URL: http://ffc-demo-claim-message-queue:9324/queue/claim
+      CREATE_CLAIM_QUEUE: "true"
+      CLAIM_ENDPOINT: http://ffc-demo-claim-message-queue:9324
+
+  ffc-demo-claim-message-queue:
+    image: softwaremill/elasticmq

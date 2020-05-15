@@ -2,7 +2,7 @@
 
 # FFC Demo Service
 
-Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
+Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the message service.
 
 ## Prerequisites
 
@@ -32,22 +32,30 @@ The following environment variables are required by the application container. V
 | REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
 | REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
 | COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
-| API_GATEWAY                           | Url of service API Gateway | no       | http://localhost:3001 |                             |
 | SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
 | STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
 | REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
+| DEV_ACCESS_KEY_ID                | Local dev only access key Id   | no       |           |                             |                                   |
+| DEV_ACCESS_KEY                   | Local dev only access key Id   | no       |           |                             |                                   |
+| CLAIM_QUEUE_NAME                 | Message queue name             | yes      |           |                             |                                   |
+| CLAIM_ENDPOINT                   | Message base url               | yes      |           |                             |                                   |
+| CLAIM_QUEUE_URL                  | Message queue url              | no       |           |                             |                                   |
+| CLAIM_QUEUE_REGION               | AWS region                     | no       | eu-west-2 |                             | Ignored in local dev              |
+| CREATE_CLAIM_QUEUE               | Create queue before connection | no       | false     |                             | For local development set to true |
+| OKTA_ENABLED                          | set to true to enable Okta authentication | no       | "true"                |                             |
+| OKTA_DOMAIN                           | Okta domain, i.e. `mysite.okta.com`       | no       |                       |                             |
+| OKTA_CLIENT_ID                        | Client ID of Okta OpenID Connect app      | no       |                       |                             |
+| OKTA_CLIENT_SECRET                    | Client Secret of Okta OpenID Connect app  | no       |                       |                             |
+| OKTA_AUTH_SERVER_ID                   | ID of Okta custom authorisation server    | no       |                       |                             |
+| SITE_URL                              | URL of site, i.e. https://mysite.com      | no       |                       |                             |
 
-## Building the project locally
+The `/account` page is accessible only by authenticated users. Authentication uses either [Okta](https://www.okta.com/) or stubbed authentication (for local development only). 
+To use the stubbed authentication set `OKTA_ENABLED` to `"false"`
 
-To build the project locally the Docker client must be authenticated against the private Defra container registry to retrieve the parent image.
-An ECR registry provides exact commands for authenticating the Docker client.
-These can be found by selecting a repository and clicking the `View push commands` button.
-
-The environment variable `DOCKER_REGISTRY` must be set to the registry holding the Defra parent image,
-i.e.
-```
-export DOCKER_REGISTRY=registryid.myprivatedockersite.com
-```
+Okta specific environment variables must be set if `OKTA_ENABLED` is set to `"true"`.
+A valid Okta OpenID Connect application is required, and the Okta domain, client ID, Client Secret, Custom Authorisation
+Server ID, and URL of the site must be set in the environment variables
+`OKTA_DOMAIN`, `OKTA_CLIENT_ID`, `OKTA_CLIENT_SECRET`, `OKTA_AUTH_SERVER_ID`, and `SITE_URL` respectively.
 
 ## How to run tests
 
@@ -106,9 +114,6 @@ For the site to render correctly locally `npm run build` must be run on the host
 By default, the start script will build (or rebuild) images so there will rarely be a need to build images manually. However, this can be achieved through the Docker Compose [build](https://docs.docker.com/compose/reference/build/) command:
 
 ```
-# Authenticate with FFC container image registry (requires pre-configured AWS credentials on your machine)
-aws ecr get-login --no-include-email | sh
-
 # Build container images
 docker-compose build
 ```
@@ -227,7 +232,7 @@ where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
 
 A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
 
-## License
+## Licence
 
 THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
 
@@ -237,7 +242,7 @@ The following attribution statement MUST be cited in your products and applicati
 
 > Contains public sector information licensed under the Open Government license v3
 
-### About the license
+### About the licence
 
 The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable information providers in the public sector to license the use and re-use of their information under a common open licence.
 

@@ -3,6 +3,7 @@ describe('Accessible test', () => {
   let server
 
   beforeAll(async () => {
+    jest.mock('../../../app/services/message-service')
     createServer = require('../../../app/server')
   })
 
