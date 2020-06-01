@@ -1,4 +1,4 @@
 @Library('defra-library@psd-313-npm-audit') _
 
 
-buildNodeJs environment: 'dev'
+buildNodeJs environment: 'dev', npmAuditLevel: 'high'
