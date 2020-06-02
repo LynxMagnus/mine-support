@@ -7,6 +7,9 @@ workstream: ffc-demo
 labels:
   component: web
 
+configMap:
+  name: my-config-map
+
 okta: {}
 
 service:
