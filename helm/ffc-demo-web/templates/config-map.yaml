@@ -1,0 +1,22 @@
+{{- include "ffc-helm-library.container-config-map" (list . "ffc-demo-web.config-map") -}}
+{{- define "ffc-demo-web.config-map" -}}
+data:
+  NODE_ENV: {{ quote .Values.environment }}
+  PORT: {{ quote .Values.container.port }}
+  OKTA_DOMAIN: {{ quote .Values.okta.domain }}
+  OKTA_CLIENT_ID: {{ quote .Values.okta.clientId }}
+  OKTA_AUTH_SERVER_ID: {{ quote .Values.okta.authorizationServerId }}  
+{{- if .Values.pr }}
+  SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
+{{- else }}
+  SITE_URL: {{ quote .Values.container.siteUrl }}
+{{- end }}
+  REDIS_HOSTNAME: {{ quote .Values.container.redisHostname }}
+  REDIS_PARTITION: {{ quote .Values.container.redisPartition }}
+  REST_CLIENT_TIMEOUT_IN_MILLIS: {{ quote .Values.container.restClientTimeoutMillis }}
+  STATIC_CACHE_TIMEOUT_IN_MILLIS: {{ quote .Values.container.staticCacheTimeoutMillis }}
+  CLAIM_QUEUE_NAME: {{ quote .Values.container.claimQueueName }}
+  CLAIM_ENDPOINT: {{ quote .Values.container.claimQueueEndpoint }}
+  CLAIM_QUEUE_REGION: {{ quote .Values.container.claimQueueRegion }}
+  CREATE_CLAIM_QUEUE: {{ quote .Values.container.claimCreateQueue }}
+{{- end -}}

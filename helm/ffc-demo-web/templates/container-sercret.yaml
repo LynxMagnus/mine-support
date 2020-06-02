@@ -1,0 +1,6 @@
+{{- include "ffc-helm-library.container-secret" (list . "ffc-demo-web.container-secret") -}}
+{{- define "ffc-demo-web.container-secret" -}}
+data:
+  COOKIE_PASSWORD: {{ .Values.container.cookiePassword | b64enc | quote }}
+  OKTA_CLIENT_SECRET: {{ .Values.okta.clientSecret | b64enc | quote }}  
+{{- end -}}
