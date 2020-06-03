@@ -1,51 +1,61 @@
+jest.mock('rhea-promise')
+jest.mock('../app/config', () => ({
+  claimQueueConfig: {
+    claimQueue: 'claimQueue'
+  }
+}))
+const mockSender = {
+  close: () => {},
+  send: jest.fn(async () => ({ settled: 'settled' }))
+}
+const mockConnection = {
+  open: () => {},
+  close: () => {},
+  isOpen: () => true,
+  createAwaitableSender: async () => mockSender
+}
 
-describe('Test message sender', () => {
-  let MessageSender
-  let MockAWS
-  const dummyObject = { dummy: 'data' }
+describe('Test message service', () => {
+  let messageService
+  let rheaPromiseMock
 
   beforeAll(async () => {
-    jest.mock('aws-sdk')
+    rheaPromiseMock = require('rhea-promise')
+    rheaPromiseMock.Container.mockImplementation(() => ({
+      identifyYourself: 'abc',
+      createConnection: () => mockConnection
+    }))
+    messageService = require('../app/services/message-service')
   })
 
-  beforeEach(async () => {
-    jest.resetModules()
-    MessageSender = require('../app/services/messaging/message-sender')
-  })
-
-  afterEach(async () => {
+  beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  test('Decodes JSON message', async () => {
-    const sender = new MessageSender(dummyObject, 'dummyName')
-    const result = sender.decodeMessage(dummyObject)
-    expect(typeof result).toBe('string')
+  test('Message service sends the claim to the queue', async () => {
+    const claimRecord = {
+      claimId: 'MINE123',
+      propertyType: 'business',
+      accessible: false,
+      dateOfSubsidence: new Date(),
+      mineType: ['gold', 'iron']
+    }
+    const jsonData = JSON.stringify(claimRecord)
+
+    await messageService.publishClaim(claimRecord)
+    await expect(mockSender.send).toHaveBeenCalledTimes(1)
+    await expect(mockSender.send).toHaveBeenCalledWith({ body: jsonData })
   })
 
-  test('Errors when trying to decode non JSON message', async () => {
-    const sender = new MessageSender(dummyObject, 'dummyName')
-    const bigInt = 1234567891234567n
-    expect(() => { sender.decodeMessage(bigInt) }).toThrow()
-  })
-
-  test('Error caught from sendMessage error', async () => {
-    jest.clearAllMocks()
-    MockAWS = require('aws-sdk')
-    MockAWS.SQS.mockImplementation(() => {
-      return {
-        sendMessage: () => {
-          throw new Error('Test')
-        }
-      }
-    })
-
-    MessageSender = require('../app/services/messaging/message-sender')
-    const sender = new MessageSender(dummyObject, 'dummyName')
-    await expect(sender.sendMessage(dummyObject)).rejects.toThrow()
-  })
-
-  afterAll(async () => {
-    jest.unmock('../app/services/message-service')
+  test('Message service acts correctly to an error while sending', async () => {
+    const claimRecord = {
+      claimId: 'MINE123',
+      propertyType: 'business',
+      accessible: false,
+      dateOfSubsidence: new Date(),
+      mineType: ['gold', 'iron']
+    }
+    mockSender.send.mockImplementation(() => { throw new Error() })
+    return expect(messageService.publishClaim(claimRecord)).rejects.toThrow()
   })
 })

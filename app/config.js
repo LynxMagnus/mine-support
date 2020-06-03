@@ -1,4 +1,5 @@
 const Joi = require('@hapi/joi')
+const mqConfig = require('./mq-config')
 const getOktaConfig = require('./get-okta-config')
 
 // Define config schema
@@ -61,5 +62,6 @@ value.catboxOptions = {
   tls: value.isProd ? {} : undefined,
   partition: value.redisPartition
 }
+value.claimQueueConfig = mqConfig.claimQueueConfig
 
 module.exports = value

@@ -36,7 +36,7 @@ async function createServer () {
     await server.register(require('./plugins/logging'))
   }
 
-  await messageService.registerService()
+  await messageService.registerQueues()
   return server
 }
 

@@ -1,27 +1,36 @@
-const createQueue = require('./messaging/create-queue')
 const MessageSender = require('./messaging/message-sender')
-const config = require('../mq-config')
+const config = require('../config')
 
-const claimSender = new MessageSender(config.claimQueueConfig, config.claimQueueConfig.queueUrl)
+const messageSender = new MessageSender('claim-queue-sender', config.claimQueueConfig)
 
-async function registerService () {
-  if (config.claimQueueConfig.createQueue) {
-    await createQueue(config.claimQueueConfig.name, config.claimQueueConfig)
-  }
+async function registerQueues () {
+  await openConnections()
+}
+
+process.on('SIGTERM', async function () {
+  await closeConnections()
+  process.exit(0)
+})
+
+process.on('SIGINT', async function () {
+  await closeConnections()
+  process.exit(0)
+})
+
+async function closeConnections () {
+  await messageSender.closeConnection()
+}
+
+async function openConnections () {
+  await messageSender.openConnection()
 }
 
 async function publishClaim (claim) {
-  try {
-    await Promise.all([
-      claimSender.sendMessage(claim)
-    ])
-  } catch (err) {
-    console.log(err)
-    throw err
-  }
+  await messageSender.sendMessage(claim)
 }
 
 module.exports = {
-  registerService,
-  publishClaim
+  registerQueues,
+  publishClaim,
+  closeConnections
 }

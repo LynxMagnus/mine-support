@@ -6,6 +6,8 @@ services:
       context: .
       target: production
     image: ffc-demo-web
+    depends_on:
+      - ffc-demo-claim-message-queue
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
@@ -15,12 +17,14 @@ services:
       OKTA_CLIENT_SECRET: ${OKTA_CLIENT_SECRET}
       OKTA_AUTH_SERVER_ID: ${OKTA_AUTH_SERVER_ID}
       SITE_URL: http://localhost:3000
-      DEV_ACCESS_KEY_ID: elasticmq
-      DEV_ACCESS_KEY: elasticmq
-      CLAIM_QUEUE_NAME: claim
-      CLAIM_QUEUE_URL: http://ffc-demo-claim-message-queue:9324/queue/claim
-      CREATE_CLAIM_QUEUE: "true"
-      CLAIM_ENDPOINT: http://ffc-demo-claim-message-queue:9324
+      MESSAGE_QUEUE_HOST : ffc-demo-claim-message-queue
+      MESSAGE_QUEUE_PORT : 5672
+      CLAIM_QUEUE_ADDRESS : claim
+      CLAIM_QUEUE_USER : artemis
+      CLAIM_QUEUE_PASSWORD : artemis
 
   ffc-demo-claim-message-queue:
-    image: softwaremill/elasticmq
+    image: vromero/activemq-artemis:2.9.0-alpine
+    environment:
+      ARTEMIS_USERNAME: artemis
+      ARTEMIS_PASSWORD: artemis

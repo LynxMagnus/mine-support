@@ -1,28 +1,32 @@
 const joi = require('@hapi/joi')
 
-const queueSchema = joi.object({
-  name: joi.string().required(),
-  endpoint: joi.string().required(),
-  queueUrl: joi.string().required(),
-  region: joi.string().default('eu-west-2'),
-  accessKeyId: joi.string().optional(),
-  secretAccessKey: joi.string().optional(),
-  createQueue: joi.bool().default(true)
-})
-
 const mqSchema = joi.object({
-  claimQueueConfig: queueSchema
+  messageQueue: {
+    host: joi.string().default('localhost'),
+    hostname: joi.string().default('localhost'),
+    port: joi.number().default(5672),
+    reconnect_Limit: joi.number().default(10),
+    transport: joi.string().default('tcp')
+  },
+  claimQueue: {
+    address: joi.string().default('claim'),
+    username: joi.string(),
+    password: joi.string()
+  }
 })
 
 const mqConfig = {
-  claimQueueConfig: {
-    name: process.env.CLAIM_QUEUE_NAME,
-    endpoint: process.env.CLAIM_ENDPOINT,
-    queueUrl: process.env.CLAIM_QUEUE_URL || `${process.env.CLAIM_ENDPOINT}/${process.env.CLAIM_QUEUE_NAME}`,
-    region: process.env.CLAIM_QUEUE_REGION,
-    accessKeyId: process.env.DEV_ACCESS_KEY_ID,
-    secretAccessKey: process.env.DEV_ACCESS_KEY,
-    createQueue: process.env.CREATE_CLAIM_QUEUE
+  messageQueue: {
+    host: process.env.MESSAGE_QUEUE_HOST,
+    hostname: process.env.MESSAGE_QUEUE_HOST,
+    port: process.env.MESSAGE_QUEUE_PORT,
+    reconnect_Limit: process.env.MESSAGE_QUEUE_RECONNECT_LIMIT,
+    transport: process.env.MESSAGE_QUEUE_TRANSPORT
+  },
+  claimQueue: {
+    address: process.env.CLAIM_QUEUE_ADDRESS,
+    username: process.env.CLAIM_QUEUE_USER,
+    password: process.env.CLAIM_QUEUE_PASSWORD
   }
 }
 
@@ -35,4 +39,8 @@ if (mqResult.error) {
   throw new Error(`The message queue config is invalid. ${mqResult.error.message}`)
 }
 
-module.exports = mqResult.value
+const claimQueueConfig = { ...mqResult.value.messageQueue, ...mqResult.value.claimQueue }
+
+module.exports = {
+  claimQueueConfig
+}
