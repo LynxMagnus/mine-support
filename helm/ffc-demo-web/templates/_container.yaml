@@ -1,7 +1,4 @@
 {{- define "ffc-demo-web.container" -}}
-name: {{ quote .Values.name }}
-env:
-
 ports:
 - containerPort: {{ .Values.container.port }}
   name: http
