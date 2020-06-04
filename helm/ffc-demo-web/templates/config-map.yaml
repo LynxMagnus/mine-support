@@ -1,4 +1,4 @@
-{{- include "ffc-helm-library.config-map" (list . "ffc-demo-web.config-map") -}}
+{{- include "ffc-helm-library.container-config-map" (list . "ffc-demo-web.config-map") -}}
 {{- define "ffc-demo-web.config-map" -}}
 data:
   NODE_ENV: {{ quote .Values.environment }}
