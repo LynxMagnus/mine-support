@@ -8,7 +8,7 @@ labels:
   component: web
 
 containerConfigMap:
-  name: my-config-map
+  name: ffc-demo-web-config-map
 
 okta: {}
 
