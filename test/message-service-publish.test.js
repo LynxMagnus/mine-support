@@ -18,8 +18,10 @@ describe('Test message service', () => {
   })
 
   test('Publish claim sends message', async () => {
-    await messageService.publishClaim({ dummy: 'data' })
+    const message = { dummy: 'data' }
+    await messageService.publishClaim(message)
     expect(MockMessageSender.mock.instances[0].sendMessage).toHaveBeenCalledTimes(1)
+    expect(MockMessageSender.mock.instances[0].sendMessage).toHaveBeenCalledWith(message)
   })
 
   afterAll(async () => {
