@@ -6,11 +6,11 @@ let messageSender
 const address = 'test-send'
 const message = { greeting: 'test message' }
 
-describe('send message', () => {
+describe('message sender', () => {
   afterEach(async () => {
     await messageSender.closeConnection()
   })
-  test('sends a json message', async () => {
+  test('can send a message', async () => {
     const testConfig = { ...config.claimQueueConfig, address }
     messageSender = new MessageSender('test-sender', testConfig)
     await messageSender.openConnection()
