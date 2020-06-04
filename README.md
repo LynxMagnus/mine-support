@@ -37,17 +37,18 @@ The following environment variables are required by the application container. V
 | REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
 | DEV_ACCESS_KEY_ID                | Local dev only access key Id   | no       |           |                             |                                   |
 | DEV_ACCESS_KEY                   | Local dev only access key Id   | no       |           |                             |                                   |
-| CLAIM_QUEUE_NAME                 | Message queue name             | yes      |           |                             |                                   |
-| CLAIM_ENDPOINT                   | Message base url               | yes      |           |                             |                                   |
-| CLAIM_QUEUE_URL                  | Message queue url              | no       |           |                             |                                   |
-| CLAIM_QUEUE_REGION               | AWS region                     | no       | eu-west-2 |                             | Ignored in local dev              |
-| CREATE_CLAIM_QUEUE               | Create queue before connection | no       | false     |                             | For local development set to true |
 | OKTA_ENABLED                          | set to true to enable Okta authentication | no       | "true"                |                             |
 | OKTA_DOMAIN                           | Okta domain, i.e. `mysite.okta.com`       | no       |                       |                             |
 | OKTA_CLIENT_ID                        | Client ID of Okta OpenID Connect app      | no       |                       |                             |
 | OKTA_CLIENT_SECRET                    | Client Secret of Okta OpenID Connect app  | no       |                       |                             |
 | OKTA_AUTH_SERVER_ID                   | ID of Okta custom authorisation server    | no       |                       |                             |
 | SITE_URL                              | URL of site, i.e. https://mysite.com      | no       |                       |                             |
+| MESSAGE_QUEUE_HOST              | Message queue host                     | no       |             | myservicebus.servicebus.windows.net |       |
+| MESSAGE_QUEUE_PORT              | Message queue port                     | no       |             | 5671,5672                           |       |
+| MESSAGE_QUEUE_TRANSPORT      | Message queue transport                | yes      | tcp         | tcp,ssl                             | standard port is 5671 for ssl, 5672 for tcp |
+| CLAIM_QUEUE_ADDRESS      | claim queue name                 | no       |             | claim                         |       |
+| CLAIM_QUEUE_USER         | claim queue user name            | no       |             |                                     |       |
+| CLAIM_QUEUE_PASSWORD     | claim queue password             | no       |             |                                     |       |
 
 The `/account` page is accessible only by authenticated users. Authentication uses either [Okta](https://www.okta.com/) or stubbed authentication (for local development only). 
 To use the stubbed authentication set `OKTA_ENABLED` to `"false"`
@@ -56,6 +57,10 @@ Okta specific environment variables must be set if `OKTA_ENABLED` is set to `"tr
 A valid Okta OpenID Connect application is required, and the Okta domain, client ID, Client Secret, Custom Authorisation
 Server ID, and URL of the site must be set in the environment variables
 `OKTA_DOMAIN`, `OKTA_CLIENT_ID`, `OKTA_CLIENT_SECRET`, `OKTA_AUTH_SERVER_ID`, and `SITE_URL` respectively.
+
+
+Running the integration tests locally requires a message bus that supports AMQP 1.0 and (at a minimum) the following environment variables setting:
+`MESSAGE_QUEUE_HOST`, `MESSAGE_QUEUE_PORT`, `CLAIM_QUEUE_USER`, `CLAIM_QUEUE_PASSWORD`
 
 ## How to run tests
 
@@ -129,6 +134,25 @@ Additional Docker Compose files are provided for scenarios such as linking to ot
 Link to other services:
 ```
 docker-compose -f docker-compose.yaml -f docker-compose.override.yaml -f docker-compose.link.yaml up
+```
+
+### Test the service
+
+This service posts messages to an AMQP 1.0 message broker so manual testing involves creating claims using the web UI and inspecting the appropriate message queue. The [start](./scripts/start) script runs [ActiveMQ Artemis](https://activemq.apache.org/components/artemis) alongside the application to provide the required message bus and broker.
+
+The posted message queues can be inspected using the Artemis console UI hosted at http://localhost:8161/console/login (username: artemis, password: artemis). Messages should match the format of the sample JSON below.
+
+Note: the messages will be posted to the ExpiryQueue until a queue is manually created in the ActiveMQ web console for the `claim` address.
+
+```
+{
+  "claimId": "MINE123",
+  "propertyType": "business",
+  "accessible": false,
+  "dateOfSubsidence": "2019-07-26T09:54:19.622Z",
+  "mineType": ["gold"],
+  "email": "test@email.com"
+}
 ```
 
 ### Deploy to Kubernetes
