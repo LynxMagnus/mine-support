@@ -22,15 +22,6 @@ function getSenderConfig (name, config) {
   }
 }
 
-function getReceiverConfig (name, config) {
-  return {
-    name,
-    source: { address: config.address },
-    onSessionError: context => onSessionError(context, name)
-  }
-}
-
 module.exports = {
-  getReceiverConfig,
   getSenderConfig
 }
