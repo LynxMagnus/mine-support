@@ -10,9 +10,6 @@ labels:
 containerConfigMap:
   name: ffc-demo-web-config-map
 
-containerSecret:
-  name: ffc-demo-web-secret
-
 okta: {}
 
 service:
