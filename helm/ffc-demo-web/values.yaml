@@ -14,7 +14,8 @@ containerSecret:
   name: ffc-demo-web-container-secret
   type: Opaque
 
-okta: {}
+okta:
+  clientSecret: secret
 
 service:
   port: 80
