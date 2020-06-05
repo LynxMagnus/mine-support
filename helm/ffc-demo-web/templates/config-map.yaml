@@ -9,7 +9,7 @@ data:
   OKTA_CLIENT_SECRET: {{ quote .Values.okta.clientSecret }}
   OKTA_AUTH_SERVER_ID: {{ quote .Values.okta.authorizationServerId }}  
 {{- if .Values.pr }}
-   SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
+  SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
 {{- else }}
   SITE_URL: {{ quote .Values.container.siteUrl }}
 {{- end }}
