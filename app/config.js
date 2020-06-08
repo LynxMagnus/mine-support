@@ -8,6 +8,7 @@ const schema = Joi.object({
   cacheName: Joi.string(),
   redisHost: Joi.string().default('localhost'),
   redisPort: Joi.number().default(6379),
+  redisPassword: Joi.string().default(''),
   redisPartition: Joi.string().default('ffc-demo'),
   cookiePassword: Joi.string().required(),
   sessionTimeoutMinutes: Joi.number().default(30),
