@@ -21,6 +21,7 @@ async function createServer () {
         options: {
           host: config.redisHost,
           port: config.redisPort,
+          password: config.redisPassword,
           partition: config.redisPartition
         }
       }

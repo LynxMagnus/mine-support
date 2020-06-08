@@ -2,5 +2,7 @@
 {{- define "ffc-demo-web.container-secret" -}}
 data:
   COOKIE_PASSWORD: {{ .Values.container.cookiePassword | b64enc | quote }}
-  OKTA_CLIENT_SECRET: {{ .Values.okta.clientSecret | b64enc | quote }}  
+  OKTA_CLIENT_SECRET: {{ .Values.okta.clientSecret | b64enc | quote }}
+stringData:
+  REDIS_PASSWORD: {{ .Values.container.redisPassword | quote }}
 {{- end -}}

@@ -30,6 +30,8 @@ serviceAccount:
 
 container:
   redisHostname: redis-redis-ha.default
+  redisPassword: redis
+  redisPort: 6380
   redisPartition: ffc-demo
   imagePullPolicy: IfNotPresent
   requestMemory: 60Mi

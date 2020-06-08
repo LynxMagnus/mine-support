@@ -24,6 +24,7 @@ const config = {
   redisPartition: process.env.REDIS_PARTITION,
   redisHost: process.env.REDIS_HOSTNAME,
   redisPort: process.env.REDIS_PORT,
+  redisPassword: process.env.REDIS_PASSWORD,
   cookiePassword: process.env.COOKIE_PASSWORD,
   oktaEnabled: process.env.OKTA_ENABLED,
   sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,

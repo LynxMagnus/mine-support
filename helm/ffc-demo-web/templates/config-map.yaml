@@ -5,13 +5,14 @@ data:
   PORT: {{ quote .Values.container.port }}
   OKTA_DOMAIN: {{ quote .Values.okta.domain }}
   OKTA_CLIENT_ID: {{ quote .Values.okta.clientId }}
-  OKTA_AUTH_SERVER_ID: {{ quote .Values.okta.authorizationServerId }}  
+  OKTA_AUTH_SERVER_ID: {{ quote .Values.okta.authorizationServerId }}
 {{- if .Values.pr }}
   SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
 {{- else }}
   SITE_URL: {{ quote .Values.container.siteUrl }}
 {{- end }}
   REDIS_HOSTNAME: {{ quote .Values.container.redisHostname }}
+  REDIS_PORT: {{ quote .Values.container.redisPort }}
   REDIS_PARTITION: {{ quote .Values.container.redisPartition }}
   REST_CLIENT_TIMEOUT_IN_MILLIS: {{ quote .Values.container.restClientTimeoutMillis }}
   STATIC_CACHE_TIMEOUT_IN_MILLIS: {{ quote .Values.container.staticCacheTimeoutMillis }}
