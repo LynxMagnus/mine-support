@@ -6,12 +6,6 @@ const messageService = require('./services/message-service')
 async function createServer () {
   // Create the hapi server
 
-  console.log('=== CONNECTION TO REDIS ===')
-  console.log(config.redisHost)
-  console.log(config.redisPort)
-  console.log(config.redisPassword)
-  console.log(config.redisPartition)
-
   const server = hapi.server({
     port: config.port,
     routes: {
