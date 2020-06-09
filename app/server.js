@@ -6,6 +6,17 @@ const messageService = require('./services/message-service')
 async function createServer () {
   // Create the hapi server
 
+  var catboxOptions = {
+    host: config.redisHost,
+    port: config.redisPort,
+    password: config.redisPassword,
+    partition: config.redisPartition
+  }
+
+  if (config.isProd) {
+    catboxOptions.tls = {}
+  }
+
   const server = hapi.server({
     port: config.port,
     routes: {
@@ -19,13 +30,7 @@ async function createServer () {
       name: config.cacheName,
       provider: {
         constructor: catbox,
-        options: {
-          host: config.redisHost,
-          port: config.redisPort,
-          password: config.redisPassword,
-          tls: {},
-          partition: config.redisPartition
-        }
+        options: catboxOptions
       }
     }]
   })
