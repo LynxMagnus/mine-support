@@ -1,4 +1,4 @@
-@Library('defra-library@v-6') _
+@Library('defra-library@test-err-logging') _
 
 
 buildNodeJs environment: 'dev'
