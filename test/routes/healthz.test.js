@@ -23,6 +23,7 @@ describe('Healthz test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

@@ -23,6 +23,7 @@ describe('Date of Subsidence test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

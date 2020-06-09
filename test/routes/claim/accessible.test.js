@@ -23,6 +23,7 @@ describe('Accessible test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

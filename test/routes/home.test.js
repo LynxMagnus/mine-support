@@ -23,6 +23,7 @@ describe('Home test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

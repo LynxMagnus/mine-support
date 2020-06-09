@@ -23,6 +23,7 @@ describe('MineType test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

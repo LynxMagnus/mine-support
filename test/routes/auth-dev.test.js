@@ -3,6 +3,7 @@ describe('auth/dev test', () => {
   let server
 
   beforeAll(async () => {
+    jest.mock('../../app/services/message-service')
     createServer = require('../../app/server')
   })
 
@@ -23,6 +24,7 @@ describe('auth/dev test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

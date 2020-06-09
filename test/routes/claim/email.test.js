@@ -4,6 +4,7 @@ describe('Email test', () => {
   let sendClaimMessage
 
   beforeAll(async () => {
+    jest.mock('../../../app/services/message-service')
     jest.mock('../../../app/services/send-claim')
     createServer = require('../../../app/server')
   })
@@ -16,6 +17,7 @@ describe('Email test', () => {
 
   afterEach(async () => {
     jest.clearAllMocks()
+    await server.stop()
   })
 
   test('GET /claim/email route returns 200', async () => {
@@ -67,9 +69,5 @@ describe('Email test', () => {
     expect(sendClaimMessage.submit).toHaveBeenCalledTimes(1)
     expect(postResponse.statusCode).toBe(302)
     expect(postResponse.headers.location).toBe('./confirmation')
-  })
-
-  afterEach(async () => {
-    await server.stop()
   })
 })

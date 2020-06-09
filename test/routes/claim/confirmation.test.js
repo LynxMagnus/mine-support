@@ -23,6 +23,7 @@ describe('Confirmation test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })

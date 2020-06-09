@@ -23,6 +23,7 @@ describe('Property Type test', () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     await server.stop()
   })
 })
