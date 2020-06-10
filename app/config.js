@@ -55,11 +55,11 @@ if (value.oktaEnabled) {
 }
 
 value.catboxOptions = {
-  host: config.redisHost,
-  port: config.redisPort,
-  password: config.redisPassword,
-  tls: config.isProd ? {} : undefined,
-  partition: config.redisPartition
+  host: value.redisHost,
+  port: value.redisPort,
+  password: value.redisPassword,
+  tls: value.isProd ? {} : undefined,
+  partition: value.redisPartition
 }
 
 module.exports = value
