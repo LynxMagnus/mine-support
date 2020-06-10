@@ -5,7 +5,6 @@ const messageService = require('./services/message-service')
 
 async function createServer () {
   // Create the hapi server
-
   const server = hapi.server({
     port: config.port,
     routes: {
