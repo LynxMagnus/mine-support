@@ -53,4 +53,13 @@ value.isProd = value.env === 'production'
 if (value.oktaEnabled) {
   value.okta = getOktaConfig()
 }
+
+value.catboxOptions = {
+  host: config.redisHost,
+  port: config.redisPort,
+  password: config.redisPassword,
+  tls: config.isProd ? {} : undefined,
+  partition: config.redisPartition
+}
+
 module.exports = value

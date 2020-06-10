@@ -18,13 +18,7 @@ async function createServer () {
       name: config.cacheName,
       provider: {
         constructor: catbox,
-        options: {
-          host: config.redisHost,
-          port: config.redisPort,
-          password: config.redisPassword,
-          tls: config.isProd ? {} : undefined,
-          partition: config.redisPartition
-        }
+        options: config.catboxOptions
       }
     }]
   })
