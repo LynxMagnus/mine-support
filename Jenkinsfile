@@ -1,3 +1,3 @@
 @Library('defra-library@psd-824-audit-in-container') _
 
-buildNodeJs(environment: 'dev', npmAuditFailOnIssues: true)
+buildNodeJs(environment: 'dev', npmAuditLevel: 'low', npmAuditFailOnIssues: true)
