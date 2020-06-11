@@ -15,7 +15,7 @@ def logType = 'parseable'
     "--mount type=bind,source='$WORKSPACE/package.json',target=$containerWorkDir/package.json " +
     "--mount type=bind,source='$WORKSPACE/package-lock.json',target=$containerWorkDir/package-lock.json " +
     "$containerImage npm audit --audit-level=$auditLevel --$logType"
-    sh(script)
+    sh(returnStatus: !failOnIssues, script:script)
   }
 
   node {
