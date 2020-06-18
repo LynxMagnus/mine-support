@@ -7,7 +7,7 @@ const schema = Joi.object({
   port: Joi.number().default(3000),
   env: Joi.string().valid('development', 'test', 'production').default('development'),
   cacheName: Joi.string(),
-  redisHost: Joi.string().default('localhost'),
+  redisHost: Joi.string(),
   redisPort: Joi.number().default(6379),
   redisPassword: Joi.string().default(''),
   redisPartition: Joi.string().default('ffc-demo'),
