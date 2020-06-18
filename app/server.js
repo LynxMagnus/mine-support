@@ -1,6 +1,6 @@
 const hapi = require('@hapi/hapi')
 const config = require('./config')
-const catbox = config.isTest ? require('@hapi/catbox-memory') : require('@hapi/catbox-redis')
+const catbox = config.useRedis ? require('@hapi/catbox-redis') : require('@hapi/catbox-memory')
 const messageService = require('./services/message-service')
 
 async function createServer () {

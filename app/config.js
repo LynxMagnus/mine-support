@@ -51,6 +51,10 @@ const value = result.value
 value.isDev = (value.env === 'development' || value.env === 'test')
 value.isTest = value.env === 'test'
 value.isProd = value.env === 'production'
+
+// Don't try to connect to Redis for testing or if Redis not available
+value.useRedis = !value.isTest && value.redisHost !== undefined
+
 if (value.oktaEnabled) {
   value.okta = getOktaConfig()
 }

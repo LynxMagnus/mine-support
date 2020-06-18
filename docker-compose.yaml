@@ -10,7 +10,7 @@ services:
       - ffc-demo-claim-message-queue
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
-      REDIS_HOSTNAME: redis
+      REDIS_HOSTNAME: 
       OKTA_ENABLED: ${OKTA_ENABLED:-false}
       OKTA_DOMAIN: ${OKTA_DOMAIN}
       OKTA_CLIENT_ID: ${OKTA_CLIENT_ID}
