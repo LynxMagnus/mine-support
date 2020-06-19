@@ -11,7 +11,9 @@ data:
 {{- else }}
   SITE_URL: {{ quote .Values.container.siteUrl }}
 {{- end }}
+{{- if .Values.redisHostname }}
   REDIS_HOSTNAME: {{ quote .Values.container.redisHostname }}
+{{- end }}
   REDIS_PORT: {{ quote .Values.container.redisPort }}
   REDIS_PARTITION: {{ quote .Values.container.redisPartition }}
   REST_CLIENT_TIMEOUT_IN_MILLIS: {{ quote .Values.container.restClientTimeoutMillis }}

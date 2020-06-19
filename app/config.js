@@ -55,6 +55,10 @@ value.isProd = value.env === 'production'
 // Don't try to connect to Redis for testing or if Redis not available
 value.useRedis = !value.isTest && value.redisHost !== undefined
 
+if (!value.useRedis) {
+  console.log('redis disabled')
+}
+
 if (value.oktaEnabled) {
   value.okta = getOktaConfig()
 }
