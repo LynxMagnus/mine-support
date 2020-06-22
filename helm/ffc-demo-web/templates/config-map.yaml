@@ -4,8 +4,6 @@ data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
   OKTA_DOMAIN: {{ quote .Values.okta.domain }}
-  OKTA_CLIENT_ID: {{ quote .Values.okta.clientId }}
-  OKTA_AUTH_SERVER_ID: {{ quote .Values.okta.authorizationServerId }}
 {{- if .Values.pr }}
   SITE_URL: "{{ .Values.container.webSiteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
 {{- else }}
@@ -22,5 +20,4 @@ data:
   MESSAGE_QUEUE_PORT: {{ quote .Values.container.messageQueuePort }}
   MESSAGE_QUEUE_TRANSPORT: {{ quote .Values.container.messageQueueTransport }}
   CLAIM_QUEUE_ADDRESS: {{ quote .Values.container.claimQueueAddress }}
-  CLAIM_QUEUE_USER: {{ quote .Values.container.claimQueueUser }}
 {{- end -}}
