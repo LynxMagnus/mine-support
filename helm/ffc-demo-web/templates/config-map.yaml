@@ -7,9 +7,9 @@ data:
   OKTA_CLIENT_ID: {{ quote .Values.okta.clientId }}
   OKTA_AUTH_SERVER_ID: {{ quote .Values.okta.authorizationServerId }}
 {{- if .Values.pr }}
-  SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
+  SITE_URL: "{{ .Values.container.webSiteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
 {{- else }}
-  SITE_URL: {{ quote .Values.container.siteUrl }}
+  SITE_URL: {{ quote .Values.container.webSiteUrl }}
 {{- end }}
 {{- if .Values.redisHostname }}
   REDIS_HOSTNAME: {{ quote .Values.container.redisHostname }}
