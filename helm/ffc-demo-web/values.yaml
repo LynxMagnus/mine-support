@@ -19,9 +19,9 @@ containerSecret:
 
 okta:
   domain:
-  clientId:
-  authorizationServerId:
-  clientSecret:
+  clientId: dummy
+  authorizationServerId: dummy
+  clientSecret: dummy
 
 service:
   port: 80
