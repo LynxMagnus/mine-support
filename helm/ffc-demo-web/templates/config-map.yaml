@@ -5,13 +5,11 @@ data:
   PORT: {{ quote .Values.container.port }}
   OKTA_DOMAIN: {{ quote .Values.okta.domain }}
 {{- if .Values.pr }}
-  SITE_URL: "{{ .Values.container.webSiteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
+  SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
 {{- else }}
-  SITE_URL: {{ quote .Values.container.webSiteUrl }}
+  SITE_URL: {{ quote .Values.container.siteUrl }}
 {{- end }}
-{{- if .Values.redisHostname }}
   REDIS_HOSTNAME: {{ quote .Values.container.redisHostname }}
-{{- end }}
   REDIS_PORT: {{ quote .Values.container.redisPort }}
   REDIS_PARTITION: {{ quote .Values.container.redisPartition }}
   REST_CLIENT_TIMEOUT_IN_MILLIS: {{ quote .Values.container.restClientTimeoutMillis }}

@@ -4,9 +4,9 @@ metadata:
   annotations:
   {{- if .Values.ingress.alb }}
     {{- if .Values.pr }}
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.webEndpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}
     {{ else }}
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.webEndpoint }}.{{ .Values.ingress.server}}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.endpoint }}.{{ .Values.ingress.server}}
     {{- end }}
   {{- end }}
 spec:
