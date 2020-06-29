@@ -24,8 +24,8 @@ Or:
 
 The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
-| Name                           | Description                               | Required | Default               | Valid                                Notes                                                                              |
-|--------------------------------|-------------------------------------------|:--------:|-----------------------|-------------------------------------|-----------------------------------------------------------------------------------|
+| Name                           | Description                               | Required | Default               | Valid                       | Notes                                                                             |
+|--------------------------------|-------------------------------------------|:--------:|-----------------------|-----------------------------|-----------------------------------------------------------------------------------|
 | NODE_ENV                       | Node environment                          | no       | development           | development,test,production         |                                                                                   |
 | PORT                           | Port number                               | no       | 3000                  |                                     |                                                                                   |
 | CACHE_NAME                     | Cache name                                | no       | redisCache            |                                     |                                                                                   |
