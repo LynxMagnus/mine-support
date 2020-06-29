@@ -20,3 +20,4 @@ okta.clientSecret
 ingress.webEndpoint
 ingress.server
 ingress.class
+appInsights.key

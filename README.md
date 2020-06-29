@@ -24,31 +24,32 @@ Or:
 
 The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
-| Name                                  | Description                | Required | Default               | Valid                       |
-|---------------------------------------|----------------------------|:--------:|-----------------------|-----------------------------|
-| NODE_ENV                              | Node environment           | no       | development           | development,test,production |
-| PORT                                  | Port number                | no       | 3000                  |                             |
-| CACHE_NAME                            | Cache name                 | no       | redisCache            |                             |
-| REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
-| REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
-| COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
-| SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
-| STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
-| REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
-| DEV_ACCESS_KEY_ID                | Local dev only access key Id   | no       |           |                             |                                   |
-| DEV_ACCESS_KEY                   | Local dev only access key Id   | no       |           |                             |                                   |
-| OKTA_ENABLED                          | set to true to enable Okta authentication | no       | "true"                |                             |
-| OKTA_DOMAIN                           | Okta domain, i.e. `mysite.okta.com`       | no       |                       |                             |
-| OKTA_CLIENT_ID                        | Client ID of Okta OpenID Connect app      | no       |                       |                             |
-| OKTA_CLIENT_SECRET                    | Client Secret of Okta OpenID Connect app  | no       |                       |                             |
-| OKTA_AUTH_SERVER_ID                   | ID of Okta custom authorisation server    | no       |                       |                             |
-| SITE_URL                              | URL of site, i.e. https://mysite.com      | no       |                       |                             |
-| MESSAGE_QUEUE_HOST              | Message queue host                     | no       |             | myservicebus.servicebus.windows.net |       |
-| MESSAGE_QUEUE_PORT              | Message queue port                     | no       |             | 5671,5672                           |       |
-| MESSAGE_QUEUE_TRANSPORT      | Message queue transport                | yes      | tcp         | tcp,ssl                             | standard port is 5671 for ssl, 5672 for tcp |
-| CLAIM_QUEUE_ADDRESS      | claim queue name                 | no       |             | claim                         |       |
-| CLAIM_QUEUE_USER         | claim queue user name            | no       |             |                                     |       |
-| CLAIM_QUEUE_PASSWORD     | claim queue password             | no       |             |                                     |       |
+| Name                           | Description                               | Required | Default               | Valid                                Notes                                                                              |
+|--------------------------------|-------------------------------------------|:--------:|-----------------------|-------------------------------------|-----------------------------------------------------------------------------------|
+| NODE_ENV                       | Node environment                          | no       | development           | development,test,production         |                                                                                   |
+| PORT                           | Port number                               | no       | 3000                  |                                     |                                                                                   |
+| CACHE_NAME                     | Cache name                                | no       | redisCache            |                                     |                                                                                   |
+| REDIS_HOSTNAME                 | Redis host                                | no       | localhost             |                                     |                                                                                   |
+| REDIS_PORT                     | Redis port                                | no       | 6379                  |                                     |                                                                                   |
+| COOKIE_PASSWORD                | Redis cookie password                     | yes      |                       |                                     |                                                                                   |
+| SESSION_TIMEOUT_IN_MINUTES     | Redis session timeout                     | no       | 30                    |                                     |                                                                                   |
+| STATIC_CACHE_TIMEOUT_IN_MILLIS | static file cache timeout                 | no       | 54000 (15 minutes)    |                                     |                                                                                   |
+| REST_CLIENT_TIMEOUT_IN_MILLIS  | Rest client timout                        | no       | 5000                  |                                     |                                                                                   |
+| DEV_ACCESS_KEY_ID              | Local dev only access key Id              | no       |                       |                                     |                                                                                   |
+| DEV_ACCESS_KEY                 | Local dev only access key Id              | no       |                       |                                     |                                                                                   |
+| OKTA_ENABLED                   | set to true to enable Okta authentication | no       | "true"                |                                     |                                                                                   |
+| OKTA_DOMAIN                    | Okta domain, i.e. `mysite.okta.com`       | no       |                       |                                     |                                                                                   |
+| OKTA_CLIENT_ID                 | Client ID of Okta OpenID Connect app      | no       |                       |                                     |                                                                                   |
+| OKTA_CLIENT_SECRET             | Client Secret of Okta OpenID Connect app  | no       |                       |                                     |                                                                                   |
+| OKTA_AUTH_SERVER_ID            | ID of Okta custom authorisation server    | no       |                       |                                     |                                                                                   |
+| SITE_URL                       | URL of site, i.e. https://mysite.com      | no       |                       |                                     |                                                                                   |
+| MESSAGE_QUEUE_HOST             | Message queue host                        | no       |                       | myservicebus.servicebus.windows.net |                                                                                   |
+| MESSAGE_QUEUE_PORT             | Message queue port                        | no       |                       | 5671,5672                           |                                                                                   |
+| MESSAGE_QUEUE_TRANSPORT        | Message queue transport                   | yes      | tcp                   | tcp,ssl                             | standard port is 5671 for ssl, 5672 for tcp                                       |
+| CLAIM_QUEUE_ADDRESS            | claim queue name                          | no       |                       | claim                               |                                                                                   |
+| CLAIM_QUEUE_USER               | claim queue user name                     | no       |                       |                                     |                                                                                   |
+| CLAIM_QUEUE_PASSWORD           | claim queue password                      | no       |                       |                                     |                                                                                   |
+| APPINSIGHTS_INSTRUMENTATIONKEY | Key for application insight               | no       |                       |                                     | App insights only enabled if key is present. Note: Silently fails for invalid key |
 
 The `/account` page is accessible only by authenticated users. Authentication uses either [Okta](https://www.okta.com/) or stubbed authentication (for local development only). 
 To use the stubbed authentication set `OKTA_ENABLED` to `"false"`
