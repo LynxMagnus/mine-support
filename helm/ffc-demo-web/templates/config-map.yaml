@@ -20,4 +20,5 @@ data:
   MESSAGE_QUEUE_PORT: {{ quote .Values.container.messageQueuePort }}
   MESSAGE_QUEUE_TRANSPORT: {{ quote .Values.container.messageQueueTransport }}
   CLAIM_QUEUE_ADDRESS: {{ quote .Values.container.claimQueueAddress }}
+  APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
 {{- end -}}
