@@ -58,6 +58,7 @@ container:
 ingress:
   class: nginx
   endpoint: ffc-demo
+  server: example.com
 
 deployment:
   restartPolicy: Always
