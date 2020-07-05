@@ -7,7 +7,7 @@ let messageSender
 const address = 'test-send'
 const message = { greeting: 'test message' }
 
-describe('message sender', () => {
+describe.skip('message sender', () => {
   appInsights.setup().start()
   afterEach(async () => {
     await messageSender.closeConnection()

@@ -6,7 +6,7 @@ const consoleErrorOrig = console.consoleError
 let mockConsoleError
 let messageBase
 
-describe('message base', () => {
+describe.skip('message base', () => {
   beforeAll(() => {
     mockConsoleError = jest.fn()
     console.error = mockConsoleError
