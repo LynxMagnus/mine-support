@@ -10,7 +10,7 @@ services:
       - ffc-demo-claim-message-queue
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-demo-web-local
-      APPINSIGHTS_INSTRUMENTATIONKEY:
+      APPINSIGHTS_INSTRUMENTATIONKEY: ${APPINSIGHTS_INSTRUMENTATIONKEY}
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       REDIS_HOSTNAME: redis
       OKTA_ENABLED: ${OKTA_ENABLED:-false}
