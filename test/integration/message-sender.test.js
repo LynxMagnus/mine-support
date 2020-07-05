@@ -1,4 +1,5 @@
 const MessageSender = require('../../app/services/messaging/message-sender')
+const appInsights = require('applicationinsights')
 
 const config = require('../../app/config')
 
@@ -7,6 +8,7 @@ const address = 'test-send'
 const message = { greeting: 'test message' }
 
 describe('message sender', () => {
+  appInsights.setup().start()
   afterEach(async () => {
     await messageSender.closeConnection()
   })
