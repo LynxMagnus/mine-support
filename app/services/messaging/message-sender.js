@@ -9,14 +9,16 @@ class MessageSender extends MessageBase {
   }
 
   async sendMessage (message) {
+    const sender = this.sbClient.createSender(this.senderConfig.name)
     const data = JSON.stringify(message)
-    const sender = await this.connection.createAwaitableSender(this.senderConfig)
+    // const sender = await this.connection.createAwaitableSender(this.senderConfig)
     let startTime
     let success = true
     let resultCode = 200
     try {
       console.log(`${this.name} sending message`, data)
       startTime = Date.now()
+      // no need for delivery as sender.send returns Promise<void>
       const delivery = await sender.send({ body: data })
       console.log(`message sent ${this.name}`)
       return delivery
