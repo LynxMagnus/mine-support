@@ -6,7 +6,7 @@ let messageSender
 const address = 'test-send'
 const message = { greeting: 'test message' }
 
-describe('message sender', () => {
+describe.skip('message sender', () => {
   afterEach(async () => {
     await messageSender.closeConnection()
   })
