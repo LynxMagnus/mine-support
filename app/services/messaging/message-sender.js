@@ -9,7 +9,7 @@ class MessageSender extends MessageBase {
   }
 
   async sendMessage (message) {
-    const sender = this.sbClient.createSender(this.senderConfig.name)
+    const sender = this.sbClient.createSender(this.senderConfig.target.address)
     const data = JSON.stringify(message)
     // const sender = await this.connection.createAwaitableSender(this.senderConfig)
     let startTime
