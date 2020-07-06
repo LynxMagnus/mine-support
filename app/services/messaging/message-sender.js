@@ -17,7 +17,14 @@ class MessageSender extends MessageBase {
     try {
       console.log(`${this.name} sending message`, data)
       startTime = Date.now()
-      const delivery = await sender.send({ body: data })
+      const correlationContext = appInsights.getCorrelationContext()
+      console.log(correlationContext)
+      // debugger;
+      const traceParentTraceId = correlationContext.operation.traceparent.traceId
+      const msg = { body: data, correlation_id: traceParentTraceId }
+      console.log(msg)
+      // no need for delivery as sender.send returns Promise<void>
+      const delivery = await sender.send(msg)
       console.log(`message sent ${this.name}`)
       return delivery
     } catch (error) {
