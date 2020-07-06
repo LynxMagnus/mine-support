@@ -64,6 +64,10 @@ Server ID, and URL of the site must be set in the environment variables
 Running the integration tests locally requires a message bus that supports AMQP 1.0 and (at a minimum) the following environment variables setting:
 `MESSAGE_QUEUE_HOST`, `MESSAGE_QUEUE_PORT`, `CLAIM_QUEUE_USER`, `CLAIM_QUEUE_PASSWORD`
 
+## Test structure
+
+The tests have been structured into subfolders of ./test as per the [Microservice test approach and repository structure](https://eaflood.atlassian.net/wiki/spaces/FPS/pages/1845396477/Microservice+test+approach+and+repository+structure)
+
 ## How to run tests
 
 A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before running tests via docker-compose, using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`. The command given to `docker-compose run` may be customised by passing arguments to the test script.
