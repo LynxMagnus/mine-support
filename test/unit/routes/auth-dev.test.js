@@ -1,4 +1,4 @@
-describe('Confirmation test', () => {
+describe('auth/dev test', () => {
   let createServer
   let server
 
@@ -12,14 +12,15 @@ describe('Confirmation test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/confirmation route returns 200', async () => {
-    const options = {
+  test('GET /auth/dev sets auth cookie and redirects', async () => {
+    const authUrlOptions = {
       method: 'GET',
-      url: '/claim/confirmation'
+      url: '/auth/dev'
     }
 
-    const response = await server.inject(options)
-    expect(response.statusCode).toBe(200)
+    const authResponse = await server.inject(authUrlOptions)
+    expect(authResponse.statusCode).toBe(302)
+    expect(authResponse.headers['set-cookie'][0]).toContain('ffc-demo-web=')
   })
 
   afterEach(async () => {

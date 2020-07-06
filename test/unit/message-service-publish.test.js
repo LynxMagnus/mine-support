@@ -4,13 +4,13 @@ describe('Test message service', () => {
   let MockMessageSender
 
   beforeAll(async () => {
-    jest.mock('../app/services/messaging/message-sender')
+    jest.mock('../../app/services/messaging/message-sender')
   })
 
   beforeEach(async () => {
     jest.resetModules()
-    messageService = require('../app/services/message-service')
-    MockMessageSender = require('../app/services/messaging/message-sender')
+    messageService = require('../../app/services/message-service')
+    MockMessageSender = require('../../app/services/messaging/message-sender')
   })
 
   afterEach(async () => {
@@ -25,6 +25,6 @@ describe('Test message service', () => {
   })
 
   afterAll(async () => {
-    jest.unmock('../app/services/message-service')
+    jest.unmock('../../app/services/message-service')
   })
 })

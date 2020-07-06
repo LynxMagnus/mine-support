@@ -4,15 +4,15 @@ describe('Email test', () => {
   let sendClaimMessage
 
   beforeAll(async () => {
-    jest.mock('../../../app/services/message-service')
-    jest.mock('../../../app/services/send-claim')
-    createServer = require('../../../app/server')
+    jest.mock('../../../../app/services/message-service')
+    jest.mock('../../../../app/services/send-claim')
+    createServer = require('../../../../app/server')
   })
 
   beforeEach(async () => {
     server = await createServer()
     await server.initialize()
-    sendClaimMessage = require('../../../app/services/send-claim')
+    sendClaimMessage = require('../../../../app/services/send-claim')
   })
 
   afterEach(async () => {
@@ -42,7 +42,7 @@ describe('Email test', () => {
     expect(postResponse.payload).toContain('Please enter valid email')
   })
 
-  test('POST /claim/email sends claim message but fails if message doesn not send', async () => {
+  test('POST /claim/email sends claim message but fails if message does not send', async () => {
     const postOptions = {
       method: 'POST',
       url: '/claim/email',

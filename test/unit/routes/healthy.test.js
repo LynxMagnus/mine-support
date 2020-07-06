@@ -1,4 +1,4 @@
-describe('Property Type test', () => {
+describe('Healthy test', () => {
   let createServer
   let server
 
@@ -12,10 +12,10 @@ describe('Property Type test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/property-type route returns 200', async () => {
+  test('GET /healthy route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/claim/property-type'
+      url: '/healthy'
     }
 
     const response = await server.inject(options)
