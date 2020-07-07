@@ -2,12 +2,8 @@ const appInsights = require('applicationinsights')
 
 function setup () {
   if (process.env.APPINSIGHTS_INSTRUMENTATIONKEY) {
-    appInsights
-      .setup()
-      // 'developer' mode
-      .setInternalLogging(true, true)
-      .start()
-    // send events more often
+    appInsights.setup().start()
+    // send events more often for development
     appInsights.defaultClient.config.maxBatchSize = 1
     const cloudRoleTag = appInsights.defaultClient.context.keys.cloudRole
     const appName = process.env.APPINSIGHTS_CLOUDROLE
