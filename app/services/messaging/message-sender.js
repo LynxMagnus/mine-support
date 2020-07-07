@@ -11,17 +11,17 @@ class MessageSender extends MessageBase {
   async sendMessage (message) {
     const data = JSON.stringify(message)
     const sender = await this.connection.createAwaitableSender(this.senderConfig)
-    let startTime
+    let msgCreationTime
     let success = true
     let resultCode = 200
     try {
       console.log(`${this.name} sending message`, data)
 
-      startTime = Date.now()
       const correlationContext = appInsights.getCorrelationContext()
       const traceId = correlationContext.operation.traceparent.traceId
       const spanId = correlationContext.operation.traceparent.spanId
-      const msg = { body: data, correlation_id: `${traceId}.${spanId}` }
+      msgCreationTime = Date.now()
+      const msg = { body: data, correlation_id: `${traceId}.${spanId}`, creation_time: msgCreationTime }
 
       console.log(`${this.name} sending message`, msg)
       const delivery = await sender.send(msg)
@@ -33,7 +33,7 @@ class MessageSender extends MessageBase {
       console.error('failed to send message', error)
       throw error
     } finally {
-      const duration = Date.now() - startTime
+      const duration = Date.now() - msgCreationTime
       appInsights.defaultClient.trackDependency({ data, dependencyTypeName: 'AMQP', duration, name: this.name, resultCode, success, target: this.senderConfig.target.address })
       await sender.close()
     }
