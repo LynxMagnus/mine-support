@@ -16,14 +16,13 @@ class MessageSender extends MessageBase {
     let resultCode = 200
     try {
       console.log(`${this.name} sending message`, data)
+
       startTime = Date.now()
       const correlationContext = appInsights.getCorrelationContext()
-      console.log(correlationContext)
-      // debugger;
       const traceParentTraceId = correlationContext.operation.traceparent.traceId
       const msg = { body: data, correlation_id: traceParentTraceId }
-      console.log(msg)
-      // no need for delivery as sender.send returns Promise<void>
+
+      console.log(`${this.name} sending message`, msg)
       const delivery = await sender.send(msg)
       console.log(`message sent ${this.name}`)
       return delivery
@@ -33,9 +32,8 @@ class MessageSender extends MessageBase {
       console.error('failed to send message', error)
       throw error
     } finally {
-      console.log('trackDependency')
       const duration = Date.now() - startTime
-      appInsights.defaultClient.trackDependency({ data, dependencyTypeName: 'AMQP', duration, name: 'claim message queue', resultCode, success, target: this.senderConfig.target.address })
+      appInsights.defaultClient.trackDependency({ data, dependencyTypeName: 'AMQP', duration, name: this.name, resultCode, success, target: this.senderConfig.target.address })
       await sender.close()
     }
   }
