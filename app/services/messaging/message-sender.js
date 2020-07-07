@@ -20,7 +20,7 @@ class MessageSender extends MessageBase {
       startTime = Date.now()
       const correlationContext = appInsights.getCorrelationContext()
       const traceParentTraceId = correlationContext.operation.traceparent.traceId
-      const msg = { body: data, correlation_id: traceParentTraceId }
+      const msg = { body: data, operationId: traceParentTraceId }
 
       console.log(`${this.name} sending message`, msg)
       const delivery = await sender.send(msg)
