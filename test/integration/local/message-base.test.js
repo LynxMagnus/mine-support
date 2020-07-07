@@ -1,5 +1,5 @@
-const MessageBase = require('../../app/services/messaging/message-base')
-const config = require('../../app/config')
+const MessageBase = require('../../../app/services/messaging/message-base')
+const config = require('../../../app/config')
 
 const consoleErrorOrig = console.consoleError
 

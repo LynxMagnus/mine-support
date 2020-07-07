@@ -1,4 +1,4 @@
-describe('MineType test', () => {
+describe('Home test', () => {
   let createServer
   let server
 
@@ -12,10 +12,10 @@ describe('MineType test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/mine-type route returns 200', async () => {
+  test('GET / route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/claim/mine-type'
+      url: '/'
     }
 
     const response = await server.inject(options)

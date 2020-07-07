@@ -1,6 +1,6 @@
-const MessageSender = require('../../app/services/messaging/message-sender')
+const MessageSender = require('../../../app/services/messaging/message-sender')
 
-const config = require('../../app/config')
+const config = require('../../../app/config')
 
 let messageSender
 const address = 'test-send'

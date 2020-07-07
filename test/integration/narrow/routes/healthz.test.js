@@ -1,4 +1,4 @@
-describe('Confirmation test', () => {
+describe('Healthz test', () => {
   let createServer
   let server
 
@@ -12,10 +12,10 @@ describe('Confirmation test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/confirmation route returns 200', async () => {
+  test('GET /healthz route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/claim/confirmation'
+      url: '/healthz'
     }
 
     const response = await server.inject(options)

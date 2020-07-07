@@ -1,4 +1,4 @@
-describe('Date of Subsidence test', () => {
+describe('Healthy test', () => {
   let createServer
   let server
 
@@ -12,10 +12,10 @@ describe('Date of Subsidence test', () => {
     await server.initialize()
   })
 
-  test('GET /claim/date-of-subsidence route returns 200', async () => {
+  test('GET /healthy route returns 200', async () => {
     const options = {
       method: 'GET',
-      url: '/claim/date-of-subsidence'
+      url: '/healthy'
     }
 
     const response = await server.inject(options)
