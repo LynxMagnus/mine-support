@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  wdio-cucumber:
+    volumes:
+      - ./:/usr/src/app/src
+      - ./babel.config.js:/usr/src/app/babel.config.js
+      - ./wdio.conf.js:/usr/src/app/wdio.conf.js
+      - ./wdio.BUILD.conf.js:/usr/src/app/wdio.BUILD.conf.js
+      - ./reports/html-reports/:/usr/src/app/reports/html-reports/
+
+  hub:
+    ports:
+      - "4444:4444"

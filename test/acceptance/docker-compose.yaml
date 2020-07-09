@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  wdio-cucumber:
+    build: .
+    image: wdio-cucumber
+    container_name: wdio-cucumber
+    depends_on:
+      - selenium
+    environment:
+      TEST_ENVIRONMENT_ROOT_URL: ${TEST_ENVIRONMENT_ROOT_URL}  
+
+  selenium:
+    image: selenium/standalone-chrome-debug
+    privileged: true
+
+  hub:
+    image: selenium/hub
