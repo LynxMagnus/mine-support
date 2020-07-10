@@ -77,7 +77,15 @@
       "afterEach",
       "jest",
       "beforeAll",
-      "afterAll"
+      "afterAll",
+      "browser",
+      "it",
+      "expect",
+      "describe",
+      "jest",
+      "beforeEach",
+      "assert",
+      "$"
     ]
   }
 }
