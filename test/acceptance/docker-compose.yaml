@@ -3,7 +3,7 @@ services:
   wdio-cucumber:
     build: .
     image: wdio-cucumber
-    container_name: wdio-cucumber
+    container_name: webdriver-cuke
     depends_on:
       - selenium
     environment:
@@ -11,7 +11,9 @@ services:
 
   selenium:
     image: selenium/standalone-chrome-debug
+    container_name: chrome-browser
     privileged: true
 
   hub:
     image: selenium/hub
+    container_name: selenium-hub

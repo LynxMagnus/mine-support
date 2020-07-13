@@ -1,10 +1,10 @@
-# acceptance-tests
+# Acceptance Tests
 Future Farming and Countryside Programme - Demo Web Acceptance Tests 
 ***
 
 This folder contains the acceptance tests for the FFC Demo Web service components as can be operated through the 'customer facing' `ffc-demo-web` front end microservice.
 
-The framework is (Cucumber)[https://cucumber.io/] and (webdriver.io)[https://webdriver.io/] based, containerised, expandable and based on the actively maintained webdriver.io Cucumber boilerplate project. It is recommended to keep in sync with the master branch of this project to benefit from the work done by the maintainers.
+The framework is (Cucumber)[https://cucumber.io/] and (webdriver.io)[https://webdriver.io/] based, containerised, expandable and based on the actively maintained webdriver.io Cucumber boilerplate project. 
 
 ## Requirements
 
@@ -12,21 +12,24 @@ The framework is (Cucumber)[https://cucumber.io/] and (webdriver.io)[https://web
 - Node version 12 (not compatible with v13)
   - if you have multiple versions of node, run `nvm use 12` to use version 12 for this alone
 
-## Quick start
+# Quick start
 
-Choose one of the following options:
+Docker is used to create a container for each of selenium-hub, chrome-browser and webdriver-cuke.
+* Selenium Hub allows concurrent execution of test cases 
+* Chrome Browser is the browser specified in the configuration file `wdio.conf.js` by default
+* Webdriver.io along with Cucumber is this framework that defines the tests.
 
-1. Clone the git repo — `git clone https://github.com/DEFRA/ffc-demo-acceptance-tests.git`
+## How to run the tests
 
-2. Set the root URL for the environment in the environment variable `TEST_ENVIRONMENT_ROOT_URL`
+1. Set the root URL for the environment in the environment variable `TEST_ENVIRONMENT_ROOT_URL`
 
-3. From the directory containing the dockerfile run `docker-compose up --build`. This will run an acceptance test against the FFC-Demo web service.
+2. From the directory containing the dockerfile run `docker-compose up --build`. This will run an acceptance test against the FFC-Demo web service.
 
-4. The test report will be output to `./reports/html-reports`. Read more about report configuration in the [rpii/wdio-hmtl-reporter docs](https://github.com/rpii/wdio-html-reporter)
+3. The test report will be output to `./reports/html-reports`. Read more about report configuration in the [rpii/wdio-hmtl-reporter docs](https://github.com/rpii/wdio-html-reporter)
 
-5. Now you are ready to maintain, extend or write your own features in the `./acceptance/features` directory
+4. Now you are ready to maintain, extend or write your own features in the `./acceptance/features` directory
 
-# How to write a test
+## How to write a test
 
 Tests are written in [Gherkin syntax](https://cucumber.io/docs/reference)
 that means that you write down what's supposed to happen in a real language. All test files are located in
@@ -54,12 +57,6 @@ Scenario: Another test
 
 This test opens the browser and navigates them to google.com to check if the title contains the search
 query after doing a search. As you can see, it is pretty simple and understandable for everyone.
-
-# How to run the test
-
-Docker compose runs the local webserver to allow Selenium to do it's stuff so after any scenario or code changes in the framework you need on run the `docker-compose build` and `docker-compose up` commands to run a test.
-
-_please note_ The WDIO runner uses the configuration file `wdio.conf.js` by default.
 
 # Configurations
 
