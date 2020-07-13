@@ -12,3 +12,4 @@ test-output
 *.tgz
 helm/**/*.lock
 .env
+test/acceptance/reports
