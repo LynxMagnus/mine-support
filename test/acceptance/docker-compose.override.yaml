@@ -6,7 +6,7 @@ services:
       - ./babel.config.js:/home/node/babel.config.js
       - ./wdio.conf.js:/home/node/wdio.conf.js
       - ./wdio.BUILD.conf.js:/home/node/wdio.BUILD.conf.js
-      - ./reports/html-reports/:/home/node/reports/html-reports/
+      - ./html-reports/:/home/node/html-reports/
 
   hub:
     ports:

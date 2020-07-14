@@ -32,7 +32,7 @@ exports.config = {
   reporters: ['spec',
     [HtmlReporter, {
       debug: true,
-      outputDir: './reports/html-reports/',
+      outputDir: './html-reports/',
       filename: 'feature-report.html',
       reportTitle: 'Feature Test Report',
       showInBrowser: false,
@@ -64,7 +64,7 @@ exports.config = {
   // =====
   onPrepare: function (config, capabilities) {
     const reportAggregator = new ReportAggregator({
-      outputDir: './reports/html-reports/',
+      outputDir: './html-reports/',
       filename: 'acceptance-test-suite-report.html',
       reportTitle: 'Acceptance Tests Report',
       browserName: capabilities.browserName
@@ -99,7 +99,7 @@ exports.config = {
       return
     }
     const timestamp = moment().format('YYYYMMDD-HHmmss.SSS')
-    const filepath = path.join('reports/html-reports/screenshots/', timestamp + '.png')
+    const filepath = path.join('/html-reports/screenshots/', timestamp + '.png')
     browser.saveScreenshot(filepath)
     process.emit('test:screenshot', filepath)
   }
