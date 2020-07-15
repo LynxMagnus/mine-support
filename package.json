@@ -84,10 +84,8 @@
       "expect",
       "describe",
       "jest",
-      "beforeEach",
       "assert",
-      "$",
-      "afterAll"
+      "$"
     ],
     "ignore": [
       "**/js/**"
