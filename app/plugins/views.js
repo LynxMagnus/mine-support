@@ -33,6 +33,8 @@ module.exports = {
     isCached: !config.isDev,
     context: {
       appVersion: pkg.version,
+      appInsightsKey: process.env.APPINSIGHTS_INSTRUMENTATIONKEY,
+      appInsightsCloudRole: process.env.APPINSIGHTS_CLOUDROLE,
       assetPath: '/static',
       govukAssetPath: '/assets',
       serviceName: 'FFC Demo Service',
