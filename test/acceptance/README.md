@@ -1,10 +1,10 @@
 # Acceptance Tests
-Future Farming and Countryside Programme - Demo Web Acceptance Tests 
-***
+
+> Future Farming and Countryside Programme - Demo Web Acceptance Tests
 
 This folder contains the acceptance tests for the FFC Demo Web service components as can be operated through the 'customer facing' `ffc-demo-web` front end microservice.
 
-The framework is (Cucumber)[https://cucumber.io/] and (webdriver.io)[https://webdriver.io/] based, containerised, expandable and based on the actively maintained webdriver.io Cucumber boilerplate project. 
+The framework is (Cucumber)[https://cucumber.io/] and (webdriver.io)[https://webdriver.io/] based, containerised, expandable and based on the actively maintained webdriver.io Cucumber boilerplate project.
 
 ## Requirements
 
@@ -15,7 +15,7 @@ The framework is (Cucumber)[https://cucumber.io/] and (webdriver.io)[https://web
 # Quick start
 
 Docker is used to create a container for each of selenium-hub, chrome-browser and webdriver-cuke.
-* Selenium Hub allows concurrent execution of test cases 
+* Selenium Hub allows concurrent execution of test cases
 * Chrome Browser is the browser specified in the configuration file `wdio.conf.js` by default
 * Webdriver.io along with Cucumber is this framework that defines the tests.
 
