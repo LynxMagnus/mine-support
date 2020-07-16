@@ -9,7 +9,7 @@ labels:
 
 appInsights:
   key:
-  
+
 containerConfigMap:
   name: ffc-demo-web-config-map
 
@@ -49,8 +49,6 @@ container:
   cookiePassword: passwordpasswordpasswordpasswordpassword
   siteUrl:
   messageQueueHost: amq
-  messageQueuePort: 5672
-  messageQueueTransport: tcp
   claimQueueAddress: claim
   claimQueueUser: artemis
   claimQueuePassword: artemis

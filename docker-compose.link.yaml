@@ -6,15 +6,12 @@ version: '3.7'
 
 services:
   ffc-demo-web:
-    build: 
+    build:
       context: .
-      target: development  
-    command: >
-      sh -c "
-        scripts/wait-for/wait-for ffc-demo-message-queue:5672 --
-        npm run start:watch"
+      target: development
+    command: npm run start:watch
     environment:
-      MESSAGE_QUEUE_HOST : ffc-demo-message-queue
+      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST-notset}
     networks:
       - default
       - ffc-demo

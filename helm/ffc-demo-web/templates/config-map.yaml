@@ -19,8 +19,6 @@ data:
   REST_CLIENT_TIMEOUT_IN_MILLIS: {{ quote .Values.container.restClientTimeoutMillis }}
   STATIC_CACHE_TIMEOUT_IN_MILLIS: {{ quote .Values.container.staticCacheTimeoutMillis }}
   MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
-  MESSAGE_QUEUE_PORT: {{ quote .Values.container.messageQueuePort }}
-  MESSAGE_QUEUE_TRANSPORT: {{ quote .Values.container.messageQueueTransport }}
   CLAIM_QUEUE_ADDRESS: {{ quote .Values.container.claimQueueAddress }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
 {{- end -}}

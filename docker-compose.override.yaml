@@ -8,13 +8,9 @@ services:
     build:
       target: development
     image: ffc-demo-web-development
-    command: >
-      sh -c "
-        scripts/wait-for/wait-for ffc-demo-claim-message-queue:5672 --
-        npm run start:watch"
+    command: npm run start:watch
     depends_on:
       - redis
-      - ffc-demo-claim-message-queue
     ports:
       - "3000:3000"
       - "9229:9229"
@@ -33,10 +29,6 @@ services:
       - redis_data:/data
     ports:
       - "6379:6379"
-  ffc-demo-claim-message-queue:
-    ports:
-      - "8161:8161"
-      - "5672:5672"
 
 volumes:
   redis_data:
