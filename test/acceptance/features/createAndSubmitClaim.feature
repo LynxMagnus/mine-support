@@ -1,4 +1,4 @@
-Feature: Create and submit a new claim
+Feature: Create and submit a new claim journey
 
     Scenario: Successfully complete form to submit a new claim
 
