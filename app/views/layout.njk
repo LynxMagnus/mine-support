@@ -8,6 +8,7 @@
     startAppInsights(
       { 
         instrumentationKey: "{{ appInsightsKey }}",
+        distributedTracingMode: 1, // DistributedTracingModes.AI_AND_W3C
         cloudRole: "{{ appInsightsCloudRole }}" 
       }
     )
