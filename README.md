@@ -72,6 +72,8 @@ The tests have been structured into subfolders of ./test as per the [Microservic
 
 A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before running tests via docker-compose, using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`. The command given to `docker-compose run` may be customised by passing arguments to the test script.
 
+N.B. Acceptance tests in test/acceptance are not yet runnable due to [NGINX Ingress being needed on AKS Cluster PSD-861](https://eaflood.atlassian.net/browse/PSD-861) but can be run locally for now. For running instructions see separate [README](./test/acceptance/README.md).
+
 Examples:
 
 ```
