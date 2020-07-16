@@ -2,8 +2,7 @@ const joi = require('@hapi/joi')
 
 const mqSchema = joi.object({
   messageQueue: {
-    host: joi.string().default('localhost'),
-    reconnect_Limit: joi.number().default(10)
+    host: joi.string().default('localhost')
   },
   claimQueue: {
     address: joi.string().default('claim'),
@@ -14,8 +13,7 @@ const mqSchema = joi.object({
 
 const mqConfig = {
   messageQueue: {
-    host: process.env.MESSAGE_QUEUE_HOST,
-    reconnect_Limit: process.env.MESSAGE_QUEUE_RECONNECT_LIMIT
+    host: process.env.MESSAGE_QUEUE_HOST
   },
   claimQueue: {
     address: process.env.CLAIM_QUEUE_ADDRESS,
