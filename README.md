@@ -24,18 +24,24 @@ Or:
 - Redis
 
 ### Azure Service Bus
-This service depends on access to an ASB instance, a queue and credentials to
-write to that queue. The following environment variables need to be set in any
-environment before the Docker container is started. The easiest way to do this
-is by adding them to a `.env` file.
 
-| Name                   | Description                                                                                |
-| -----                  | ------------                                                                               |
-| MESSAGE_QUEUE_HOST     | Azure Service Bus host name, e.g. `myservicebus.servicebus.windows.net`                    |
-| MESSAGE_QUEUE_PASSWORD | Azure Service Bus SAS policy key                                                           |
-| MESSAGE_QUEUE_SUFFIX   | Developer specific queue suffix to prevent collisions, only required for local development |
-| MESSAGE_QUEUE_USER     | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey`                        |
+This service depends on a valid Azure Service Bus connection string for
+asynchronous communication.  The following environment variables need to be set
+in any non-production (`!config.isProd`) environment before the Docker
+container is started. When deployed into an appropriately configured AKS
+cluster (where [AAD Pod Identity](https://github.com/Azure/aad-pod-identity) is
+configured) the micro-service will use AAD Pod Identity through the manifests
+for
+[azure-identity](./helm/ffc-demo-claim-service/templates/azure-identity.yaml)
+and
+[azure-identity-binding](./helm/ffc-demo-claim-service/templates/azure-identity-binding.yaml).
 
+| Name                               | Description                                                                                  |
+| ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| MESSAGE_QUEUE_HOST                 | Azure Service Bus hostname, e.g. `myservicebus.servicebus.windows.net`                       |
+| MESSAGE_QUEUE_PASSWORD             | Azure Service Bus SAS policy key                                                             |
+| MESSAGE_QUEUE_SUFFIX               | Developer specific queue suffix to prevent collisions, only required for local development   |
+| MESSAGE_QUEUE_USER                 | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey`                          |
 
 ## Environment variables
 
@@ -44,29 +50,26 @@ Values for development are set in the Docker Compose configuration. Default
 values for production-like deployments are set in the Helm chart and may be
 overridden by build and release pipelines.
 
-| Name                           | Description                               | Required  | Default            | Valid                               | Notes                                                                             |
-| ----                           | -----------                               | :-------: | -------            | -----                               | -----                                                                             |
-| APPINSIGHTS_INSTRUMENTATIONKEY | Key for application insight               | no        |                    |                                     | App insights only enabled if key is present. Note: Silently fails for invalid key |
-| APPINSIGHTS_CLOUDROLE          | Role used for filtering metrics           | no        |                    |                                     | Set to `ffc-demo-web-local` in docker compose files                               |
-| CLAIM_QUEUE_ADDRESS            | claim queue name                          | no        |                    | claim                               |                                                                                   |
-| CLAIM_QUEUE_USER               | claim queue user name                     | no        |                    |                                     |                                                                                   |
-| CLAIM_QUEUE_PASSWORD           | claim queue password                      | no        |                    |                                     |                                                                                   |
-| CACHE_NAME                     | Cache name                                | no        | redisCache         |                                     |                                                                                   |
-| COOKIE_PASSWORD                | Redis cookie password                     | yes       |                    |                                     |                                                                                   |
-| MESSAGE_QUEUE_HOST             | Message queue host                        | no        |                    | myservicebus.servicebus.windows.net |                                                                                   |
-| NODE_ENV                       | Node environment                          | no        | development        | development,test,production         |                                                                                   |
-| OKTA_AUTH_SERVER_ID            | ID of Okta custom authorisation server    | no        |                    |                                     |                                                                                   |
-| OKTA_CLIENT_ID                 | Client ID of Okta OpenID Connect app      | no        |                    |                                     |                                                                                   |
-| OKTA_CLIENT_SECRET             | Client Secret of Okta OpenID Connect app  | no        |                    |                                     |                                                                                   |
-| OKTA_DOMAIN                    | Okta domain, i.e. `mysite.okta.com`       | no        |                    |                                     |                                                                                   |
-| OKTA_ENABLED                   | set to true to enable Okta authentication | no        | "true"             |                                     |                                                                                   |
-| PORT                           | Port number                               | no        | 3000               |                                     |                                                                                   |
-| REDIS_HOSTNAME                 | Redis host                                | no        | localhost          |                                     |                                                                                   |
-| REDIS_PORT                     | Redis port                                | no        | 6379               |                                     |                                                                                   |
-| REST_CLIENT_TIMEOUT_IN_MILLIS  | Rest client timout                        | no        | 5000               |                                     |                                                                                   |
-| SESSION_TIMEOUT_IN_MINUTES     | Redis session timeout                     | no        | 30                 |                                     |                                                                                   |
-| SITE_URL                       | URL of site, i.e. https://mysite.com      | no        |                    |                                     |                                                                                   |
-| STATIC_CACHE_TIMEOUT_IN_MILLIS | static file cache timeout                 | no        | 54000 (15 minutes) |                                     |                                                                                   |
+| Name                           | Description                               | Required  | Default            | Valid                       | Notes                                                                             |
+| ----                           | -----------                               | :-------: | -------            | -----                       | -----                                                                             |
+| APPINSIGHTS_CLOUDROLE          | Role used for filtering metrics           | no        |                    |                             | Set to `ffc-demo-web-local` in docker compose files                               |
+| APPINSIGHTS_INSTRUMENTATIONKEY | Key for application insight               | no        |                    |                             | App insights only enabled if key is present. Note: Silently fails for invalid key |
+| CACHE_NAME                     | Cache name                                | no        | redisCache         |                             |                                                                                   |
+| CLAIM_QUEUE_ADDRESS            | claim queue name                          | no        |                    | claim                       |                                                                                   |
+| COOKIE_PASSWORD                | Redis cookie password                     | yes       |                    |                             |                                                                                   |
+| NODE_ENV                       | Node environment                          | no        | development        | development,test,production |                                                                                   |
+| OKTA_AUTH_SERVER_ID            | ID of Okta custom authorisation server    | no        |                    |                             |                                                                                   |
+| OKTA_CLIENT_ID                 | Client ID of Okta OpenID Connect app      | no        |                    |                             |                                                                                   |
+| OKTA_CLIENT_SECRET             | Client Secret of Okta OpenID Connect app  | no        |                    |                             |                                                                                   |
+| OKTA_DOMAIN                    | Okta domain, i.e. `mysite.okta.com`       | no        |                    |                             |                                                                                   |
+| OKTA_ENABLED                   | set to true to enable Okta authentication | no        | "true"             |                             |                                                                                   |
+| PORT                           | Port number                               | no        | 3000               |                             |                                                                                   |
+| REDIS_HOSTNAME                 | Redis host                                | no        | localhost          |                             |                                                                                   |
+| REDIS_PORT                     | Redis port                                | no        | 6379               |                             |                                                                                   |
+| REST_CLIENT_TIMEOUT_IN_MILLIS  | Rest client timout                        | no        | 5000               |                             |                                                                                   |
+| SESSION_TIMEOUT_IN_MINUTES     | Redis session timeout                     | no        | 30                 |                             |                                                                                   |
+| SITE_URL                       | URL of site, i.e. https://mysite.com      | no        |                    |                             |                                                                                   |
+| STATIC_CACHE_TIMEOUT_IN_MILLIS | static file cache timeout                 | no        | 54000 (15 minutes) |                             |                                                                                   |
 
 The `/account` page is accessible only by authenticated users. Authentication
 uses either [Okta](https://www.okta.com/) or stubbed authentication (for local
