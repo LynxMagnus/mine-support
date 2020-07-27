@@ -17,8 +17,8 @@ const mqConfig = {
   },
   claimQueue: {
     address: process.env.CLAIM_QUEUE_ADDRESS,
-    username: process.env.CLAIM_QUEUE_USER,
-    password: process.env.CLAIM_QUEUE_PASSWORD
+    username: process.env.MESSAGE_QUEUE_USER,
+    password: process.env.MESSAGE_QUEUE_PASSWORD
   }
 }
 
