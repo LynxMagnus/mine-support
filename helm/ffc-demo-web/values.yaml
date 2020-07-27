@@ -54,8 +54,6 @@ container:
   siteUrl:
   messageQueueHost: amq
   claimQueueAddress: claim
-  claimQueueUser: artemis
-  claimQueuePassword: artemis
 
 ingress:
   class: nginx
