@@ -4,7 +4,7 @@ class MessageBase {
   constructor (name, config, credentials) {
     this.name = name
     this.sbClient = credentials ? ServiceBusClient.createFromAadTokenCredentials(config.host, credentials) : ServiceBusClient.createFromConnectionString(`Endpoint=sb://${config.host}/;SharedAccessKeyName=${config.username};SharedAccessKey=${config.password}`)
-
+    console.log('service bus client', this.sbClient)
     this.queueClient = this.sbClient.createQueueClient(config.address)
   }
 

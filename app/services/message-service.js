@@ -24,7 +24,12 @@ class MessageService {
   }
 
   async publishClaim (claim) {
-    return await this.claimSender.sendMessage(claim)
+    try {
+      return await this.claimSender.sendMessage(claim)
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
   }
 }
 
@@ -32,7 +37,9 @@ let messageService
 
 module.exports = (async function createConnections () {
   if (!messageService) {
+    console.log('creating message service')
     const credentials = config.isProd ? await auth.loginWithVmMSI({ resource: 'https://servicebus.azure.net' }) : undefined
+    console.log('message service credentials', credentials)
     messageService = new MessageService(credentials)
   }
   return messageService
