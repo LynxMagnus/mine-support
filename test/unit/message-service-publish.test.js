@@ -1,4 +1,3 @@
-
 describe('Test message service', () => {
   let messageService
   let MockMessageSender
@@ -9,7 +8,7 @@ describe('Test message service', () => {
 
   beforeEach(async () => {
     jest.resetModules()
-    messageService = require('../../app/services/message-service')
+    messageService = await require('../../app/services/message-service')
     MockMessageSender = require('../../app/services/messaging/message-sender')
   })
 

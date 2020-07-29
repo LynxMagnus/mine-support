@@ -1,19 +1,17 @@
-
 describe('Test send claim', () => {
   let sendClaimMessage
-  let mockMessageService
+  let messageService
   let sessionHandler
 
   beforeAll(async () => {
-    jest.mock('../../app/services/message-service')
     jest.mock('../../app/services/session-handler')
   })
 
   beforeEach(async () => {
-    jest.resetModules()
-    mockMessageService = require('../../app/services/message-service')
     sendClaimMessage = require('../../app/services/send-claim')
     sessionHandler = require('../../app/services/session-handler')
+    messageService = await require('../../app/services/message-service')
+    messageService.publishClaim = jest.fn()
 
     sessionHandler.get.mockResolvedValue({
       claimId: 'MINE123',
@@ -31,22 +29,21 @@ describe('Test send claim', () => {
 
   test('Claim service publishes the claim to the message broker', async () => {
     const result = await sendClaimMessage.submit('dummy')
-    expect(mockMessageService.publishClaim).toHaveBeenCalledTimes(1)
+    expect(messageService.publishClaim).toHaveBeenCalledTimes(1)
     expect(result).toBe(true)
   })
 
   test('Catch error thrown by publish message', async () => {
-    mockMessageService.publishClaim.mockImplementation(() => {
+    messageService.publishClaim.mockImplementation(() => {
       throw new Error()
     })
 
     const result = await sendClaimMessage.submit('dummy')
-    expect(mockMessageService.publishClaim).toThrow(Error)
+    expect(messageService.publishClaim).toThrow(Error)
     expect(result).toBe(false)
   })
 
   afterAll(async () => {
-    jest.unmock('../../app/services/message-service')
     jest.unmock('../../app/services/session-handler')
   })
 })

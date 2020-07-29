@@ -1,4 +1,3 @@
-
 describe('Test message service', () => {
   let messageService
   let MockMessageSender
@@ -18,7 +17,7 @@ describe('Test message service', () => {
       }
     })
 
-    messageService = require('../../app/services/message-service')
+    messageService = await require('../../app/services/message-service')
   })
 
   afterEach(async () => {

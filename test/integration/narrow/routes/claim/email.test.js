@@ -4,7 +4,6 @@ describe('Email test', () => {
   let sendClaimMessage
 
   beforeAll(async () => {
-    jest.mock('../../../../../app/services/message-service')
     jest.mock('../../../../../app/services/send-claim')
     createServer = require('../../../../../app/server')
   })

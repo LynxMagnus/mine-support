@@ -7,7 +7,7 @@ module.exports = {
       const claim = sessionHandler.get(request, 'claim')
       console.log('submitting claim')
       console.log(claim)
-      await messageService.publishClaim(claim)
+      await (await messageService).publishClaim(claim)
       return true
     } catch (err) {
       console.log(err)
