@@ -20,5 +20,22 @@ metadata:
       proxy_hide_header l5d-remote-ip;
       proxy_hide_header l5d-server-id;
     {{- end }}
+spec:
+  rules:
+{{- if .Values.ingress.endpoint }}
+  {{- if .Values.pr }}
+  - host: {{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}
+  {{ else }}
+  - host: {{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}
+  {{- end }}
+    http:
+{{ else }}
+  - http:
+{{- end }}
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ required (printf $requiredMsg "name") .Values.name | quote }}
+          servicePort: {{ required (printf $requiredMsg "service.port") .Values.service.port }}
 {{- end }}
 {{- end -}}
