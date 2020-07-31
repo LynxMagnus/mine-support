@@ -35,7 +35,7 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: {{ required (printf $requiredMsg "name") .Values.name | quote }}
-          servicePort: {{ required (printf $requiredMsg "service.port") .Values.service.port }}
+          serviceName: {{ .Values.name | quote }}
+          servicePort: {{ .Values.service.port }}
 {{- end }}
 {{- end -}}
