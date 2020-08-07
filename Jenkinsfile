@@ -6,10 +6,10 @@ def runAcceptanceTests = {
       dir('test/acceptance') {
         pwd
         sh('mkdir -p -m 777 html-reports')
-        // URL for running application - might need to be PR specific, using the namespace
-        // sh("export TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo${namespace}.ffc.snd.azure.defra.cloud")
-        sh('export TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo.ffc.snd.azure.defra.cloud')
-        sh('docker-compose up --build')
+        // URL for running application - hard coding this to be PR specific for now
+        withEnv(['TEST_ENVIRONMENT_ROOT_URL=https://ffc-demo-pr174.ffc.snd.azure.defra.cloud']) {
+          sh('docker-compose up --build --abort-on-container-exit')
+        }
       }
     } finally {
       sh('docker-compose down -v')
