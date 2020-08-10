@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  ffc-demo-web:
+    command: npm run start:watch
+    build:
+      target: development
+    image: ffc-demo-web-development
+    environment:
+      NODE_ENV: test
+    volumes:
+      - ./test-output/:/home/node/test-output/
+
+  zap-baseline:
+    image: owasp/zap2docker-stable
+    command: zap-baseline.py -t http://ffc-demo-web:${PORT:-3000} -r zap-report.html -a -j -d
+    depends_on:
+      - ffc-demo-web
+    volumes:
+      - ./test-output/:/zap/wrk/
