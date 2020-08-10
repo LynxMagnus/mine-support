@@ -11,9 +11,9 @@ services:
     volumes:
       - ./test-output/:/home/node/test-output/
 
-  zap-baseline:
+  zap-baseline-scan:
     image: owasp/zap2docker-stable
-    command: zap-baseline.py -t http://ffc-demo-web:${PORT:-3000} -c config/zap.conf -r test-output/zap-report.html -a -j -d -I
+    command: zap-baseline.py -t http://ffc-demo-web:${PORT:-3000} -c config/zap.conf -r test-output/zap-report.html -a -d -I
     depends_on:
       - ffc-demo-web
     volumes:
