@@ -7,7 +7,7 @@ def runAcceptanceTests = {
         sh('mkdir -p -m 777 html-reports')
 
         // Try PR specific URL (but not https)
-        withEnv(['TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo-pr174.ffc.snd.azure.defra.cloud']) {
+        withEnv(['TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo.ffc.snd.azure.defra.cloud']) {
           sh('wget $TEST_ENVIRONMENT_ROOT_URL')
           sh('docker-compose up --build --abort-on-container-exit')
         }
