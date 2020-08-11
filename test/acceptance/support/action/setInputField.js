@@ -16,7 +16,7 @@ export default (method, value, selector) => {
 
   let checkValue = value
 
-  checkIfElementExists(selector, false, 1)
+  checkIfElementExists(selector, false)
 
   if (!value) {
     checkValue = ''
