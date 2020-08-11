@@ -90,16 +90,18 @@ exports.config = {
     global.should = chai.should()
   },
 
-  afterTest: function (test) {
+  afterStep: function (featureName, feature, result, ctx) {
+    if (result.passed) {
+      return
+    }
+
     const path = require('path')
     const moment = require('moment')
 
-    // if test passed, ignore, else take and save screenshot.
-    if (test.passed) {
-      return
-    }
+    const screenshotFileName = ctx.uri.split('.feature')[0].split('/').slice(-1)[0]
     const timestamp = moment().format('YYYYMMDD-HHmmss.SSS')
-    const filepath = path.join('/html-reports/screenshots/', timestamp + '.png')
+    const filepath = path.join('./html-reports/screenshots/', screenshotFileName + '-' + timestamp + '.png')
+
     browser.saveScreenshot(filepath)
     process.emit('test:screenshot', filepath)
   }
