@@ -6,9 +6,13 @@ def runAcceptanceTests = {
       dir('test/acceptance') {
         sh('mkdir -p -m 777 html-reports')
 
-        // Try PR specific URL (but not https)
-        withEnv(['TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo-pr174.ffc.snd.azure.defra.cloud']) {
-          sh('wget $TEST_ENVIRONMENT_ROOT_URL')
+      if (pr != '') {
+        withEnv(["TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo-pr${pr}.ffc.snd.azure.defra.cloud"]) {
+          sh('docker-compose up --build --abort-on-container-exit')
+        }
+      }
+      else { 
+        withEnv(['TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo.ffc.snd.azure.defra.cloud']) {
           sh('docker-compose up --build --abort-on-container-exit')
         }
       }
