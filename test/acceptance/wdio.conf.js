@@ -1,7 +1,7 @@
 const { ReportAggregator, HtmlReporter } = require('@rpii/wdio-html-reporter')
 const log4js = require('@log4js-node/log4js-api')
 const logger = log4js.getLogger('default')
-const envRoot = (process.env.TEST_ENVIRONMENT_ROOT_URL || 'http://ffc-demo.ffc.snd.azure.defra.cloud')
+const envRoot = (process.env.TEST_ENVIRONMENT_ROOT_URL || 'http://host.docker.internal:3000')
 
 exports.config = {
   hostname: 'selenium',
