@@ -21,7 +21,7 @@ exports.config = {
   // Test Configurations
   // ===================
   // Define all options that are relevant for the WebdriverIO instance here
-  logLevel: 'info',
+  logLevel: 'warn',
   bail: 0,
   baseUrl: envRoot + '/selenium:4444',
   waitforTimeout: 10000,
@@ -31,7 +31,7 @@ exports.config = {
   framework: 'cucumber',
   reporters: ['spec',
     [HtmlReporter, {
-      debug: true,
+      debug: false,
       outputDir: './html-reports/',
       filename: 'feature-report.html',
       reportTitle: 'Feature Test Report',
