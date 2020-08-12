@@ -5,9 +5,10 @@ def runAcceptanceTests = {
     try {
       dir('test/acceptance') {
         sh('mkdir -p -m 777 html-reports')
-        def pr = utils.getMergedPrNo()
-        if (pr != '') {
-          withEnv(["TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo-${pr}.ffc.snd.azure.defra.cloud"]) {
+        (repoName, pr, tag, mergedPrNo) = build.getVariables(version.getPackageJsonVersion())
+        echo("repoName, pr, tag, mergedPrNo: $repoName, $pr, $tag, $mergedPrNo")
+        if (mergedPrNo != '') {
+          withEnv(["TEST_ENVIRONMENT_ROOT_URL=http://ffc-demo-${mergedPrNo}.ffc.snd.azure.defra.cloud"]) {
             sh('docker-compose up --build --abort-on-container-exit')
           }
         }
