@@ -1,3 +1,3 @@
-@Library('defra-library@psd-882-add-acceptance-tests-stage') _
+@Library('defra-library@v-8') _
 
 buildNodeJs environment: 'dev'
