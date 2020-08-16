@@ -1,7 +1,7 @@
 {
   "name": "ffc-demo-web",
   "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
-  "version": "4.11.0",
+  "version": "4.12.0",
   "homepage": "https://github.com/DEFRA/ffc-demo-web",
   "repository": {
     "type": "git",
@@ -63,7 +63,9 @@
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
-    "standard": "^14.3.4"
+    "standard": "^14.3.4",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   },
   "nodemonConfig": {
     "ignore": [
