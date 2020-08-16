@@ -9,7 +9,7 @@
   },
   "main": "app/index.js",
   "scripts": {
-    "build": "npm run build:css",
+    "build": "npm run build:css && npm run webpack",
     "build:css": "node-sass --output=app/static/stylesheets --output-style=expanded app/static/stylesheets",
     "build:css-watch": "node-sass --output=app/static/stylesheets --output-style=expanded --source-map true --watch app/static/stylesheets",
     "pretest": "npm run test:lint",
@@ -20,7 +20,8 @@
     "test:unit-watch": "jest --testPathPattern=test/unit --coverage=false --onlyChanged --watch",
     "test:lint": "standard",
     "start:watch": "npm-run-all --parallel build:css-watch start:nodemon",
-    "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
+    "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js",
+    "webpack": "webpack"
   },
   "author": "Defra DDTS",
   "contributors": [
