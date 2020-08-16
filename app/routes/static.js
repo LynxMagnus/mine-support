@@ -30,22 +30,6 @@ module.exports = [{
   }
 }, {
   method: 'GET',
-  path: '/govuk-frontend/govuk/{path*}',
-  options: {
-    handler: {
-      directory: {
-        path: [
-          'node_modules/govuk-frontend/govuk'
-        ]
-      }
-    },
-    cache: {
-      expiresIn: config.staticCacheTimeoutMillis,
-      privacy: 'private'
-    }
-  }
-}, {
-  method: 'GET',
   path: '/static/{path*}',
   options: {
     handler: {
