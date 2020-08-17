@@ -1,5 +1,10 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+
+const isDev = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
+
+console.log(`Running webpack in ${isDev ? 'development' : 'production'} mode`)
 
 module.exports = {
   entry: './app/frontend/index.js',
@@ -20,7 +25,7 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true,
+              sourceMap: isDev,
               sassOptions: {
                 outputStyle: 'compressed'
               }
@@ -52,7 +57,11 @@ module.exports = {
     filename: 'js/bundle.js',
     path: path.resolve(__dirname, 'app/dist')
   },
-  plugins: [new MiniCssExtractPlugin({
-    filename: 'css/application.css'
-  })]
+  plugins: [
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/application.css'
+    })
+  ],
+  watch: isDev
 }
