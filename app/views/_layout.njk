@@ -2,7 +2,9 @@
 
 {% block head %}
   <!--[if !IE 8]><!-->
-    <link href="{{ assetPath }}/css/application.css" rel="stylesheet" />
+<% htmlWebpackPlugin.files.css.forEach(cssFile => { %>
+<link href="<%= cssFile.replace('../dist/', '/static/') %>" rel="stylesheet">
+<% }) %>
   <!--<![endif]-->
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
@@ -36,5 +38,7 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script src="../static/js/bundle.js"></script>
+<% htmlWebpackPlugin.files.js.forEach(jsFile => { %>
+  <script src="<%= jsFile.replace('../dist/', '/static/') %>"></script>
+<% }) %>
 {% endblock %}
