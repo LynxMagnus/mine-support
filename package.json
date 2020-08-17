@@ -56,6 +56,7 @@
     "@hapi/good-console": "^9.0.0",
     "@hapi/good-squeeze": "^6.0.0",
     "blipp": "^4.0.1",
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.1",
     "file-loader": "^6.0.0",
     "jest": "^26.1.0",
