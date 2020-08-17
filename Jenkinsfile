@@ -1,3 +1,3 @@
-@Library('defra-library@fix-acceptance-tests') _
+@Library('defra-library@v-8') _
 
 buildNodeJs environment: 'dev'
