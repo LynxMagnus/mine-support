@@ -12,7 +12,7 @@
     "build": "webpack",
     "build:watch": "webpack --watch",
     "pretest": "npm run test:lint",
-    "test": "jest --runInBand",
+    "test": "npm run build && jest --runInBand",
     "test:integration": "jest --testPathPattern=test/integration",
     "test:unit": "jest --testPathPattern=test/unit",
     "test:watch": "jest --coverage=false --onlyChanged --watch --runInBand",
