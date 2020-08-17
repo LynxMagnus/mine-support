@@ -10,6 +10,7 @@
   "main": "app/index.js",
   "scripts": {
     "build": "webpack",
+    "build:watch": "webpack --watch",
     "pretest": "npm run test:lint",
     "test": "jest --runInBand",
     "test:integration": "jest --testPathPattern=test/integration",
@@ -17,7 +18,7 @@
     "test:watch": "jest --coverage=false --onlyChanged --watch --runInBand",
     "test:unit-watch": "jest --testPathPattern=test/unit --coverage=false --onlyChanged --watch",
     "test:lint": "standard",
-    "start:watch": "npm-run-all --parallel build start:nodemon",
+    "start:watch": "npm-run-all --parallel build:watch start:nodemon",
     "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
   },
   "author": "Defra DDTS",
@@ -59,6 +60,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.1",
     "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.3.0",
     "jest": "^26.1.0",
     "jest-junit": "^11.1.0",
     "mini-css-extract-plugin": "^0.10.0",

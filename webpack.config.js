@@ -1,6 +1,7 @@
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const isDev = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
 
@@ -8,6 +9,7 @@ console.log(`Running webpack in ${isDev ? 'development' : 'production'} mode`)
 
 module.exports = {
   entry: './app/frontend/index.js',
+  mode: isDev ? 'development' : 'production',
   module: {
     rules: [
       {
@@ -54,14 +56,18 @@ module.exports = {
     ]
   },
   output: {
-    filename: 'js/bundle.js',
+    filename: 'js/bundle.[hash].js',
     path: path.resolve(__dirname, 'app/dist')
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      inject: false,
+      filename: '../views/layout.njk',
+      template: 'app/views/_layout.njk'
+    }),
     new MiniCssExtractPlugin({
-      filename: 'css/application.css'
+      filename: 'css/application.[hash].css'
     })
-  ],
-  watch: isDev
+  ]
 }
