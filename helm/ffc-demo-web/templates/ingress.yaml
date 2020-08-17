@@ -1,5 +1,6 @@
 {{- include "ffc-helm-library.azure-ingress" (list . "ffc-demo-web.ingress") -}}
 {{- define "ffc-demo-web.ingress" -}}
+apiVersion: networking.k8s.io/v1
 metadata:
   annotations:
     {{- if .Values.secret.auth }}
