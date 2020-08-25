@@ -2,7 +2,7 @@
 
 {% block head %}
   <!--[if !IE 8]><!-->
-    <link href="{{ assetPath }}/stylesheets/application.css" rel="stylesheet" />
+    <link href="./static/application.css" rel="stylesheet" />
   <!--<![endif]-->
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
@@ -36,6 +36,5 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script src="/govuk-frontend/govuk/all.js"></script>
-  <script>window.GOVUKFrontend.initAll()</script>
+  <script src="./static/index.js></script>
 {% endblock %}

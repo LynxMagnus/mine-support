@@ -33,7 +33,7 @@ module.exports = {
     isCached: !config.isDev,
     context: {
       appVersion: pkg.version,
-      assetPath: '/static',
+      assetPath: '/dist',
       govukAssetPath: '/assets',
       serviceName: 'FFC Demo Service',
       pageTitle: 'FFC Demo Service - GOV.UK'
