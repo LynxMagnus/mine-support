@@ -9,8 +9,8 @@
   },
   "main": "app/index.js",
   "scripts": {
-    "parcel:build": "rm -rf ./app/dist && parcel build ./app/frontend/index.js ./app/frontend/application.scss --out-dir app/dist --public-url ./static/",
-    "parcel:watch": "parcel watch ./app/frontend/index.js ./app/frontend/application.scss --out-dir app/dist --public-url ./static/",
+    "parcel:build": "rm -rf ./app/dist && parcel build ./app/frontend/index.js ./app/frontend/application.scss --out-dir app/dist --public-url /static/",
+    "parcel:watch": "parcel watch ./app/frontend/index.js ./app/frontend/application.scss --out-dir app/dist --public-url /static/",
     "parcel": "parcel",
     "build": "npm run build:css",
     "build:css": "npm run parcel:build",
