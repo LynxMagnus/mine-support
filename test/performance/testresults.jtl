@@ -1,0 +1,9 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1598613336370,6200,Transaction Controller,200,"Number of samples in transaction : 7, number of failing samples : 0",Thread Group 1-1,,true,,26557,9924,1,1,null,0,881,0
+1598613337176,3083,/-94,200,OK,Thread Group 1-1,text,true,,4109,395,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/,3059,0,2956
+1598613340288,223,/claim/property-type-99,200,OK,Thread Group 1-1,text,true,,3863,1759,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/claim/accessible,176,0,135
+1598613340512,262,/claim/accessible-101,200,OK,Thread Group 1-1,text,true,,3920,1756,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/claim/date-of-subsidence,156,0,0
+1598613340775,99,/claim/date-of-subsidence-103,200,OK,Thread Group 1-1,text,true,,3906,1781,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/claim/mine-type,38,0,0
+1598613340875,1402,/claim/mine-type-105,200,OK,Thread Group 1-1,text,true,,3706,1738,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/claim/email,196,0,0
+1598613342242,1085,/claim/email-117,200,OK,Thread Group 1-1,text,true,,3830,1749,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/claim/confirmation,820,0,0
+1598613343328,46,/claim/confirmation-108,200,OK,Thread Group 1-1,text,true,,3223,746,1,1,https://ffc-demo-pr179.ffc.snd.azure.defra.cloud/claim/confirmation,46,0,0
