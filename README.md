@@ -145,6 +145,13 @@ development, it may not be obvious why `docker-compose.test.yaml` exists. It's
 main purpose is for CI pipelines, where tests need to run in a container
 without any ports forwarded from the host machine.
 
+### Running ZAP scan
+
+A docker-compose exists for running a
+[ZAP Baseline Scan](https://www.zaproxy.org/docs/docker/baseline-scan/).
+Primarily this will be run during CI. It can also be run locally via the
+[zap](./scripts/zap) script.
+
 ## Running the application
 
 The application is designed to run in containerised environments, using Docker
