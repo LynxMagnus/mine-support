@@ -40,7 +40,6 @@ and
 | ----                   | -----------                                                                                |
 | MESSAGE_QUEUE_HOST     | Azure Service Bus hostname, e.g. `myservicebus.servicebus.windows.net`                     |
 | MESSAGE_QUEUE_PASSWORD | Azure Service Bus SAS policy key                                                           |
-| MESSAGE_QUEUE_SUFFIX   | Developer specific queue suffix to prevent collisions, only required for local development |
 | MESSAGE_QUEUE_USER     | Azure Service Bus SAS policy name, e.g. `RootManageSharedAccessKey`                        |
 
 ## Environment variables
@@ -85,8 +84,10 @@ and `SITE_URL` respectively.
 
 Running the integration tests locally requires access to ASB, this can be
 achieved by setting the following environment variables:
-`MESSAGE_QUEUE_HOST`, `MESSAGE_QUEUE_PASSWORD`,`MESSAGE_QUEUE_SUFFIX`,
-`MESSAGE_QUEUE_USER`.
+`MESSAGE_QUEUE_HOST`, `MESSAGE_QUEUE_PASSWORD`, `MESSAGE_QUEUE_USER`.
+`CLAIM_QUEUE_ADDRESS` must be set to a valid, developer specific queue that is
+available on ASB e.g. `ffc-demo-claim-<initials>` where `<initials>` are the
+initials of the developer.
 
 ## Test structure
 
