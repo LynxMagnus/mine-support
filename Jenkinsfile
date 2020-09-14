@@ -1,3 +1,3 @@
-@Library('defra-library@psd-956-run-int-tests') _
+@Library('defra-library@v-8') _
 
 buildNodeJs environment: 'dev'
