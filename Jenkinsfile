@@ -1,3 +1,3 @@
 @Library('defra-library@psd-968-parametered-acceptance-tests') _
 
-buildNodeJs environment: 'dev' npmAuditFailOnIssues: false, snykFailOnIssues: false
+buildNodeJs environment: 'dev', npmAuditFailOnIssues: false, snykFailOnIssues: false
