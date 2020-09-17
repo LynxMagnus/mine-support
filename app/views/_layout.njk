@@ -2,8 +2,8 @@
 
 {% block head %}
   <!--[if !IE 8]><!-->
-<% htmlWebpackPlugin.files.css.forEach(cssFile => { %>
-<link href="<%= cssFile.replace('../dist/', '/static/') %>" rel="stylesheet">
+<% htmlWebpackPlugin.files.css.forEach(file => { %>
+<link href="<%= file.replace('../dist/', '/static/') %>" rel="stylesheet">
 <% }) %>
   <!--<![endif]-->
 
@@ -38,7 +38,7 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-<% htmlWebpackPlugin.files.js.forEach(jsFile => { %>
-  <script src="<%= jsFile.replace('../dist/', '/static/') %>"></script>
+<% htmlWebpackPlugin.files.js.forEach(file => { %>
+  <script src="<%= file.replace('../dist/', '/static/') %>"></script>
 <% }) %>
 {% endblock %}
