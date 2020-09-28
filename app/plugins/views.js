@@ -1,7 +1,7 @@
 const path = require('path')
 const nunjucks = require('nunjucks')
 const config = require('../config')
-const pkg = require('../../package.json')
+const { version } = require('../../package.json')
 
 module.exports = {
   plugin: require('@hapi/vision'),
@@ -32,7 +32,7 @@ module.exports = {
     relativeTo: __dirname,
     isCached: !config.isDev,
     context: {
-      appVersion: pkg.version,
+      appVersion: version,
       assetPath: '/static',
       govukAssetPath: '/assets',
       serviceName: 'FFC Demo Service',

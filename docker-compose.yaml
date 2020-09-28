@@ -9,7 +9,7 @@ services:
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-demo-web-local
       APPINSIGHTS_INSTRUMENTATIONKEY:
-      CLAIM_QUEUE_ADDRESS: ffc-demo-claim-${MESSAGE_QUEUE_SUFFIX}
+      CLAIM_QUEUE_ADDRESS: ${CLAIM_QUEUE_ADDRESS:-notset}
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
       OKTA_AUTH_SERVER_ID: ${OKTA_AUTH_SERVER_ID}
       OKTA_CLIENT_ID: ${OKTA_CLIENT_ID}
