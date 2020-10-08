@@ -21,3 +21,4 @@ services:
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER:-notset}
       REDIS_HOSTNAME: redis
       SITE_URL: http://localhost:3000
+      GOOGLE_TAG_MANAGER_KEY: GTM-N5QK7RL

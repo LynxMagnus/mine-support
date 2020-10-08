@@ -15,7 +15,8 @@ const schema = Joi.object({
   sessionTimeoutMinutes: Joi.number().default(30),
   staticCacheTimeoutMillis: Joi.number().default(15 * 60 * 1000),
   restClientTimeoutMillis: Joi.number().default(20000),
-  oktaEnabled: Joi.boolean().default(true)
+  oktaEnabled: Joi.boolean().default(true),
+  googleTagManagerKey: Joi.string().default('')
 })
 
 // Build config
@@ -31,7 +32,8 @@ const config = {
   oktaEnabled: process.env.OKTA_ENABLED,
   sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,
   restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS,
-  staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS
+  staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS,
+  googleTagManagerKey: process.env.GOOGLE_TAG_MANAGER_KEY
 }
 
 // Validate config

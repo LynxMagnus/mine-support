@@ -54,6 +54,7 @@ container:
   siteUrl:
   messageQueueHost: amq
   claimQueueAddress: claim
+  googleTagManagerKey: GTM-N5QK7RL
 
 ingress:
   class: nginx
