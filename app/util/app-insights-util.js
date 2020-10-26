@@ -6,8 +6,6 @@ module.exports = {
       const client = appInsights.defaultClient
       const operationIdTag = appInsights.defaultClient.context.keys.operationId
       client.context.tags[operationIdTag] = correlationId
-
-      // this.setAppInsightsTraceMessage(message)
     }
   },
   logTraceMessage: function (message) {
