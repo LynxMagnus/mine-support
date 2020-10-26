@@ -23,7 +23,7 @@ describe('App Insights Util', () => {
   test('App Insights client is null', async () => {
     const appInsightsService = appInsightstUtil(null)
 
-    appInsightsService.setOperationId('13213213eweqwe32121')
+    appInsightsService.setOperationId('d79dd6fe-72fc-43a8-b4c4-ec9c6bc7db9d')
 
     expect(appInsightsClient.context.keys.operationId).toHaveBeenCalledTimes(0)
     expect(appInsightsClient.trackTrace).toHaveBeenCalledTimes(0)
