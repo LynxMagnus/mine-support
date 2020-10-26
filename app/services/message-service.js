@@ -23,9 +23,9 @@ class MessageService {
     await this.claimSender.closeConnection()
   }
 
-  async publishClaim (claim) {
+  async publishClaim (claim, correlationId) {
     try {
-      return await this.claimSender.sendMessage(claim)
+      return await this.claimSender.sendMessage(claim, correlationId)
     } catch (err) {
       console.log(err)
       throw err

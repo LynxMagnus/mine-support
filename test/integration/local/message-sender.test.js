@@ -2,6 +2,7 @@ const MessageSender = require('../../../app/services/messaging/message-sender')
 const config = require('../../../app/config')
 const { claimQueueConfig } = require('../../../app/mq-config')
 const asbHelper = require('../../asb-helper')
+const { v4: uuidv4 } = require('uuid')
 
 describe('message sender', () => {
   let messageSender
@@ -18,6 +19,6 @@ describe('message sender', () => {
   test('can send a message', async () => {
     const message = { greeting: 'test message' }
 
-    await messageSender.sendMessage(message)
+    await messageSender.sendMessage(message, uuidv4())
   })
 })

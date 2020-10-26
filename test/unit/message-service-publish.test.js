@@ -17,10 +17,11 @@ describe('Test message service', () => {
   })
 
   test('Publish claim sends message', async () => {
+    const correlationId = '4026dd58-5e85-4538-9c1b-7b66bdb916c6'
     const message = { dummy: 'data' }
-    await messageService.publishClaim(message)
+    await messageService.publishClaim(message, correlationId)
     expect(MockMessageSender.mock.instances[0].sendMessage).toHaveBeenCalledTimes(1)
-    expect(MockMessageSender.mock.instances[0].sendMessage).toHaveBeenCalledWith(message)
+    expect(MockMessageSender.mock.instances[0].sendMessage).toHaveBeenCalledWith(message, correlationId)
   })
 
   afterAll(async () => {
