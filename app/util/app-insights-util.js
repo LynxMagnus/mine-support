@@ -1,20 +1,11 @@
-const appInsightsService = (appInsightClient) => {
-  const setOperationId = (correlationId) => {
-    if (appInsightClient !== null && appInsightClient !== undefined) {
-      const operationIdTag = appInsightClient.context.keys.operationId
-      appInsightClient.context.tags[operationIdTag] = correlationId
-    }
-  }
-  const logTraceMessage = (message) => {
-    if (appInsightClient !== null && appInsightClient !== undefined) {
-      appInsightClient.trackTrace({ message: message })
-    }
-  }
+const appInsights = require('applicationinsights')
 
-  return {
-    setOperationId,
-    logTraceMessage
+module.exports = {
+  setOperationId: (correlationId) => {
+    const operationIdTag = appInsights.defaultClient.context.keys.operationId
+    appInsights.defaultClient.context.tags[operationIdTag] = correlationId
+  },
+  logTraceMessage: (message) => {
+    appInsights.defaultClient.trackTrace({ message })
   }
 }
-
-module.exports = appInsightsService

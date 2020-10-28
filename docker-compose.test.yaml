@@ -9,7 +9,7 @@ services:
     build:
       target: development
     image: ffc-demo-web-development
-    command: npm run test
+    command: npm run test:watch
     environment:
       NODE_ENV: test
       OKTA_DOMAIN: mydomain.otka.com
@@ -17,5 +17,7 @@ services:
       OKTA_CLIENT_SECRET: placeholdersecret
       OKTA_AUTH_SERVER_ID: placeholderauthserverid
     volumes:
+      - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
       - ./test-output/:/home/node/test-output/
       - ./scripts/:/home/node/scripts/
