@@ -10,7 +10,7 @@ services:
     image: ffc-demo-web-development
     environment:      
       APPINSIGHTS_CONSOLE_DEBUG_ENABLED: ${APPINSIGHTS_CONSOLE_DEBUG_ENABLED:-true}
-    command: npm run start:watch
+    command: npm run start
     depends_on:
       - redis
     ports:
