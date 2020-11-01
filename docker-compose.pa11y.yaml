@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  ffc-demo-web:
+    command: npm run start:watch
+    build:
+      target: development
+    image: ffc-demo-web-development
+    environment:
+      NODE_ENV: test
+    volumes:
+      - ./test-output/:/home/node/test-output/
+
+  pa11y:
+    image: outrigger/pa11y:1
+    depends_on:
+      - ffc-demo-web
+    command: bash -c "cd /code/pa11y && ls pa11y --config /code/pa11y/pa11y.json --json > test-output/report.json"
+    volumes:
+      - ./pa11y.json:/code/pa11y/pa11y.json
+      - ./test-output/:/code/pa11y/test-output/
+    cap_add:
+      - SYS_ADMIN

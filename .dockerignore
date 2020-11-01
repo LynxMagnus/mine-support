@@ -1,6 +1,5 @@
 node_modules
 npm-debug.log
-test-output
 auth
 helm
 docs
@@ -18,6 +17,6 @@ Dockerfile
 jsconfig.json
 .dockerignore
 .vscode
-.gitignore
 .vs
+.gitignore
 sonar-project.properties
