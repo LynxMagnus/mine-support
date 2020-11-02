@@ -1,6 +1,7 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
+{% include "./tagManager/headContent.njk" %}
   <!--[if !IE 8]><!-->
 <% htmlWebpackPlugin.files.css.forEach(file => { %>
 <link href="<%= file.replace('../dist/', '/static/') %>" rel="stylesheet">
@@ -26,6 +27,10 @@
     serviceName: serviceName,
     serviceUrl: "/"
   }) }}
+{% endblock %}
+
+{% block bodyStart %}
+{% include "./tagManager/bodyContent.njk" %}
 {% endblock %}
 
 {% block pageTitle %}
