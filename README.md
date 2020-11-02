@@ -153,6 +153,13 @@ A docker-compose exists for running a
 Primarily this will be run during CI. It can also be run locally via the
 [zap](./scripts/zap) script.
 
+### Running Pa11y accessibility tests
+
+A docker-compose exists for running a
+[Pa11y-CI](https://github.com/pa11y/pa11y-ci).
+Primarily this will be run during CI. It can also be run locally via the
+[pa11y](./scripts/pa11y) script.
+
 ## Running the application
 
 The application is designed to run in containerised environments, using Docker
