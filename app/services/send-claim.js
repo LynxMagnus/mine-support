@@ -1,8 +1,6 @@
 const sessionHandler = require('./session-handler')
 const messageService = require('./message-service')
-const AppInsightsUtil = require('../util/app-insights-util')
-const { v4: uuidv4 } = require('uuid')
-const appInsights = require('applicationinsights')
+const { getSessionId, logTraceMessage } = require('../util/app-insights-util')
 
 module.exports = {
   submit: async (request) => {
@@ -11,12 +9,9 @@ module.exports = {
       console.log('submitting claim')
       console.log(claim)
 
-      const appInsightService = AppInsightsUtil(appInsights.defaultClient)
-      const correlationId = uuidv4()
-      appInsightService.setOperationId(correlationId)
-      appInsightService.logTraceMessage('Trace Sender - ffc-demo-web: demo-web-sender')
+      logTraceMessage('Trace Sender - ffc-demo-web: demo-web-sender')
 
-      await (await messageService).publishClaim(claim, correlationId)
+      await (await messageService).publishClaim(claim, getSessionId())
       return true
     } catch (err) {
       console.log(err)
