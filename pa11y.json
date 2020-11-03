@@ -1,0 +1,27 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 10000,
+    "wait": 1500,
+    "chromeLaunchConfig": {
+      "args": [
+        "--no-sandbox",
+        "--disable-dev-shm-usage"
+      ],
+      "executablePath": "/usr/bin/chromium-browser"
+    },
+    "hideElements": [
+      ".govuk-header__logotype-crown",
+      ".govuk-footer__licence-logo"
+    ]
+  },
+  "urls": [
+    "http://ffc-demo-web:3000/",
+    "http://ffc-demo-web:3000/claim/property",
+    "http://ffc-demo-web:3000/claim/accessible",
+    "http://ffc-demo-web:3000/claim/mine-type",
+    "http://ffc-demo-web:3000/claim/date-of-subsidence",
+    "http://ffc-demo-web:3000/claim/email",
+    "http://ffc-demo-web:3000/claim/confirmation"
+  ]
+}

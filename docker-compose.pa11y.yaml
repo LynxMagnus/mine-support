@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  ffc-demo-web:
+    command: npm run start:watch
+    build:
+      target: development
+    image: ffc-demo-web-development
+    environment:
+      NODE_ENV: test
+    volumes:
+      - ./test-output/:/home/node/test-output/
+
+  pa11y:
+    image: defradigital/ffc-pa11y
+    depends_on:
+      - ffc-demo-web
+    command: sh -c "scripts/wait ffc-demo-web:3000 -- pa11y-ci -c pa11y.json"
+    volumes:
+      - ./pa11y.json:/home/node/pa11y.json
+      - ./test-output/:/home/node/test-output/
+      - ./scripts/:/home/node/scripts
