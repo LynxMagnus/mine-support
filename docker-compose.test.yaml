@@ -18,6 +18,7 @@ services:
       OKTA_AUTH_SERVER_ID: placeholderauthserverid
     volumes:
       - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
       - ./package.json:/home/node/package.json
       - ./test-output/:/home/node/test-output/
       - ./scripts/:/home/node/scripts/
