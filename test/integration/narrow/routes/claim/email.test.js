@@ -1,21 +1,21 @@
 describe('Email test', () => {
   let createServer
   let server
-  let sendClaimMessage
+  let publishClaim
 
   beforeAll(async () => {
-    jest.mock('../../../../../app/services/send-claim')
+    jest.mock('../../../../../app/messaging/publish-claim')
     createServer = require('../../../../../app/server')
   })
 
   beforeEach(async () => {
     server = await createServer()
     await server.initialize()
-    sendClaimMessage = require('../../../../../app/services/send-claim')
+    publishClaim = require('../../../../../app/messaging/publish-claim')
   })
 
   afterEach(async () => {
-    jest.clearAllMocks()
+    jest.resetAllMocks()
     await server.stop()
   })
 
@@ -48,10 +48,12 @@ describe('Email test', () => {
       payload: { email: 'me@me.com' }
     }
 
-    sendClaimMessage.submit.mockResolvedValue(false)
+    publishClaim.mockImplementation(() => {
+      throw new Error('Sending error')
+    })
 
     const postResponse = await server.inject(postOptions)
-    expect(sendClaimMessage.submit).toHaveBeenCalledTimes(1)
+    expect(publishClaim).toHaveBeenCalledTimes(1)
     expect(postResponse.payload).toContain('Sorry, the service is unavailable')
   })
 
@@ -62,10 +64,8 @@ describe('Email test', () => {
       payload: { email: 'me@me.com' }
     }
 
-    sendClaimMessage.submit.mockResolvedValue(true)
-
     const postResponse = await server.inject(postOptions)
-    expect(sendClaimMessage.submit).toHaveBeenCalledTimes(1)
+    expect(publishClaim).toHaveBeenCalledTimes(1)
     expect(postResponse.statusCode).toBe(302)
     expect(postResponse.headers.location).toBe('./confirmation')
   })
