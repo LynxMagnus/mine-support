@@ -58,7 +58,7 @@ value.isProd = value.env === 'production'
 value.useRedis = !value.isTest && value.redisHost !== undefined
 
 if (!value.useRedis) {
-  console.log('redis disabled')
+  console.info('Redis disabled, using in memory cache')
 }
 
 if (value.oktaEnabled) {
