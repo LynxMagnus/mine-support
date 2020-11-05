@@ -10,7 +10,7 @@ describe('Test send claim', () => {
   beforeEach(async () => {
     sendClaimMessage = require('../../app/services/send-claim')
     sessionHandler = require('../../app/services/session-handler')
-    messageService = await require('../../app/services/message-service')
+    messageService = await require('../../app/messaging/publish-claim')
     messageService.publishClaim = jest.fn()
 
     sessionHandler.get.mockResolvedValue({

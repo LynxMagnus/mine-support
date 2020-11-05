@@ -8,7 +8,7 @@ describe('Test message service', () => {
 
   beforeEach(async () => {
     jest.resetModules()
-    messageService = await require('../../app/services/message-service')
+    messageService = await require('../../app/messaging/publish-claim')
     MockMessageSender = require('../../app/services/messaging/message-sender')
   })
 

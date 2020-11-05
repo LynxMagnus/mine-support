@@ -1,6 +1,6 @@
-const schema = require('../../schemas/claim/accessible')
+const schema = require('../../schemas/accessible')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/claim/accessible')
+const ViewModel = require('../../models/accessible')
 
 module.exports = [{
   method: 'GET',

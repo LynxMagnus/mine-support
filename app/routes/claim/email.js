@@ -1,8 +1,8 @@
-const sendClaimMessage = require('../../services/send-claim')
+const publishClaim = require('../../messaging/publish-claim')
 const idService = require('../../services/id-service')
-const schema = require('../../schemas/claim/email')
+const schema = require('../../schemas/email')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/claim/email')
+const ViewModel = require('../../models/email')
 
 module.exports = [{
   method: 'GET',
@@ -27,17 +27,18 @@ module.exports = [{
     handler: async (request, h) => {
       const claim = sessionHandler.get(request, 'claim')
 
-      // TODO refactor to safely handle clearing of cache when no longer needed and add more robus generation logic for unique Id
       if (!claim.submitted) {
-        request.payload.claimId = idService.generateId()
-        sessionHandler.update(request, 'claim', request.payload)
-        const submitted = await sendClaimMessage.submit(request)
-        if (!submitted) {
-          console.log('claim submission failed')
+        try {
+          request.payload.claimId = idService.generateId()
+          sessionHandler.update(request, 'claim', request.payload)
+          await publishClaim(request.payload)
+          console.error(`Submitted claim ${request.payload.claimId}`)
+          request.payload.submitted = true
+          sessionHandler.update(request, 'claim', request.payload)
+        } catch (err) {
+          console.error('Failed to submit claim', err)
           return h.view('service-unavailable')
         }
-        request.payload.submitted = true
-        sessionHandler.update(request, 'claim', request.payload)
       }
       return h.redirect('./confirmation')
     }

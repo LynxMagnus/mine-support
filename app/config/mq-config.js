@@ -2,7 +2,9 @@ const joi = require('@hapi/joi')
 
 const mqSchema = joi.object({
   messageQueue: {
-    host: joi.string().default('localhost')
+    host: joi.string().default('localhost'),
+    usePodIdentity: joi.bool().default(false),
+    type: joi.string()
   },
   claimQueue: {
     address: joi.string().default('claim'),
@@ -13,7 +15,9 @@ const mqSchema = joi.object({
 
 const mqConfig = {
   messageQueue: {
-    host: process.env.MESSAGE_QUEUE_HOST
+    host: process.env.MESSAGE_QUEUE_HOST,
+    usePodIdentity: process.env.NODE_ENV === 'production',
+    type: 'queue'
   },
   claimQueue: {
     address: process.env.CLAIM_QUEUE_ADDRESS,

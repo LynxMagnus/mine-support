@@ -16,13 +16,9 @@ services:
       - "9229:9229"
     volumes:
       - ./app/:/home/node/app/
-      - ./test/:/home/node/test/
-      - ./test-output/:/home/node/test-output/
       - ./scripts/:/home/node/scripts/
-      - ./.git/:/home/node/.git/
-      - ./jest.config.js:/home/node/jest.config.js
-      - ./jest.setup.js:/home/node/jest.setup.js
       - ./package.json:/home/node/package.json
+
   redis:
     image: redis:4.0.14
     volumes:
