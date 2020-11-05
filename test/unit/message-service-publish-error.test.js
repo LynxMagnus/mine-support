@@ -17,7 +17,7 @@ describe('Test message service', () => {
       }
     })
 
-    messageService = await require('../../app/services/message-service')
+    messageService = await require('../../app/messaging/publish-claim')
   })
 
   afterEach(async () => {

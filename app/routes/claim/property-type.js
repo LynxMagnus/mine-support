@@ -1,6 +1,6 @@
-const schema = require('../../schemas/claim/property-type')
+const schema = require('../../schemas/property-type')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/claim/property-type')
+const ViewModel = require('../../models/property-type')
 
 module.exports = [{
   method: 'GET',

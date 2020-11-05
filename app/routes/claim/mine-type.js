@@ -1,6 +1,6 @@
-const schema = require('../../schemas/claim/mine-type')
+const schema = require('../../schemas/mine-type')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/claim/mine-type')
+const ViewModel = require('../../models/mine-type')
 
 module.exports = [{
   method: 'GET',

@@ -4,14 +4,13 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 command="$@"
-project="ffc-demo-web"
 service="ffc-demo-web"
 
 compose() {
   docker-compose \
     -f docker-compose.yaml \
     -f docker-compose.test.yaml \
-    -p "${project}-test" \
+    -p "${service}-test" \
     $@
 }
 
@@ -19,7 +18,7 @@ compose() {
   cd "${projectRoot}"
 
   # Guarantee clean environment
-  compose down --volumes
+  compose down -v
 
   # Ensure container images are up to date
   compose build

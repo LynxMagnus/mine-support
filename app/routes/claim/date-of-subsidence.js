@@ -1,7 +1,7 @@
 const dateUtil = require('../../util/date-util')
-const schema = require('../../schemas/claim/date-of-subsidence')
+const schema = require('../../schemas/date-of-subsidence')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/claim/date-of-subsidence')
+const ViewModel = require('../../models/date-of-subsidence')
 
 module.exports = [{
   method: 'GET',

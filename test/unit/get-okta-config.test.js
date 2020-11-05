@@ -1,4 +1,4 @@
-const getOktaConfig = require('../../app/get-okta-config')
+const getOktaConfig = require('../../app/config/get-okta-config')
 const origclientId = process.env.OKTA_CLIENT_ID
 describe('get okta config', () => {
   afterAll(async () => {

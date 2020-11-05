@@ -13,9 +13,8 @@ module.exports = {
       mode: 'try'
     },
     handler: function (request, h) {
-      console.log('/auth/dev')
       request.cookieAuth.set({ profile: devProfile })
-      console.log('authenticated as', devProfile.username)
+      console.info('Authenticated as', devProfile.username)
       return h.redirect('/account')
     }
   }
