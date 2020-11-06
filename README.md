@@ -160,6 +160,10 @@ A docker-compose exists for running a
 Primarily this will be run during CI. It can also be run locally via the
 [pa11y](./scripts/pa11y) script.
 
+### Running acceptance tests
+
+See [README](./test/acceptance/README.md).
+
 ## Running the application
 
 The application is designed to run in containerised environments, using Docker
@@ -225,18 +229,6 @@ An example message:
   "mineType": ["gold"],
   "email": "test@email.com"
 }
-```
-
-### Deploy to Kubernetes
-
-For production deployments, a helm chart is included in the `.\helm` folder.
-
-```
-# Deploy to current Kubernetes context
-scripts/helm/install
-
-# Remove from current Kubernetes context
-scripts/helm/delete
 ```
 
 #### Accessing the pod
