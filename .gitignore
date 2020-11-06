@@ -14,4 +14,3 @@ helm/**/*.lock
 .env
 test/acceptance/html-reports
 dist/
-app/views/layout.njk
