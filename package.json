@@ -45,7 +45,7 @@
     "@hapi/wreck": "^17.0.0",
     "@hapi/yar": "^10.1.0",
     "applicationinsights": "^1.8.2",
-    "ffc-messaging": "^1.0.2-alpha.1",
+    "ffc-messaging": "^1.0.2",
     "govuk-frontend": "^3.7.0",
     "moment": "^2.27.0",
     "nunjucks": "^3.2.2"
@@ -99,7 +99,7 @@
       "$"
     ],
     "ignore": [
-      "/app/dist/**/*.js"
+      "app/dist/**/*.js"
     ]
   }
 }

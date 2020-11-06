@@ -1,5 +1,5 @@
 # Use DEFRA base node version
-FROM defradigital/node:1.2.1-node14.15.0
+FROM defradigital/node:1.2.1-node12.18.3
 ENV NODE_ENV=development
 
 # Install app dependencies
