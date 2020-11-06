@@ -23,11 +23,13 @@ Docker is used to create a container for each of selenium-hub, chrome-browser an
 
 1. Set the root URL for the environment in the environment variable `TEST_ENVIRONMENT_ROOT_URL`
 
-2. From the directory containing the dockerfile run `docker-compose up --build`. This will run an acceptance test against the FFC-Demo web service.
+2. If running against localhost, then no need to set `TEST_ENVIRONMENT_ROOT_URL` as it will default to `docker.host.internal:3000`.  Instead make sure the application container is running wotj `docker-compose up --build` in the root folder of this repository
 
-3. The test reports will be output to `./html-reports`. Note that WSL users need to run `mkdir -m 777 html-reports`. Read more about report configuration in the [rpii/wdio-hmtl-reporter docs](https://github.com/rpii/wdio-html-reporter)
+3. From the directory containing the dockerfile run `docker-compose up --build`. This will run an acceptance test against the FFC-Demo web service.
 
-4. Now you are ready to maintain, extend or write your own features in the `./acceptance/features` directory
+4. The test reports will be output to `./html-reports`. Note that WSL users need to run `mkdir -m 777 html-reports`. Read more about report configuration in the [rpii/wdio-hmtl-reporter docs](https://github.com/rpii/wdio-html-reporter)
+
+5. Now you are ready to maintain, extend or write your own features in the `./acceptance/features` directory
 
 ## How to write a test
 
