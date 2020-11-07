@@ -19,10 +19,6 @@ Or:
 - Kubernetes
 - Helm
 
-Or:
-- Node 10+
-- Redis
-
 ### Azure Service Bus
 
 This service depends on a valid Azure Service Bus connection string for

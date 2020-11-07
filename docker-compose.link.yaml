@@ -1,21 +1,5 @@
 version: '3.7'
-
-# This override file should be used in development environments to
-# connect this service to sibling services from other repositories.
-# Dependencies shared with other projects should be started separately.
-
-services:
-  ffc-demo-web:
-    build:
-      context: .
-      target: development
-    command: npm run start:watch
-    environment:
-      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST-notset}
-    networks:
-      - default
-      - ffc-demo
-
 networks:
-  ffc-demo:
-    external: true
+  default:
+    external:
+      name: ffc-demo
