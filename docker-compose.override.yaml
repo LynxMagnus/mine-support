@@ -7,7 +7,6 @@ services:
   ffc-demo-web:
     build:
       target: development
-    image: ffc-demo-web-development
     command: npm run start:watch
     depends_on:
       - redis
