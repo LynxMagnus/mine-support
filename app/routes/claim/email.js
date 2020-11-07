@@ -31,7 +31,7 @@ module.exports = [{
         try {
           request.payload.claimId = idService.generateId()
           sessionHandler.update(request, 'claim', request.payload)
-          await publishClaim(request.payload)
+          await publishClaim(request)
           console.error(`Submitted claim ${request.payload.claimId}`)
           request.payload.submitted = true
           sessionHandler.update(request, 'claim', request.payload)
