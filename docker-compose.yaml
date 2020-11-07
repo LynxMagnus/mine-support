@@ -6,6 +6,7 @@ services:
       context: .
       target: production
     image: ffc-demo-web
+    container_name: ffc-demo-web
     environment:
       APPINSIGHTS_CLOUDROLE: ffc-demo-web-local
       APPINSIGHTS_INSTRUMENTATIONKEY: ${APPINSIGHTS_INSTRUMENTATIONKEY}
