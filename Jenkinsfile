@@ -1,3 +1,3 @@
-@Library('defra-library@psd-524-github-commit-message') _
+@Library('defra-library@v-9') _
 
 buildNodeJs environment: 'dev', defaultBranch: 'master'
