@@ -8,7 +8,7 @@ data:
 {{- end }}
 {{- if .Values.pr }}
   SITE_URL: "{{ .Values.container.siteUrl }}-{{ .Values.pr }}.{{ .Values.ingress.server }}"
-{{- else }}
+{{- else if .Values.container.siteUrl }}
   SITE_URL: {{ quote .Values.container.siteUrl }}
 {{- end }}
 {{- if .Values.container.redisHostname }}
