@@ -9,13 +9,12 @@ submission the data is pulled from Redis and passed to the message service.
 
 ## Prerequisites
 
-Access to an instance of an
+- Access to an instance of an
 [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/)(ASB).
-And either:
 - Docker
 - Docker Compose
 
-Or:
+Optional:
 - Kubernetes
 - Helm
 
