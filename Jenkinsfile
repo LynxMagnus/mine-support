@@ -1,3 +1,3 @@
-@Library('defra-library@v-9') _
+@Library('defra-library@fix-cleanup-of-acceptance-tests') _
 
 buildNodeJs environment: 'dev', defaultBranch: 'master'
