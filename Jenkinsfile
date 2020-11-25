@@ -1,3 +1,3 @@
-@Library('defra-library@psd-1080-fix-cleanup-of-acceptance-tests') _
+@Library('defra-library@v-9') _
 
 buildNodeJs environment: 'dev', defaultBranch: 'master'
