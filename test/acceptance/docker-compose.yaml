@@ -12,7 +12,6 @@ services:
   selenium:
     image: selenium/standalone-chrome-debug
     container_name: chrome-browser
-    privileged: true
 
   hub:
     image: selenium/hub

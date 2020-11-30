@@ -9,13 +9,12 @@ submission the data is pulled from Redis and passed to the message service.
 
 ## Prerequisites
 
-Access to an instance of an
+- Access to an instance of an
 [Azure Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging/)(ASB).
-And either:
 - Docker
 - Docker Compose
 
-Or:
+Optional:
 - Kubernetes
 - Helm
 
@@ -104,35 +103,8 @@ Examples:
 # Run all tests
 scripts/test
 
-# Run only unit tests
-scripts/test npm run test:unit
-```
-
-Alternatively, the same tests may be run locally via npm:
-
-```
-# Run tests without Docker
-npm run test
-```
-
-### Test watcher
-
-A more convenient way to run tests in development is to use a file watcher to
-automatically run tests each time associated files are modified. For this
-purpose, the default docker-compose configuration mounts all app, test and git
-files into the main `ffc-demo-web` container, enabling the test watcher to be
-run as shown below. The same approach may be used to execute arbitrary commands
-in the running app.
-
-```
-# Run unit test file watcher
-docker-compose run ffc-demo-web npm run test:unit-watch
-
-# Run all tests
-docker-compose run ffc-demo-web npm test
-
-# Open an interactive shell in the app container
-docker-compose run ffc-demo-web sh
+# Run tests with file watch
+scripts/test -w
 ```
 
 ### Why the docker-compose.test.yaml exists
