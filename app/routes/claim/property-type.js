@@ -1,30 +1,21 @@
-const schema = require('../../schemas/property-type')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/property-type')
 
-module.exports = [{
-  method: 'GET',
-  path: '/claim/property-type',
-  options: {
-    handler: (request, h) => {
-      const claim = sessionHandler.get(request, 'claim')
-      return h.view('claim/property-type', new ViewModel(claim.propertyType, null))
-    }
-  }
-},
-{
-  method: 'POST',
-  path: '/claim/property-type',
-  options: {
-    validate: {
-      payload: schema,
-      failAction: async (request, h, error) => {
-        return h.view('claim/property-type', new ViewModel(request.payload.propertyType, error)).takeover()
+module.exports = [
+  {
+    method: ['GET', 'POST'],
+    path: '/claim/property-type',
+    handler: {
+      'hapi-govuk-question-page': {
+        getConfig: () => {
+          return {
+            $VIEW$: { serviceName: 'FFC Demo Service' }
+          }
+        },
+        getData: (request) => sessionHandler.get(request, 'claim'),
+        getNextPath: () => '/claim/accessible',
+        pageDefinition: require('./page-definitions/property-type')
       }
     },
-    handler: async (request, h) => {
-      sessionHandler.update(request, 'claim', request.payload)
-      return h.redirect('./accessible')
-    }
+    options: require('./question-page-options')
   }
-}]
+]

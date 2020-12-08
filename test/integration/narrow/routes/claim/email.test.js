@@ -38,7 +38,7 @@ describe('Email test', () => {
 
     const postResponse = await server.inject(postOptions)
     expect(postResponse.statusCode).toBe(200)
-    expect(postResponse.payload).toContain('Please enter valid email')
+    expect(postResponse.payload).toContain('Enter email in the correct format')
   })
 
   test('POST /claim/email sends claim message but fails if message does not send', async () => {

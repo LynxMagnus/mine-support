@@ -17,7 +17,8 @@ module.exports = {
         },
         prepare: (options, next) => {
           options.compileOptions.environment = nunjucks.configure([
-            path.join(options.relativeTo || process.cwd(), options.path),
+            path.join(options.relativeTo || process.cwd(), ...options.path),
+            'app/views',
             'node_modules/govuk-frontend/'
           ], {
             autoescape: true,
@@ -28,7 +29,7 @@ module.exports = {
         }
       }
     },
-    path: '../views',
+    path: ['../views', '../../node_modules/@envage/hapi-govuk-question-page'],
     relativeTo: __dirname,
     isCached: !config.isDev,
     context: {

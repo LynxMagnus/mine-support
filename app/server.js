@@ -24,6 +24,12 @@ async function createServer () {
 
   // Register the plugins
   await server.register(require('@hapi/inert'))
+  await server.register({
+    plugin: require('@envage/hapi-govuk-question-page'),
+    options: {
+      pageTemplateName: 'layout.njk'
+    }
+  })
   await server.register(require('./plugins/auth'))
   await server.register(require('./plugins/views'))
   await server.register(require('./plugins/router'))

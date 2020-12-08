@@ -13,7 +13,7 @@ module.exports = {
   },
   update: function (request, key, object) {
     const existing = this.get(request, key)
-    hoek.merge(existing, object, true, false)
+    hoek.merge(existing, object, { mergeArrays: false })
     this.set(request, key, existing)
   },
   clear: function (request, key) {

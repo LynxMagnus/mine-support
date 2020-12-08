@@ -1,46 +1,49 @@
-const publishClaim = require('../../messaging/publish-claim')
-const idService = require('../../services/id-service')
-const schema = require('../../schemas/email')
 const sessionHandler = require('../../services/session-handler')
-const ViewModel = require('../../models/email')
+const idService = require('../../services/id-service')
+const publishClaim = require('../../messaging/publish-claim')
 
-module.exports = [{
-  method: 'GET',
-  path: '/claim/email',
-  options: {
-    handler: (request, h) => {
-      const claim = sessionHandler.get(request, 'claim')
-      return h.view('claim/email', new ViewModel(claim.email, null))
-    }
-  }
-},
-{
-  method: 'POST',
-  path: '/claim/email',
-  options: {
-    validate: {
-      payload: schema,
-      failAction: async (request, h, error) => {
-        return h.view('claim/email', new ViewModel(request.payload.email, error)).takeover()
+module.exports = [
+  {
+    method: ['GET', 'POST'],
+    path: '/claim/email',
+    handler: {
+      'hapi-govuk-question-page': {
+        getConfig: async () => {
+          return {
+            $VIEW$: { serviceName: 'FFC Demo Service' }
+          }
+        },
+        getData: (request) => sessionHandler.get(request, 'claim'),
+        getNextPath: () => '/claim/confirmation',
+        pageDefinition: require('./page-definitions/email')
       }
     },
-    handler: async (request, h) => {
-      const claim = sessionHandler.get(request, 'claim')
-
-      if (!claim.submitted) {
-        try {
-          request.payload.claimId = idService.generateId()
-          sessionHandler.update(request, 'claim', request.payload)
-          await publishClaim(request)
-          console.error(`Submitted claim ${request.payload.claimId}`)
-          request.payload.submitted = true
-          sessionHandler.update(request, 'claim', request.payload)
-        } catch (err) {
-          console.error('Failed to submit claim', err)
-          return h.view('service-unavailable')
+    options: {
+      ext: {
+        onPostHandler: {
+          method: async (request, h) => {
+            if (request.app['hapi-govuk-question-page']) {
+              sessionHandler.update(request, 'claim', request.app['hapi-govuk-question-page'].data)
+              const claim = sessionHandler.get(request, 'claim')
+              if (!claim.submitted) {
+                try {
+                  claim.claimId = idService.generateId()
+                  sessionHandler.update(request, 'claim', claim)
+                  await publishClaim(request)
+                  console.log(`Submitted claim ${request.payload.claimId}`)
+                  claim.submitted = true
+                  sessionHandler.update(request, 'claim', claim)
+                } catch (err) {
+                  console.error('Failed to submit claim', err)
+                  return h.view('service-unavailable')
+                }
+              }
+              return h.redirect('./confirmation')
+            }
+            return h.continue
+          }
         }
       }
-      return h.redirect('./confirmation')
     }
   }
-}]
+]
