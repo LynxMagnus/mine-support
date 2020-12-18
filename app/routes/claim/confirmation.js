@@ -7,7 +7,7 @@ module.exports = {
   options: {
     handler: (request, h) => {
       const claim = sessionHandler.get(request, 'claim')
-      return h.view('./confirmation', new ViewModel(claim))
+      return h.view('claim/confirmation', new ViewModel(claim))
     }
   }
 }
