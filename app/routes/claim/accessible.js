@@ -12,7 +12,7 @@ module.exports = [
           }
         },
         getData: (request) => sessionHandler.get(request, 'claim'),
-        getNextPath: () => '/claim/date-of-subsidence',
+        getNextPath: () => './date-of-subsidence',
         pageDefinition: require('./page-definitions/accessible')
       }
     },

@@ -14,7 +14,7 @@ module.exports = [
           }
         },
         getData: (request) => sessionHandler.get(request, 'claim'),
-        getNextPath: () => '/claim/confirmation',
+        getNextPath: () => './confirmation',
         pageDefinition: require('./page-definitions/email')
       }
     },

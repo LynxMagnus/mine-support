@@ -12,7 +12,7 @@ module.exports = [
           }
         },
         getData: (request) => sessionHandler.get(request, 'claim'),
-        getNextPath: () => '/claim/email',
+        getNextPath: () => './email',
         pageDefinition: require('./page-definitions/mine-type')
       }
     },

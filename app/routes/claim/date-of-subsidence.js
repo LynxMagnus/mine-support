@@ -16,7 +16,7 @@ module.exports = [
           const date = dateOfSubsidence ? new Date(dateOfSubsidence) : undefined
           return { dateOfSubsidence: date }
         },
-        getNextPath: () => '/claim/mine-type',
+        getNextPath: () => './mine-type',
         pageDefinition: require('./page-definitions/date-of-subsidence')
       }
     },

@@ -12,7 +12,7 @@ module.exports = [
           }
         },
         getData: (request) => sessionHandler.get(request, 'claim'),
-        getNextPath: () => '/claim/accessible',
+        getNextPath: () => './accessible',
         pageDefinition: require('./page-definitions/property-type')
       }
     },
