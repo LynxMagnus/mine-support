@@ -5,7 +5,7 @@ module.exports = {
       type: 'DatePartsField',
       name: 'dateOfSubsidence',
       title: 'When did the subsidence start?',
-      titleForError: 'When the subsidence started'
+      titleForError: 'date when the subsidence started'
     }
   ]
 }

@@ -30,7 +30,7 @@ module.exports = [
                   claim.claimId = idService.generateId()
                   sessionHandler.update(request, 'claim', claim)
                   await publishClaim(request)
-                  console.log(`Submitted claim ${request.payload.claimId}`)
+                  console.log(`Submitted claim ${claim.claimId}`)
                   claim.submitted = true
                   sessionHandler.update(request, 'claim', claim)
                 } catch (err) {
