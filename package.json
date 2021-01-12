@@ -72,7 +72,8 @@
     "standard": "^14.3.4",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "@pact-foundation/pact": "^9.11.1"
   },
   "nodemonConfig": {
     "ignore": [

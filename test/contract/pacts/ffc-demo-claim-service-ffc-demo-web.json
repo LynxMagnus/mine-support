@@ -1,0 +1,83 @@
+{
+  "consumer": {
+    "name": "ffc-demo-claim-service"
+  },
+  "provider": {
+    "name": "ffc-demo-web"
+  },
+  "messages": [
+    {
+      "description": "a request for new claim",
+      "providerStates": [
+        {
+          "name": "valid message",
+          "params": null
+        }
+      ],
+      "contents": {
+        "claimId": "MINE123",
+        "name": "Joe Bloggs",
+        "propertyType": "business",
+        "dateOfSubsidence": "2015-08-06T16:53:10+01:00",
+        "mineType": "[\"gold\"]",
+        "email": "hello@pact.io"
+      },
+      "matchingRules": {
+        "body": {
+          "$.claimId": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.name": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.propertyType": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.dateOfSubsidence": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d([+-][0-2]\\d:[0-5]\\d|Z)$"
+              }
+            ]
+          },
+          "$.mineType": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.email": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+              }
+            ]
+          }
+        }
+      },
+      "metaData": {
+        "content-type": "application/json"
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  }
+}
