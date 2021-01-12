@@ -18,8 +18,10 @@
         "claimId": "MINE123",
         "name": "Joe Bloggs",
         "propertyType": "business",
-        "dateOfSubsidence": "2015-08-06T16:53:10+01:00",
-        "mineType": "[\"gold\"]",
+        "dateOfSubsidence": "2015-08-06T16:53:10.123+01:00",
+        "mineType": [
+          "gold"
+        ],
         "email": "hello@pact.io"
       },
       "matchingRules": {
@@ -49,11 +51,18 @@
             "matchers": [
               {
                 "match": "regex",
-                "regex": "^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d([+-][0-2]\\d:[0-5]\\d|Z)$"
+                "regex": "^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d{3,}([+-][0-2]\\d(:?[0-5]\\d)?|Z)$"
               }
             ]
           },
           "$.mineType": {
+            "matchers": [
+              {
+                "min": 1
+              }
+            ]
+          },
+          "$.mineType[*].*": {
             "matchers": [
               {
                 "match": "type"
