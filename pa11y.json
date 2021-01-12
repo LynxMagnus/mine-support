@@ -17,6 +17,7 @@
   },
   "urls": [
     "http://ffc-demo-web:3000/",
+    "http://ffc-demo-web:3000/claim/name",
     "http://ffc-demo-web:3000/claim/property",
     "http://ffc-demo-web:3000/claim/accessible",
     "http://ffc-demo-web:3000/claim/mine-type",
