@@ -7,8 +7,8 @@ module.exports = [{
   path: '/claim/name',
   options: {
     handler: (request, h) => {
-      const claim = sessionHandler.get(request, 'name')
-      return h.view('claim/name', new ViewModel(claim.accessible, null))
+      const claim = sessionHandler.get(request, 'claim')
+      return h.view('claim/name', new ViewModel(claim.name, null))
     }
   }
 },
@@ -19,11 +19,11 @@ module.exports = [{
     validate: {
       payload: schema,
       failAction: async (request, h, error) => {
-        return h.view('claim/name', new ViewModel(request.payload.accessible, error)).takeover()
+        return h.view('claim/name', new ViewModel(request.payload.name, error)).takeover()
       }
     },
     handler: async (request, h) => {
-      sessionHandler.update(request, 'name', request.payload)
+      sessionHandler.update(request, 'claim', request.payload)
       return h.redirect('./property-type')
     }
   }
