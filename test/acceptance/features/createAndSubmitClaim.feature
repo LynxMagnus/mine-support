@@ -6,6 +6,10 @@ Feature: Create and submit a new claim
         Then I expect that the title contains "FFC Demo Service - GOV.UK"
         Then I expect that element "h1" contains the text "FFC Demo Service"
         When I click on the button ".govuk-button--start"
+        Then I expect that the url contains "/claim/name"
+
+        And I add "Seymour Pattisson" to the inputfield "#name"
+        When I click on the button ".govuk-button"
         Then I expect that the url contains "/claim/property-type"
 
         When I click on the button "#propertyType"
