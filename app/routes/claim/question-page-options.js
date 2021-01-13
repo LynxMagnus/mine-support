@@ -1,8 +1,5 @@
 const sessionHandler = require('../../services/session-handler')
-
-function asArray (item) {
-  return Array.isArray(item) ? item : [item]
-}
+const { asArray } = require('../../util/array-util')
 
 const questionPageOptions = {
   ext: {
