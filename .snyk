@@ -4,10 +4,10 @@ version: v1.14.1
 ignore:
   SNYK-JS-AJV-584908:
     - ffc-messaging > @azure/ms-rest-nodeauth > adal-node > request > har-validator > ajv:
-        reason: Not patchable
-        expires: '2021-02-05T22:00:46.788Z'
+        reason: no direct upgrade or patch available
+        expires: '2021-01-17T10:42:03.553Z'
   SNYK-JS-GLOBPARENT-1016905:
     - nunjucks > chokidar > glob-parent:
-        reason: No fixed version
-        expires: '2021-02-11T21:12:43.706Z'
+        reason: no direct upgrade or patch available
+        expires: '2021-02-12T10:14:06.748Z'
 patch: {}
