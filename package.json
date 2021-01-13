@@ -34,7 +34,7 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@envage/hapi-govuk-question-page": "git://github.com/DEFRA/hapi-govuk-question-page.git#allow-custom-viewName",
+    "@envage/hapi-govuk-question-page": "^0.3.0",
     "@hapi/bell": "^12.1.0",
     "@hapi/catbox-redis": "^6.0.1",
     "@hapi/cookie": "^11.0.1",
