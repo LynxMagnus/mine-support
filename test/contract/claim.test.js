@@ -1,5 +1,4 @@
 const { MessageProviderPact } = require('@pact-foundation/pact')
-const path = require('path')
 const createMessage = require('../../app/messaging/create-message')
 
 describe('Pact Verification', () => {
@@ -19,9 +18,10 @@ describe('Pact Verification', () => {
         'a request for new claim': () => createMessage(claim).body
       },
       provider: 'ffc-demo-web',
-      pactUrls: [
-        path.resolve(__dirname, './pacts/ffc-demo-claim-service-ffc-demo-web.json')
-      ]
+      consumerVersionTags: ['main', 'dev', 'test', 'preprod', 'prod'],
+      pactBrokerUrl: process.env.PACT_BROKER_URL,
+      pactBrokerUsername: process.env.PACT_BROKER_USERNAME,
+      pactBrokerPassword: process.env.PACT_BROKER_PASSWORD
     })
 
     return provider.verify()

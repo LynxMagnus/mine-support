@@ -16,6 +16,9 @@ services:
       OKTA_CLIENT_ID: placeholderclientid
       OKTA_CLIENT_SECRET: placeholdersecret
       OKTA_AUTH_SERVER_ID: placeholderauthserverid
+      PACT_BROKER_URL: ${PACT_BROKER_URL:-notset}
+      PACT_BROKER_USERNAME: ${PACT_BROKER_USERNAME:-notset}
+      PACT_BROKER_PASSWORD: ${PACT_BROKER_PASSWORD:-notset}
     volumes:
       - ./app/:/home/node/app/
       - ./test/integration:/home/node/test/integration/
