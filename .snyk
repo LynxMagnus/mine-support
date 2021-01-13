@@ -5,5 +5,9 @@ ignore:
   SNYK-JS-AJV-584908:
     - ffc-messaging > @azure/ms-rest-nodeauth > adal-node > request > har-validator > ajv:
         reason: Not patchable
-        expires: '2020-12-05T22:00:46.788Z'
+        expires: '2021-02-12T14:25:54.672Z'
+  SNYK-JS-GLOBPARENT-1016905:
+    - nunjucks > chokidar > glob-parent:
+        reason: None given
+        expires: '2021-02-12T14:25:54.672Z'
 patch: {}
