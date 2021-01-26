@@ -5,7 +5,7 @@ const sessionHandler = require('../services/session-handler')
 let claimSender
 
 async function stop () {
-  await claimSender.closeConnections()
+  await claimSender.closeConnection()
 }
 
 process.on('SIGTERM', async () => {
@@ -23,6 +23,7 @@ async function publishClaim (request) {
   const message = createMessage(claim)
   claimSender = new MessageSender(mqConfig)
   await claimSender.sendMessage(message)
+  await claimSender.closeConnection()
 }
 
 module.exports = publishClaim
