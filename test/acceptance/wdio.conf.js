@@ -29,6 +29,8 @@ exports.config = {
   connectionRetryCount: 3,
   services: ['selenium-standalone'],
   framework: 'cucumber',
+  specFileRetries: 3,
+  specFileRetriesDelay: 30,
   reporters: ['spec',
     [HtmlReporter, {
       debug: false,
