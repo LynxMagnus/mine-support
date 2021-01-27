@@ -74,9 +74,7 @@ exports.config = {
       // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs')
     })
     reportAggregator.clean()
-    setTimeout(function () {
-      console.log('Just chillin')
-    }, 60)
+
     global.reportAggregator = reportAggregator
   },
 
