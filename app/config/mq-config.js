@@ -17,7 +17,7 @@ const mqSchema = joi.object({
 const mqConfig = {
   messageQueue: {
     host: process.env.MESSAGE_QUEUE_HOST,
-    useP: process.env.NODE_ENV === 'production',
+    useCredentialChain: process.env.NODE_ENV === 'production',
     type: 'queue',
     appInsights: process.env.NODE_ENV === 'production' ? require('applicationinsights') : undefined
   },
