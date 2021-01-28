@@ -5,7 +5,7 @@ ignore:
   SNYK-JS-AJV-584908:
     - ffc-messaging > @azure/ms-rest-nodeauth > adal-node > request > har-validator > ajv:
         reason: no direct upgrade or patch available
-        expires: '2021-01-17T10:42:03.553Z'
+        expires: '2021-02-27T13:15:21.720Z'
   SNYK-JS-GLOBPARENT-1016905:
     - nunjucks > chokidar > glob-parent:
         reason: no direct upgrade or patch available
