@@ -46,7 +46,7 @@
     "@hapi/wreck": "^17.0.0",
     "@hapi/yar": "^10.1.0",
     "applicationinsights": "^1.8.2",
-    "ffc-messaging": "^2.0.0-pre.17",
+    "ffc-messaging": "^2.0.0",
     "govuk-frontend": "^3.7.0",
     "moment": "^2.27.0",
     "nunjucks": "^3.2.2"
