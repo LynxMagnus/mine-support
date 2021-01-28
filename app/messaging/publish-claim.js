@@ -19,8 +19,9 @@ process.on('SIGINT', async () => {
 })
 
 async function publishClaim (request) {
-  claimSender = new MessageSender(mqConfig)
   const claim = sessionHandler.get(request, 'claim')
+  claimSender = new MessageSender(mqConfig)
+  await claimSender.connect()
   const message = createMessage(claim)
   await claimSender.sendMessage(message)
   await claimSender.closeConnection()
