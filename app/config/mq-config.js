@@ -8,6 +8,7 @@ const mqSchema = joi.object({
     appInsights: joi.object()
   },
   claimQueue: {
+    name: joi.string().default('ffc-demo-web-claim'),
     address: joi.string().default('claim'),
     username: joi.string(),
     password: joi.string()
@@ -22,6 +23,7 @@ const mqConfig = {
     appInsights: process.env.NODE_ENV === 'production' ? require('applicationinsights') : undefined
   },
   claimQueue: {
+    name: process.env.CLAIM_QUEUE_NAME,
     address: process.env.CLAIM_QUEUE_ADDRESS,
     username: process.env.MESSAGE_QUEUE_USER,
     password: process.env.MESSAGE_QUEUE_PASSWORD

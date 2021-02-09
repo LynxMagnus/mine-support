@@ -1,7 +1,7 @@
 {
   "name": "ffc-demo-web",
   "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
-  "version": "4.23.3",
+  "version": "4.23.4",
   "homepage": "https://github.com/DEFRA/ffc-demo-web",
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     "@hapi/wreck": "^17.0.0",
     "@hapi/yar": "^10.1.0",
     "applicationinsights": "^1.8.2",
-    "ffc-messaging": "^2.0.0",
+    "ffc-messaging": "^2.1.0",
     "govuk-frontend": "^3.7.0",
     "moment": "^2.27.0",
     "nunjucks": "^3.2.2"
