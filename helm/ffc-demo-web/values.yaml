@@ -55,6 +55,7 @@ container:
   messageQueueHost: amq
   claimQueueAddress: claim
   googleTagManagerKey: GTM-N5QK7RL
+  protectiveMonitoringUrl:
 
 ingress:
   class: nginx

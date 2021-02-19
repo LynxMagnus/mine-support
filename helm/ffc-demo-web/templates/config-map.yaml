@@ -3,6 +3,7 @@
 data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
+  PROTECTIVE_MONITORING_URL: {{ quote .Values.container.protectiveMonitoringUrl }}
 {{- if .Values.okta.domain }}
   OKTA_DOMAIN: {{ quote .Values.okta.domain }}
 {{- end }}
