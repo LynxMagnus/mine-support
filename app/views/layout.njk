@@ -1,7 +1,9 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
-{% include "./tagManager/headContent.njk" %}
+  {% if cookiesPolicy.analytics %}
+    {% include "./tag-manager/head-content.njk" %}
+  {% endif %}
   <!--[if !IE 8]><!-->
 
 <link href="/static/css/application.96f4e52ad17d719b159b.css" rel="stylesheet">
@@ -30,7 +32,13 @@
 {% endblock %}
 
 {% block bodyStart %}
-{% include "./tagManager/bodyContent.njk" %}
+  {% if not cookiesPolicy.confirmed %}
+    {% include "./cookies/cookie-banner.njk" %}
+  {% endif %}
+
+  {% if cookiesPolicy.analytics %}
+    {% include "./tag-manager/body-content.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block pageTitle %}
@@ -39,6 +47,19 @@
 
 {% block content %}
   <h1 class="govuk-heading-xl">Default page template</h1>
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "/cookies",
+          text: "Cookies"
+        }
+      ]
+    }
+  }) }}
 {% endblock %}
 
 {% block bodyEnd %}
