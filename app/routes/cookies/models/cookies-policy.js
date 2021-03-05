@@ -26,4 +26,3 @@ function ViewModel (cookiesPolicy = {}, updated = false) {
 }
 
 module.exports = ViewModel
-al

@@ -2,7 +2,7 @@
 
 {% block head %}
 {% if cookiesPolicy.analytics %}
-  {% include "./tagManager/headContent.njk" %}
+  {% include "./tag-manager/head-content.njk" %}
 {% endif %}
   <!--[if !IE 8]><!-->
   <% htmlWebpackPlugin.files.css.forEach(file => { %>

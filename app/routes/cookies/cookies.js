@@ -1,6 +1,6 @@
 const ViewModel = require('./models/cookies-policy')
-const config = require('../../config').cookieOptions
-const joi = require('joi')
+const { updatePolicy } = require('../../cookies')
+const Joi = require('joi')
 
 module.exports = [{
   method: 'GET',
@@ -13,22 +13,17 @@ module.exports = [{
   path: '/cookies',
   options: {
     validate: {
-      payload: joi.object({
-        analytics: joi.boolean(),
-        async: joi.boolean().default(false)
+      payload: Joi.object({
+        analytics: Joi.boolean(),
+        async: Joi.boolean().default(false)
       })
     },
     handler: (request, h) => {
-      const cookiesPolicy = request.state.cookies_policy
-      cookiesPolicy.analytics = request.payload.analytics
-      cookiesPolicy.confirmed = true
-
-      h.state('cookies_policy', cookiesPolicy, config)
-
+      updatePolicy(request, h, request.payload.analytics)
       if (request.payload.async) {
-        return h.response()
+        return h.response('ok')
       }
-      return h.redirect('cookies/?updated=true')
+      return h.redirect('/cookies?updated=true')
     }
   }
 }]

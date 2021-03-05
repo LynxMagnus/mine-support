@@ -36,7 +36,8 @@ module.exports = [{
     handler: {
       directory: {
         path: [
-          'app/dist'
+          'app/dist',
+          'app/static'
         ]
       }
     },
