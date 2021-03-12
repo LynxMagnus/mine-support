@@ -18,7 +18,6 @@ services:
       - "9228:9229"
 
   selenium:
-    image: selenium/standalone-chrome-debug
     ports:
       - "9001:5900"
 
