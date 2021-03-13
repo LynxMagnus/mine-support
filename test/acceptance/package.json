@@ -19,10 +19,7 @@
     "selenium"
   ],
   "scripts": {
-    "test": "run-s test:*",
-    "test:lint": "standard",
-    "test:unit": "jest --config=jest.json --detectOpenHandles",
-    "test:features": "wdio wdio.conf.js",
+    "test": "wdio wdio.conf.js",
     "test:debug": "node --inspect-brk=0.0.0.0 ./node_modules/@wdio/cli/bin/wdio.js wdio.conf.js"
   },
   "dependencies": {
