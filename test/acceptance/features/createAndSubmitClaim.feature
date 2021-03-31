@@ -9,15 +9,15 @@ Feature: Create and submit a new claim
         Then I expect that the url contains "/claim/name"
 
         And I add "Seymour Pattisson" to the inputfield "#name"
-        When I click on the button ".govuk-button"
+        When I click on the button "#submit"
         Then I expect that the url contains "/claim/property-type"
 
         When I click on the button "#propertyType"
-        When I click on the button ".govuk-button"
+        When I click on the button "#submit"
         Then I expect that the url contains "/claim/accessible"
 
         When I click on the button "#accessible"
-        When I click on the button ".govuk-button"
+        When I click on the button "#submit"
         Then I expect that the url contains "/claim/date-of-subsidence"
 
         And I clear the inputfield "#dateOfSubsidence__day"
@@ -26,12 +26,12 @@ Feature: Create and submit a new claim
         And I add "01" to the inputfield "#dateOfSubsidence__month"
         And I clear the inputfield "#dateOfSubsidence__year"
         And I add "1970" to the inputfield "#dateOfSubsidence__year"
-        And I click on the button ".govuk-button"
+        And I click on the button "#submit"
         Then  I expect that the url contains "/claim/mine-type"
 
         When I click on the button "#mineType-3"
-        When I click on the button ".govuk-button"
+        When I click on the button "#submit"
         And I clear the inputfield "#email"
         And I add "seymour.pattisson@defra.gov.uk" to the inputfield "#email"
-        When I click on the button ".govuk-button"
+        When I click on the button "#submit"
         Then I expect that the url contains "/claim/confirmation"

@@ -12,5 +12,5 @@ test-output
 *.tgz
 helm/**/*.lock
 .env
-test/acceptance/html-reports
 dist/
+html-reports

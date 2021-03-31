@@ -9,5 +9,5 @@ ignore:
   SNYK-JS-GLOBPARENT-1016905:
     - nunjucks > chokidar > glob-parent:
         reason: no direct upgrade or patch available
-        expires: '2021-02-12T10:14:06.748Z'
+        expires: '2021-03-21T11:23:27.474Z'
 patch: {}

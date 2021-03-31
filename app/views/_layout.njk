@@ -1,11 +1,13 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
-{% include "./tagManager/headContent.njk" %}
+{% if cookiesPolicy and cookiesPolicy.analytics %}
+  {% include "./tag-manager/head-content.njk" %}
+{% endif %}
   <!--[if !IE 8]><!-->
-<% htmlWebpackPlugin.files.css.forEach(file => { %>
-<link href="<%= file.replace('../dist/', '/static/') %>" rel="stylesheet">
-<% }) %>
+  <% htmlWebpackPlugin.files.css.forEach(file => { %>
+  <link href="<%= file.replace('../dist/', '/static/') %>" rel="stylesheet">
+  <% }) %>
   <!--<![endif]-->
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
@@ -30,7 +32,13 @@
 {% endblock %}
 
 {% block bodyStart %}
-{% include "./tagManager/bodyContent.njk" %}
+  {% if cookiesPolicy and not cookiesPolicy.confirmed %}
+    {% include "./cookies/cookie-banner.njk" %}
+  {% endif %}
+
+  {% if cookiesPolicy and cookiesPolicy.analytics %}
+    {% include "./tag-manager/body-content.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block pageTitle %}
@@ -39,6 +47,19 @@
 
 {% block content %}
   <h1 class="govuk-heading-xl">Default page template</h1>
+{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "/cookies",
+          text: "Cookies"
+        }
+      ]
+    }
+  }) }}
 {% endblock %}
 
 {% block bodyEnd %}

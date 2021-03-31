@@ -1,14 +1,13 @@
-# Use DEFRA base node version
-FROM defradigital/node:1.2.1-node12.18.3
-ENV NODE_ENV=development
+ARG PARENT_VERSION=1.2.1-node12.18.3
+ARG PORT_DEBUG=9229
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Development
+FROM defradigital/node-development:${PARENT_VERSION}
+ARG PARENT_VERSION
+LABEL uk.gov.defra.ffc.parent-image=defradigital/node-development:${PARENT_VERSION}
+ARG PORT_DEBUG
+EXPOSE ${PORT_DEBUG}
 COPY --chown=node:node package*.json ./
 RUN npm install
-
-# Bundle app source setting node user as owner
 COPY --chown=node:node . .
-
-CMD npx wdio wdio.conf.js
+CMD [ "npm", "run", "test" ]

@@ -17,7 +17,14 @@ const schema = Joi.object({
   restClientTimeoutMillis: Joi.number().default(20000),
   oktaEnabled: Joi.boolean().default(true),
   googleTagManagerKey: Joi.string().default(''),
-  protectiveMonitoringUrl: Joi.string().default('')
+  cookieOptions: Joi.object({
+    ttl: Joi.number().default(1000 * 60 * 60 * 24 * 365),
+    encoding: Joi.string().valid('base64json').default('base64json'),
+    isSecure: Joi.bool().default(true),
+    isHttpOnly: Joi.bool().default(true),
+    clearInvalid: Joi.bool().default(false),
+    strictHeader: Joi.bool().default(true)
+  })
 })
 
 // Build config
@@ -35,7 +42,14 @@ const config = {
   restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS,
   staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS,
   googleTagManagerKey: process.env.GOOGLE_TAG_MANAGER_KEY,
-  protectiveMonitoringUrl: process.env.PROTECTIVE_MONITORING_URL
+  cookieOptions: {
+    ttl: process.env.COOKIE_TTL_IN_MILLIS,
+    encoding: 'base64json',
+    isSecure: process.env.NODE_ENV === 'production',
+    isHttpOnly: true,
+    clearInvalid: false,
+    strictHeader: true
+  }
 }
 
 // Validate config
