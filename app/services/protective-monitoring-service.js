@@ -19,6 +19,7 @@ function sendEvent (request, claim, message) {
 }
 
 function getIpAddress (request) {
+  console.log('HEADERS', request.info)
   // Identifying the originating IP address of a client connecting to a web server through an HTTP proxy or a load balancer
   const xForwardedForHeader = request.headers['x-forwarded-for']
   return xForwardedForHeader ? xForwardedForHeader.split(',')[0] : request.info.remoteAddress
@@ -29,4 +30,4 @@ function createEventDate () {
   return eventDate.toISOString()
 }
 
-module.exports = { sendEvent }
+module.exports = sendEvent

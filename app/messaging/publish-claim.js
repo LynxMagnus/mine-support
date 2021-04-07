@@ -2,7 +2,7 @@ const mqConfig = require('../config').claimQueueConfig
 const { MessageSender } = require('ffc-messaging')
 const createMessage = require('./create-message')
 const sessionHandler = require('../services/session-handler')
-const protectiveMonitoringService = require('../services/protective-monitoring-service')
+const sendProtectiveMonitoringEvent = require('../services/protective-monitoring-service')
 
 let claimSender
 
@@ -25,7 +25,7 @@ async function publishClaim (request) {
   const claim = sessionHandler.get(request, 'claim')
   const message = createMessage(claim)
   await claimSender.sendMessage(message)
-  protectiveMonitoringService.sendEvent(request, claim, 'Sending claim message')
+  sendProtectiveMonitoringEvent(request, claim, 'Sending claim message')
   await claimSender.closeConnection()
 }
 
