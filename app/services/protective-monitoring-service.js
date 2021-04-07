@@ -1,8 +1,8 @@
 const { PublishEvent } = require('ffc-protective-monitoring')
 
-function sendEvent (request, claim, message) {
+async function sendEvent (request, claim, message) {
   const protectiveMonitoring = new PublishEvent(process.env.PROTECTIVE_MONITORING_URL)
-  protectiveMonitoring.sendEvent({
+  await protectiveMonitoring.sendEvent({
     sessionid: claim.claimId,
     datetime: createEventDate(),
     version: '1.1',
