@@ -11,18 +11,6 @@ const sendProtectiveMonitoringEvent = require('../../app/services/protective-mon
 let request
 
 describe('send protective monitoring event', () => {
-  beforeEach(() => {
-    request = {
-      headers: {
-        'x-forwarded-for': '127.0.0.1'
-      }
-    }
-  })
-
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
   const claim = {
     claimId: 'MINE1',
     propertyType: 'business',
@@ -32,8 +20,27 @@ describe('send protective monitoring event', () => {
     email: 'joe.bloggs@defra.gov.uk'
   }
 
-  test('should send protective monitoring payload', async () => {
+  test('should send protective monitoring payload with x-forwarded-for header', async () => {
+    request = {
+      headers: {
+        'x-forwarded-for': '127.0.0.1'
+      }
+    }
+
     await sendProtectiveMonitoringEvent(request, claim, 'Test message')
     expect(mockSendEvent).toHaveBeenCalledTimes(1)
+  })
+
+  test('should send protective monitoring payload with remoteAddress', async () => {
+    request = {
+      headers: {
+      },
+      info: {
+        remoteAddress: '127.0.0.1'
+      }
+    }
+
+    await sendProtectiveMonitoringEvent(request, claim, 'Test message')
+    expect(mockSendEvent).toHaveBeenCalledTimes(2)
   })
 })
