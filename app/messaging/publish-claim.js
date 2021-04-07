@@ -25,7 +25,7 @@ async function publishClaim (request) {
   const claim = sessionHandler.get(request, 'claim')
   const message = createMessage(claim)
   await claimSender.sendMessage(message)
-  sendProtectiveMonitoringEvent(request, claim, 'Sending claim message')
+  await sendProtectiveMonitoringEvent(request, claim, 'Sending claim message')
   await claimSender.closeConnection()
 }
 
