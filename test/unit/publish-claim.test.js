@@ -11,12 +11,18 @@ const mockSendMessage = jest.fn()
 jest.mock('ffc-messaging', () => {
   return {
     MessageSender: jest.fn().mockImplementation(() => {
-      return { sendMessage: mockSendMessage }
+      return {
+        sendMessage: mockSendMessage,
+        closeConnection: jest.fn()
+      }
     })
   }
 })
 
+jest.mock('../../app/services/session-handler')
+
 const publishClaim = require('../../app/messaging/publish-claim')
+const sessionHandler = require('../../app/services/session-handler')
 let request
 
 describe('publish claim', () => {
@@ -30,11 +36,16 @@ describe('publish claim', () => {
   }
 
   beforeEach(() => {
+    sessionHandler.get.mockResolvedValue(claim)
     request = {
       headers: {
         'x-forwarded-for': '127.0.0.1'
       }
     }
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   test('should publish claim', async () => {
