@@ -25,7 +25,7 @@ const schema = Joi.object({
     clearInvalid: Joi.bool().default(false),
     strictHeader: Joi.bool().default(true)
   }),
-  protectiveMonitoringUrl: Joi.string().required()
+  protectiveMonitoringUrl: Joi.string()
 })
 
 // Build config
