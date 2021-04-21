@@ -45,5 +45,5 @@ Feature: Create and submit a new claim
         And I clear the inputfield "#email"
         And I add "seymour.pattisson@defra.gov.uk" to the inputfield "#email"
         When I click on the button "#submit"
-        And   I pause for 1500ms
+        And   I pause for 1800ms
         Then I expect that the url contains "/claim/confirmation"
