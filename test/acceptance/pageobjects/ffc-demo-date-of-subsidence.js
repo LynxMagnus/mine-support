@@ -4,7 +4,6 @@ class DateOfSubsidence extends Page {
   /**
     * define elements
     */
-
   get serviceName () { return $('//.govuk-header__link--service-name') }
   get headingQuestion () { return $('//.govuk-fieldset__heading') }
   get questionHint () { return $('//#date-of-subsidence-hint') }
@@ -20,7 +19,6 @@ class DateOfSubsidence extends Page {
     super.open('')
     browser.pause(3000)
   }
-
   /**
      * your page specific methods
      */
@@ -29,18 +27,15 @@ class DateOfSubsidence extends Page {
     this.subsidenceDay.setValue(day)
     browser.pause(1000)
   }
-
   enterMonth (month) {
     this.subsidenceMonth.clearValue()
     this.subsidenceMonth.setValue(month)
     browser.pause(1000)
   }
-
   enterYear (year) {
     this.subsidenceYear.clearValue()
     this.subsidenceYear.setValue(year)
     browser.pause(1000)
   }
 }
-
 export default new DateOfSubsidence()

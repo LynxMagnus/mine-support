@@ -1,12 +1,9 @@
 Feature: Date of Subsidence Page checks
 
     Scenario: Enter a date for the start of subsidence
-
         Given I open the url "/claim/date-of-subsidence"
         And   I pause for 500ms
-        Then I expect that the url contains "/claim/date-of-subsidence"
-        Then I expect that the title contains "When did the subsidence start?"
-        
+        Then I expect that the url contains "/claim/date-of-subsidence"   
         When I clear the inputfield "#dateOfSubsidence__day"
         And I click on the button "#dateOfSubsidence__day"
         And I add "01" to the inputfield "#dateOfSubsidence__day"

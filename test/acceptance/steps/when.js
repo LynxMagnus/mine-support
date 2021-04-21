@@ -17,8 +17,6 @@ import setPromptText from '../support/action/setPromptText'
 import Propertytype from '../pageobjects/ffc-demo-property-type'
 import ClaimName from '../pageobjects/ffc-demo-claimname'
 
-// import { wait } from '@hapi/hoek'
-
 const { When } = require('cucumber')
 
 When(
@@ -26,21 +24,9 @@ When(
   clickElement
 )
 
-// When(
-//   /^I clicks on the button$/, function () {
-//     Propertytype.selectHomeRadioBtn()
-//   }
-// )
-
 When(/^I clicks on the button$/, async () => {
   await Propertytype.selectHomeRadioBtn()
 })
-
-// When(
-//   /^I input claim name$/, function () {
-//     ClaimName.claimNameInput()
-//   }
-// )
 
 When(
   /^I input claim name$/, async () => {

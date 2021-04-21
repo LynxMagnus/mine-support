@@ -23,6 +23,9 @@ Docker is used to create a container for each of selenium-hub, chrome-browser an
 
 1. Set the root URL for the environment in the environment variable `TEST_ENVIRONMENT_ROOT_URL`
 
+| BROWSERSTACK_USERNAME   | User             |                          |                         |Browserstack user |
+| BROWSERSTACK_ACCESS_KEY | Key              |                           |                         |Browserstack key  |
+
 2. If running against localhost, then no need to set `TEST_ENVIRONMENT_ROOT_URL` as it will default to `docker.host.internal:3000`.  Instead make sure the application container is running with `docker-compose up --build` in the root folder of this repository
 
 3. From the directory containing the dockerfile run `docker-compose run --rm wdio-cucumber`. This will run an acceptance test against the FFC-Demo web service.
@@ -91,6 +94,12 @@ To run a test in a specific environment just add the desired configuration file 
 
 ```sh
 $ npx run wdio wdio.STAGING.conf.js
+```
+
+# Running Browserstack
+
+```sh
+$ BROWSERSTACK_ACCESS_KEY=userkeynumber npx wdio
 ```
 
 # Running single feature

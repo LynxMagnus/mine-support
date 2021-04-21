@@ -1,4 +1,4 @@
-var browserstack = require('browserstack-local')
+const browserstack = require('browserstack-local')
 const { ReportAggregator, HtmlReporter } = require('@rpii/wdio-html-reporter')
 const log4js = require('@log4js-node/log4js-api')
 const logger = log4js.getLogger('default')
@@ -29,7 +29,6 @@ exports.config = {
       }
     },
     {
-    // Windows 10 Firefox latest
       os: 'Windows',
       osVersion: '10',
       browserName: 'Firefox',
@@ -39,7 +38,6 @@ exports.config = {
       acceptSslCerts: true
     },
     {
-    // MacOS Mojave Safari 13.1
       os: 'OS X',
       osVersion: 'Big Sur',
       browserName: 'Safari',
@@ -48,9 +46,7 @@ exports.config = {
       acceptInsecureCerts: true,
       acceptSslCerts: true
     }
-
   ],
-  //
   // ===================
   // Test Configurations
   // ===================
@@ -60,7 +56,7 @@ exports.config = {
   baseUrl: envRoot,
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
-  connectionRetryCount: 3,
+  connectionRetryCount: 1,
   services: ['browserstack'],
   framework: 'cucumber',
   specFileRetries: 0,
@@ -76,7 +72,6 @@ exports.config = {
       LOG: logger
     }]
   ],
-
   // If you are using Cucumber you need to specify the location of your step definitions.
   cucumberOpts: {
     require: ['./steps/**/*.js'], // <string[]> (file/dir) require files before executing features
@@ -94,10 +89,8 @@ exports.config = {
     timeout: 60000, // <number> timeout for step definitions
     ignoreUndefinedDefinitions: false // <boolean> Enable this config to treat undefined definitions as warnings.
   },
-
   // =====
   // Hooks
-
   // =====
   onPrepare: function (config, capabilities) {
     const reportAggregator = new ReportAggregator({
@@ -105,14 +98,9 @@ exports.config = {
       filename: 'acceptance-test-suite-report.html',
       reportTitle: 'Acceptance Tests Report',
       browserName: capabilities.browserName
-
-      // to use the template override option, can point to your own file in the test project:
-      //  templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs')
-
     })
     reportAggregator.clean()
     global.reportAggregator = reportAggregator
-
     console.log('Connecting local')
     return new Promise(function (resolve, reject) {
       exports.bs_local = new browserstack.Local()
@@ -139,7 +127,6 @@ exports.config = {
 
   beforeSession: function () {
     const chai = require('chai')
-
     global.expect = chai.expect
     global.assert = chai.assert
     global.should = chai.should()
@@ -149,14 +136,11 @@ exports.config = {
     if (result.passed) {
       return
     }
-
     const path = require('path')
     const moment = require('moment')
-
     const screenshotFileName = ctx.uri.split('.feature')[0].split('/').slice(-1)[0]
     const timestamp = moment().format('YYYYMMDD-HHmmss.SSS')
     const filepath = path.join('./html-reports/screenshots/', screenshotFileName + '-' + timestamp + '.png')
-
     browser.saveScreenshot(filepath)
     process.emit('test:screenshot', filepath)
   }

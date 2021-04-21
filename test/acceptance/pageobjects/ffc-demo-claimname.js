@@ -5,7 +5,6 @@ class ClaimName extends Page {
   * define elements
   */
   get claimNameInput () { return $('//input[@id="name"]') }
-
   /**
      * define or overwrite page methods
      */
@@ -16,16 +15,13 @@ class ClaimName extends Page {
   /**
      * your page specific methods
      */
-
   waitForloginPageToLoad () {
     if (!this.headerImage.isDisplayed()) {
       this.headerImage.waitForDisplayed(10000)
     }
   }
-
   async claimName () {
     await (await this.claimNameInput).addValue('kaz')
   }
 }
-
 export default new ClaimName()

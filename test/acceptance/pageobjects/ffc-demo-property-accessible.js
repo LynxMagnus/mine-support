@@ -11,7 +11,6 @@ class PropertyAccessible extends Page {
   get yesRadioButton () { return $('//*[(@id = "accessible")]') }
   get noRadioButton () { return $('//*[(@id = "accessible-2")]') }
   get saveAndContinueButton () { return $('.govuk-button') }
-
   /**
      * define or overwrite page methods
      */
@@ -23,5 +22,4 @@ class PropertyAccessible extends Page {
      * your page specific methods
      */
 }
-
 export default new PropertyAccessible()
