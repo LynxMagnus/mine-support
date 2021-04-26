@@ -1,3 +1,3 @@
-@Library('psd-1136-support-wcag') _
+@Library('defra-library@psd-1136-support-wcag') _
 
 buildNodeJs defaultBranch: 'master'
