@@ -66,6 +66,7 @@ deployment:
   replicas: 1
   minReadySeconds: 5
   imagePullSecret:
+  useLinkerd: true
 
 readinessProbe:
   path: /healthy
