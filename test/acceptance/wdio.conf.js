@@ -59,7 +59,7 @@ exports.config = {
   connectionRetryCount: 1,
   services: ['browserstack'],
   framework: 'cucumber',
-  specFileRetries: 1,
+  specFileRetries: 2,
   specFileRetriesDelay: 30,
   reporters: ['spec',
     [HtmlReporter, {
