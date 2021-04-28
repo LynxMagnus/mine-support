@@ -16,6 +16,8 @@ import setInputField from '../support/action/setInputField'
 import setPromptText from '../support/action/setPromptText'
 import Propertytype from '../pageobjects/ffc-demo-property-type'
 import ClaimName from '../pageobjects/ffc-demo-claimname'
+import PropertyAccessible from '../pageobjects/ffc-demo-property-accessible'
+import PropertyMineType from '../pageobjects/ffc-demo-mine-type'
 
 const { When } = require('cucumber')
 
@@ -26,6 +28,18 @@ When(
 
 When(/^I clicks on the button$/, async () => {
   await Propertytype.selectHomeRadioBtn()
+})
+
+When(/^I clicks on the button$/, function () {
+  Propertytype.selectHomeRadioButton()
+})
+
+When(/^I click on the yes accessibilty button$/, function () {
+  PropertyAccessible.selectYesRadioButton()
+})
+
+When(/^I click on the coal mine checkbox$/, function () {
+  PropertyMineType.selectCoalCheckBox()
 })
 
 When(
