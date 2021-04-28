@@ -53,13 +53,12 @@ exports.config = {
       os: 'Windows',
       osVersion: '10',
       browserName: 'IE',
-      browserVersion: 'latest',
+      browserVersion: '11',
       resolution: '1024x768',
       'browserstack.local': true,
       acceptInsecureCerts: true,
       acceptSslCerts: true
     }
-
   ],
   // ===================
   // Test Configurations

@@ -26,10 +26,6 @@ When(
   clickElement
 )
 
-When(/^I clicks on the button$/, async () => {
-  await Propertytype.selectHomeRadioBtn()
-})
-
 When(/^I clicks on the button$/, function () {
   Propertytype.selectHomeRadioButton()
 })

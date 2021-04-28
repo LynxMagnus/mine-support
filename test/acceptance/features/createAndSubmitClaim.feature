@@ -12,7 +12,8 @@ Feature: Create and submit a new claim
         And I add "Seymour Pattisson" to the inputfield "#name"
         When I click on the button "#submit"
         And   I pause for 500ms
-        Then I expect that the url contains "/claim/property-type"         
+        Then I expect that the url contains "/claim/property-type" 
+        And   I pause for 500ms        
         When I clicks on the button
         When I click on the button "#submit"
         And I pause for 500ms
