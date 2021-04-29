@@ -59,6 +59,7 @@ exports.config = {
       'browserstack.local': true,
       acceptInsecureCerts: true,
       acceptSslCerts: true
+<<<<<<< HEAD
     },
 
     {
@@ -73,6 +74,9 @@ exports.config = {
       'browserstack.selenium_version': '4.0.0-alpha-6'
     }
 
+=======
+    }
+>>>>>>> origin/master
   ],
   // ===================
   // Test Configurations
