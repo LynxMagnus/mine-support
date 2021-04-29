@@ -58,7 +58,20 @@ exports.config = {
       'browserstack.local': true,
       acceptInsecureCerts: true,
       acceptSslCerts: true
+    },
+
+    {
+      // Windows Edge 86
+      os: 'Windows',
+      osVersion: '10',
+      browserName: 'Edge',
+      browserVersion: '86',
+      'browserstack.local': true,
+      acceptInsecureCerts: true,
+      acceptSslCerts: true,
+      'browserstack.selenium_version': '4.0.0-alpha-6'
     }
+
   ],
   // ===================
   // Test Configurations
