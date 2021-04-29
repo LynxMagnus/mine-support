@@ -39,6 +39,7 @@ exports.config = {
     },
 
     {
+      // Safari
       os: 'OS X',
       osVersion: 'Big Sur',
       browserName: 'Safari',
