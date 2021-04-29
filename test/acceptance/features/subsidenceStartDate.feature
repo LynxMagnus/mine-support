@@ -5,7 +5,6 @@ Feature: Date of Subsidence Page checks
         And   I pause for 500ms
         Then I expect that the url contains "/claim/date-of-subsidence"   
         When I clear the inputfield "#dateOfSubsidence__day"
-        And I click on the button "#dateOfSubsidence__day"
         And I add "01" to the inputfield "#dateOfSubsidence__day"
         And I clear the inputfield "#dateOfSubsidence__month"
         And I add "01" to the inputfield "#dateOfSubsidence__month"

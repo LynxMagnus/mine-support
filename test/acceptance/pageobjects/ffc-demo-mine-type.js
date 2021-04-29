@@ -22,5 +22,15 @@ class MineType extends Page {
   /**
      * your page specific methods
      */
+
+  selectCoalCheckBox () {
+    const element = $('#mineType')
+    browser.execute('arguments[0].click();', element)
+  }
+
+  selectGoldCheckBox () {
+    const element = $('#mineType-2')
+    browser.execute('arguments[1].click();', element)
+  }
 }
 export default new MineType()
