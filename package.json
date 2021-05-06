@@ -23,7 +23,7 @@
     "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js",
     "start:debug": "nodemon --inspect-brk=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
   },
-  "author": "Defra DDTS - added text to test GitHub signing cvcxvcx",
+  "author": "Defra DDTS - added text to test GitHub signing cvcxvcx czzcxz sddsadas",
   "contributors": [
     "John Watson john.watson2@rpa.gov.uk",
     "Mark Harrop mark.harrop@defra.gov.uk",
