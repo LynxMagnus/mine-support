@@ -1,6 +1,6 @@
 {
   "name": "ffc-demo-web",
-  "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
+  "description": "Digital service mock to c bnnmbnbjbnklaim public money in the event property subsides into mine shaft.",
   "version": "4.28.1",
   "homepage": "https://github.com/DEFRA/ffc-demo-web",
   "repository": {
@@ -23,7 +23,7 @@
     "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js",
     "start:debug": "nodemon --inspect-brk=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
   },
-  "author": "Defra DDTS",
+  "author": "Defra DDTS - added text to test GitHub signing cvcxvcx",
   "contributors": [
     "John Watson john.watson2@rpa.gov.uk",
     "Mark Harrop mark.harrop@defra.gov.uk",
