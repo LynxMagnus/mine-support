@@ -10,7 +10,6 @@ class Email extends Page {
   get emailField () { return $('#email') }
   get submitButton () { return $('.govuk-button') }
   get unavailableService () { return $('.govuk-heading-xl') }
-
   /**
      * define or overwrite page methods
      */
@@ -18,7 +17,6 @@ class Email extends Page {
     super.open('')
     browser.pause(3000)
   }
-
   /**
      * your page specific methods
      */
@@ -28,5 +26,4 @@ class Email extends Page {
     browser.pause(1000)
   }
 }
-
 export default new Email()

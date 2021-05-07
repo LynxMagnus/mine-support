@@ -12,16 +12,22 @@ class PropertyAccessible extends Page {
   get noRadioButton () { return $('//*[(@id = "accessible-2")]') }
   get saveAndContinueButton () { return $('.govuk-button') }
 
-  /**
-     * define or overwrite page methods
-     */
+  //   define or overwrite page methods
+
   open () {
     super.open('')
     browser.pause(3000)
   }
-  /**
-     * your page specific methods
-     */
-}
 
+  // your page specific methods
+  selectYesRadioButton () {
+    const element = $('#accessible')
+    browser.execute('arguments[0].click();', element)
+  }
+
+  selectNoRadioButton () {
+    const element = $('#accessible-2')
+    browser.execute('arguments[1].click();', element)
+  }
+}
 export default new PropertyAccessible()

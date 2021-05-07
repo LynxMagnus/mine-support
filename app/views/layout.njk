@@ -1,12 +1,12 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
-{% if cookiesPolicy.analytics %}
+{% if cookiesPolicy and cookiesPolicy.analytics %}
   {% include "./tag-manager/head-content.njk" %}
 {% endif %}
   <!--[if !IE 8]><!-->
   
-  <link href="/static/css/application.8c96bf7f495c7978a039.css" rel="stylesheet">
+  <link href="/static/css/application.dfac7db65d26144a7a5b.css" rel="stylesheet">
   
   <!--<![endif]-->
 
@@ -32,11 +32,11 @@
 {% endblock %}
 
 {% block bodyStart %}
-  {% if not cookiesPolicy.confirmed %}
+  {% if cookiesPolicy and not cookiesPolicy.confirmed %}
     {% include "./cookies/cookie-banner.njk" %}
   {% endif %}
 
-  {% if cookiesPolicy.analytics %}
+  {% if cookiesPolicy and cookiesPolicy.analytics %}
     {% include "./tag-manager/body-content.njk" %}
   {% endif %}
 {% endblock %}
@@ -65,6 +65,6 @@
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
 
-  <script src="/static/js/bundle.8c96bf7f495c7978a039.js"></script>
+  <script src="/static/js/bundle.dfac7db65d26144a7a5b.js"></script>
 
 {% endblock %}

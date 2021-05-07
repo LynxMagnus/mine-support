@@ -14,12 +14,34 @@ import selectOptionByIndex from '../support/action/selectOptionByIndex'
 import setCookie from '../support/action/setCookie'
 import setInputField from '../support/action/setInputField'
 import setPromptText from '../support/action/setPromptText'
+import Propertytype from '../pageobjects/ffc-demo-property-type'
+import ClaimName from '../pageobjects/ffc-demo-claimname'
+import PropertyAccessible from '../pageobjects/ffc-demo-property-accessible'
+import PropertyMineType from '../pageobjects/ffc-demo-mine-type'
 
 const { When } = require('cucumber')
 
 When(
   /^I (click|doubleclick) on the (link|button|element) "([^"]*)?"$/,
   clickElement
+)
+
+When(/^I clicks on the button$/, function () {
+  Propertytype.selectHomeRadioButton()
+})
+
+When(/^I click on the yes accessibilty button$/, function () {
+  PropertyAccessible.selectYesRadioButton()
+})
+
+When(/^I click on the coal mine checkbox$/, function () {
+  PropertyMineType.selectCoalCheckBox()
+})
+
+When(
+  /^I input claim name$/, async () => {
+    await ClaimName.claimNameInput()
+  }
 )
 
 When(

@@ -29,20 +29,15 @@ class StartPage extends Page {
       this.headerImage.waitForDisplayed(10000)
     }
   }
-
   login (username, password) {
-    // this.waitForloginPageToLoad();
     this.usernameInput.setValue(username)
     this.passwordInput.setValue(password)
     this.usertrackConsent.click()
     this.cookiesGotIt.click()
     this.loginButton.click()
   }
-
   startClaim () {
-    // this.waitForloginPageToLoad();
     this.startClaim.click()
   }
 }
-
 export default new StartPage()
