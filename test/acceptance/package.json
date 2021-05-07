@@ -37,6 +37,7 @@
     "browserstack-local": "^1.4.8",
     "chai": "^4.1.2",
     "cross-env": "^5.2.0",
+    "ecstatic": "^4.1.4",
     "selenium-server": "^3.141.59",
     "selenium-standalone": "^6.17.0",
     "wdio-geckodriver-service": "^1.0.0",
