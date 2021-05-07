@@ -45,6 +45,30 @@ exports.config = {
       'browserstack.local': true,
       acceptInsecureCerts: true,
       acceptSslCerts: true
+    },
+
+    {
+      // Windows IE 11
+      os: 'Windows',
+      osVersion: '10',
+      browserName: 'IE',
+      browserVersion: '11',
+      resolution: '1024x768',
+      'browserstack.local': true,
+      acceptInsecureCerts: true,
+      acceptSslCerts: true
+    },
+
+    {
+      // Windows Edge 86
+      os: 'Windows',
+      osVersion: '10',
+      browserName: 'Edge',
+      browserVersion: '86',
+      'browserstack.local': true,
+      acceptInsecureCerts: true,
+      acceptSslCerts: true,
+      'browserstack.selenium_version': '4.0.0-alpha-6'
     }
   ],
   // ===================
@@ -59,7 +83,7 @@ exports.config = {
   connectionRetryCount: 1,
   services: ['browserstack'],
   framework: 'cucumber',
-  specFileRetries: 1,
+  specFileRetries: 2,
   specFileRetriesDelay: 30,
   reporters: ['spec',
     [HtmlReporter, {
@@ -89,7 +113,7 @@ exports.config = {
     timeout: 60000, // <number> timeout for step definitions
     ignoreUndefinedDefinitions: false // <boolean> Enable this config to treat undefined definitions as warnings.
   },
-  // =====
+  // ====
   // Hooks
   // =====
   onPrepare: function (config, capabilities) {

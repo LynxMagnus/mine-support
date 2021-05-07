@@ -41,12 +41,10 @@ container:
   redisPort: 6379
   redisPartition: ffc-demo
   imagePullPolicy: IfNotPresent
-  requestMemory: 60Mi
-  requestCpu: 60m
+  requestMemory: 10Mi
+  requestCpu: 10m
   limitMemory: 80Mi
   limitCpu: 80m
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
   restClientTimeoutMillis: 20000
   staticCacheTimeoutMillis: 54000
   port: 3000
@@ -68,8 +66,7 @@ deployment:
   replicas: 1
   minReadySeconds: 5
   imagePullSecret:
-  runAsNonRoot: true
-  runAsUser: 1000
+  useLinkerd: true
 
 readinessProbe:
   path: /healthy
