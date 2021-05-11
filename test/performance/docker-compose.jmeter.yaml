@@ -1,5 +1,4 @@
 version: '3.7'
-
 services:
   ffc-demo-web:
     command: npm run start:watch
@@ -12,7 +11,7 @@ services:
     image: justb4/jmeter:5.1.1
     depends_on:
       - ffc-demo-web
-    command: "-Jgroup1.threads=8 -Jgroup1.loops=1 -Jgroup1.ramp=1 -n -t /perf-tests/testplan_debug.jmx -l /perf-tests/testresults.jtl -e -o /test-output/htmlreport"
+    command: "-Jgroup1.threads=8 -Jgroup1.loops=1 -Jgroup1.ramp=1 -n -t /perf-tests/FFCTestPlan.jmx -l /perf-tests/testresults.jtl -e -o /test-output/htmlreport"
     volumes:
       - ./test-output/:/test-output/
       - ./test/performance/:/perf-tests/
