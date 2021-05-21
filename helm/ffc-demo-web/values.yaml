@@ -31,10 +31,6 @@ service:
   port: 80
   type: ClusterIP
 
-secret:
-  name: ffc-demo-basic-auth
-  type: Opaque
-
 container:
   redisHostname: redis-redis-ha.default
   redisPassword: redis
