@@ -52,17 +52,11 @@ overridden by build and release pipelines.
 | CLAIM_QUEUE_ADDRESS            | claim queue name                          | no        |                    | claim                       |                                                                                   |
 | COOKIE_PASSWORD                | Redis cookie password                     | yes       |                    |                             |                                                                                   |
 | NODE_ENV                       | Node environment                          | no        | development        | development,test,production |                                                                                   |
-| OKTA_AUTH_SERVER_ID            | ID of Okta custom authorisation server    | no        |                    |                             |                                                                                   |
-| OKTA_CLIENT_ID                 | Client ID of Okta OpenID Connect app      | no        |                    |                             |                                                                                   |
-| OKTA_CLIENT_SECRET             | Client Secret of Okta OpenID Connect app  | no        |                    |                             |                                                                                   |
-| OKTA_DOMAIN                    | Okta domain, i.e. `mysite.okta.com`       | no        |                    |                             |                                                                                   |
-| OKTA_ENABLED                   | set to true to enable Okta authentication | no        | "true"             |                             |                                                                                   |
 | PORT                           | Port number                               | no        | 3000               |                             |                                                                                   |
 | REDIS_HOSTNAME                 | Redis host                                | no        | localhost          |                             |                                                                                   |
 | REDIS_PORT                     | Redis port                                | no        | 6379               |                             |                                                                                   |
 | REST_CLIENT_TIMEOUT_IN_MILLIS  | Rest client timout                        | no        | 5000               |                             |                                                                                   |
 | SESSION_TIMEOUT_IN_MINUTES     | Redis session timeout                     | no        | 30                 |                             |                                                                                   |
-| SITE_URL                       | URL of site, i.e. https://mysite.com      | no        |                    |                             |                                                                                   |
 | STATIC_CACHE_TIMEOUT_IN_MILLIS | static file cache timeout                 | no        | 54000 (15 minutes) |                             |                                                                                   |
 
 The `/account` page is accessible only by authenticated users. Authentication
