@@ -59,18 +59,6 @@ overridden by build and release pipelines.
 | SESSION_TIMEOUT_IN_MINUTES     | Redis session timeout                     | no        | 30                 |                             |                                                                                   |
 | STATIC_CACHE_TIMEOUT_IN_MILLIS | static file cache timeout                 | no        | 54000 (15 minutes) |                             |                                                                                   |
 
-The `/account` page is accessible only by authenticated users. Authentication
-uses either [Okta](https://www.okta.com/) or stubbed authentication (for local
-development only). To use the stubbed authentication set `OKTA_ENABLED` to
-`"false"`.
-
-Okta specific environment variables must be set if `OKTA_ENABLED` is set to
-`"true"`. A valid Okta OpenID Connect application is required, and the Okta
-domain, client ID, Client Secret, Custom Authorisation Server ID, and URL of
-the site must be set in the environment variables:
-`OKTA_DOMAIN`, `OKTA_CLIENT_ID`, `OKTA_CLIENT_SECRET`, `OKTA_AUTH_SERVER_ID`,
-and `SITE_URL` respectively.
-
 Running the integration tests locally requires access to ASB, this can be
 achieved by setting the following environment variables:
 `MESSAGE_QUEUE_HOST`, `MESSAGE_QUEUE_PASSWORD`, `MESSAGE_QUEUE_USER`.
