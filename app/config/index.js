@@ -1,6 +1,5 @@
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 const mqConfig = require('./mq-config')
-const getOktaConfig = require('./get-okta-config')
 
 // Define config schema
 const schema = Joi.object({
@@ -15,11 +14,11 @@ const schema = Joi.object({
   sessionTimeoutMinutes: Joi.number().default(30),
   staticCacheTimeoutMillis: Joi.number().default(15 * 60 * 1000),
   restClientTimeoutMillis: Joi.number().default(20000),
-  oktaEnabled: Joi.boolean().default(true),
   googleTagManagerKey: Joi.string().default(''),
   cookieOptions: Joi.object({
     ttl: Joi.number().default(1000 * 60 * 60 * 24 * 365),
     encoding: Joi.string().valid('base64json').default('base64json'),
+    isSameSite: Joi.string().valid('Lax').default('Lax'),
     isSecure: Joi.bool().default(true),
     isHttpOnly: Joi.bool().default(true),
     clearInvalid: Joi.bool().default(false),
@@ -38,7 +37,6 @@ const config = {
   redisPort: process.env.REDIS_PORT,
   redisPassword: process.env.REDIS_PASSWORD,
   cookiePassword: process.env.COOKIE_PASSWORD,
-  oktaEnabled: process.env.OKTA_ENABLED,
   sessionTimeoutMinutes: process.env.SESSION_TIMEOUT_IN_MINUTES,
   restClientTimeoutMillis: process.env.REST_CLIENT_TIMEOUT_IN_MILLIS,
   staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS,
@@ -46,6 +44,7 @@ const config = {
   cookieOptions: {
     ttl: process.env.COOKIE_TTL_IN_MILLIS,
     encoding: 'base64json',
+    isSameSite: 'Lax',
     isSecure: process.env.NODE_ENV === 'production',
     isHttpOnly: true,
     clearInvalid: false,
@@ -77,10 +76,6 @@ value.useRedis = !value.isTest && value.redisHost !== undefined
 
 if (!value.useRedis) {
   console.info('Redis disabled, using in memory cache')
-}
-
-if (value.oktaEnabled) {
-  value.okta = getOktaConfig()
 }
 
 value.catboxOptions = {

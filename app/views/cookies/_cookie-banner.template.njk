@@ -2,10 +2,10 @@
 
 <noscript>
 {{ govukCookieBanner({
-  ariaLabel: "Cookies on Manage my cookies",
+  ariaLabel: "Cookies on Demo service",
   messages: [
     {
-      headingText: "Cookies on Manage my cookies",
+      headingText: "Cookies on Demo service",
       text: "We use cookies to make this service work and collect analytics information. To accept or reject cookies, turn on JavaScript in your browser settings or reload this page."
     }
   ]
@@ -27,11 +27,11 @@
   {% endset %}
 
   {{ govukCookieBanner({
-    ariaLabel: "Cookies on Manage my cookies",
+    ariaLabel: "Cookies on Demo service",
     classes: "js-cookies-banner",
     messages: [
       {
-        headingText: "Cookies on Manage my cookies",
+        headingText: "Cookies on Demo service",
         html: html,
         classes: "js-question-banner",
         actions: [
@@ -82,4 +82,7 @@
   }) }}
 </div>
 
-<script src="/static/scripts/cookies.js"></script>
+<% htmlWebpackPlugin.files.js.forEach(file => { %>
+  <script src="<%= file.replace('../dist/', 'static/') %>"></script>
+<% }) %>
+

@@ -2,12 +2,12 @@
 
 {% block head %}
 {% if cookiesPolicy and cookiesPolicy.analytics %}
-  {% include "./tag-manager/head-content.njk" %}
+  {% include "./tag-manager/_head-content.njk" %}
 {% endif %}
   <!--[if !IE 8]><!-->
-  
-  <link href="/static/css/application.732f9dba26d133db3f88.css" rel="stylesheet">
-  
+  <% htmlWebpackPlugin.files.css.forEach(file => { %>
+  <link href="<%= file.replace('../dist/', '/static/') %>" rel="stylesheet">
+  <% }) %>
   <!--<![endif]-->
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
@@ -33,11 +33,11 @@
 
 {% block bodyStart %}
   {% if cookiesPolicy and not cookiesPolicy.confirmed %}
-    {% include "./cookies/cookie-banner.njk" %}
+    {% include "./cookies/_cookie-banner.njk" %}
   {% endif %}
 
   {% if cookiesPolicy and cookiesPolicy.analytics %}
-    {% include "./tag-manager/body-content.njk" %}
+    {% include "./tag-manager/_body-content.njk" %}
   {% endif %}
 {% endblock %}
 
@@ -64,7 +64,7 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-
-  <script src="/static/js/bundle.732f9dba26d133db3f88.js"></script>
-
+<% htmlWebpackPlugin.files.js.forEach(file => { %>
+  <script src="<%= file.replace('../dist/', '/static/') %>"></script>
+<% }) %>
 {% endblock %}
