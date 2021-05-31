@@ -43,7 +43,7 @@
     "selenium-standalone": "^6.17.0",
     "wdio-geckodriver-service": "^1.0.0",
     "webdriverio": "^6.1.19",
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
