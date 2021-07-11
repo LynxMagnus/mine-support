@@ -1,4 +1,7 @@
 resources:
   queues:
     - name: claim
+    - name: session
       enableSessions: true
+    - name: nosession
+      enableSessions: false
